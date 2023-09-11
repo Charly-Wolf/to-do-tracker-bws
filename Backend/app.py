@@ -22,7 +22,6 @@ class User(db.Model):
     email = Column(String(100), unique=True, nullable=False)
     password = Column(String(128), nullable=False)
     last_login_date = Column(DateTime)
-
     userType = Column(String(50))
 
     # Define the habits relationship without a column in the database
@@ -84,7 +83,8 @@ def get_users():
             "lastname": user.lastname,
             "email": user.email,
             "password": user.password,
-            "last_login_date": user.last_login_date
+            "last_login_date": user.last_login_date,
+            "userType": user.userType
         }
         users_list.append(user_data)
 
@@ -114,6 +114,22 @@ def get_habits():
 
 
     return jsonify(habits_list)
+
+@app.route('/log_entries', methods=['GET'])
+def get_log_entries():
+    log_entries = HabitLog.query.all() # Fetch all log entries from the database
+    log_entry_list = []
+
+    for log_entry in log_entries:
+        log_entry_data = {
+            "log_id": log_entry.log_id,
+            "habit_id": log_entry.habit_id,
+            "log_date": log_entry.log_date
+        }
+    
+        log_entry_list.append(log_entry_data)
+    
+    return jsonify(log_entry_list)
 
 # Create DB:
 db.create_all() 

@@ -1,4 +1,4 @@
-from app import app, db, NormalUser, Admin, Habit
+from app import app, db, NormalUser, Admin, Habit, HabitLog
 from datetime import datetime, timedelta
 
 # Assuming you have defined your Flask app and database models in "your_application_module"
@@ -50,5 +50,17 @@ with app.app_context():
 
     for habit in habits:
         db.session.add(habit)
+
+    # Create Habit Logs
+    logs = [
+        # Habit 1 (Work on the LF12 project) User 1 (John Doe)
+        HabitLog(habit_id = 1, log_date = datetime(2023, 9, 1)),
+        
+        # Habit 7 (15 min book reading) User 2 (Alice Smith)
+        HabitLog(habit_id = 7, log_date = datetime(2023, 9, 4)),
+    ]
+
+    for log in logs:
+        db.session.add(log)
 
     db.session.commit()
