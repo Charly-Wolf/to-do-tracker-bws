@@ -2,8 +2,6 @@ from app import app, db, NormalUser, Admin, Habit, HabitLog
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash
 
-# Assuming you have defined your Flask app and database models in "your_application_module"
-
 with app.app_context():
     # Create 5 Normal Users
     normal_users = [

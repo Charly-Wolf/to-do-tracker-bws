@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template, redirect, url_for, make_response
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Date, func
 from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
@@ -93,26 +93,16 @@ def get_users():
 
 @app.route('/habits', methods=['GET'])
 def get_habits():
-    #TODO user_id = request.cookies.get('user_id')  # Get user ID from the cookie
-    # if user_id is None:
-    #     return jsonify({'message': 'User not logged in'}), 401
-
-    # habit_list = get_current_user_habits_in_a_dictionary(user_id)
-
-    habits = Habit.query.all()
+    user_id = request.cookies.get('user_id')  # Get user ID from the cookie
+    if user_id is None:
+        return jsonify({'message': 'User not logged in'}), 401
 
     habits_list = []
 
-    for habit in habits:
-        habit_data = {
-            "habit_id": habit.habit_id,
-            "user_id": habit.user_id,
-            "name": habit.name,
-            "status": habit.status,
-            "habitLogs": [{"log_id": log.log_id, "log_date": log.log_date} for log in habit.habitLogs]
-        }
-        habits_list.append(habit_data)
+    habits_list = get_current_user_habits_in_a_dictionary(user_id)
 
+    if not habits_list:
+        return jsonify({'message': 'The current user does not have any habits'}), 401
 
     return jsonify(habits_list)
 
@@ -131,15 +121,6 @@ def get_log_entries():
         log_entry_list.append(log_entry_data)
     
     return jsonify(log_entry_list)
-
-def reset_user_habits_status(user_id):   
-    habits = Habit.query.filter_by(user_id=user_id).all()
-    if habits:
-        for habit in habits:
-            habit.status = False
-        db.session.commit()
-    # else:
-        #TODO
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -226,6 +207,40 @@ def index():
     if user.userType == 'admin':
         return render_template('index_admin.html')
     return render_template('index.html')
+
+
+# Helper Functions
+def reset_user_habits_status(user_id):   
+    habits = Habit.query.filter_by(user_id=user_id).all()
+    if habits:
+        for habit in habits:
+            habit.status = False
+        db.session.commit()
+    # else:
+        #TODO
+
+def get_current_user_habits_in_a_dictionary(user_id):
+    habits = Habit.query.filter_by(user_id=user_id).all() 
+    habit_list = []
+
+    for habit in habits:
+        habit_data = {
+            "habit_id": habit.habit_id,
+            "user_id": habit.user_id,
+            "name": habit.name,
+            "status": habit.status,
+            "habitLogs": [{"log_id": log.log_id, "log_date": log.log_date} for log in habit.habitLogs]
+        }
+        habit_list.append(habit_data)
+
+    print("\n\n")
+    for habit in habits:
+        print(f"Habit: {habit.name}")
+        for log in habit.logs:
+            print(str(log.log_date.date()))
+
+    return habit_list
+
 
 # Create DB:
 db.create_all() 
