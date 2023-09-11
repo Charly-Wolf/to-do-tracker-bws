@@ -139,7 +139,7 @@ def logout():
 def index():
     user_id = request.cookies.get('user_id')
     if user_id is None:
-        return redirect(url_for('login'))  # Redirect to the login page if user is not logged in
+        return redirect(url_for('user.login'))  # Redirect to the login page if user is not logged in
     user = User.query.filter_by(id=user_id).first()
     if user.userType == 'admin':
         return render_template('index_admin.html')
