@@ -32,11 +32,6 @@ with app.app_context():
         Habit(user_id = 1, name='3km running', status=False),
         Habit(user_id = 1, name='Practice Japanese', status=True),
 
-        # User 1 (John Doe)
-        Habit(user_id = 1, name='Work on the LF12 project', status=True),
-        Habit(user_id = 1, name='3km running', status=False),
-        Habit(user_id = 1, name='Practice Japanese', status=True),
-
         # User 2 (Alice Smith)
         Habit(user_id = 2, name='15 min book reading', status=False),
         Habit(user_id = 2, name='10km running', status=True),

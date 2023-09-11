@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, render_template, redirect, url_for, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from app.models import User, HabitLog, NormalUser, db
+from app.models import User, Habit, HabitLog, NormalUser, db
 from app.helpers import reset_user_habits_status, get_current_user_habits_in_a_dictionary
 
 user_bp = Blueprint('user', __name__)
@@ -39,9 +39,36 @@ def get_habits():
     habits_list = get_current_user_habits_in_a_dictionary(user_id)
 
     if not habits_list:
-        return jsonify({'message': 'The current user does not have any habits'}), 401
+        return jsonify({'message': 'The current user does not have any habits'}), 401 # TODO: check if this can be optimized so that the Frontend accordingly adapts when there are no habits for this user
 
     return jsonify(habits_list)
+
+@habit_bp.route('/add_habit', methods=['POST'])
+def add_habit():
+    try:
+        data = request.get_json()
+        habit_name = data.get('name')
+        user_id = request.cookies.get('user_id') 
+
+        if not habit_name or not habit_name.strip():
+            return jsonify({'message': 'Habit name cannot be empty!'}), 400
+
+        #Check if the user already has a habit with that name
+        user_id = request.cookies.get('user_id')
+        user_habits = get_current_user_habits_in_a_dictionary(user_id)  # Call the function to get the list of habits
+
+        for user_habit in user_habits:
+            if habit_name.lower() == user_habit['name'].lower():
+                return jsonify({'message': 'That habit already exists.'}), 400
+
+        new_habit = Habit(user_id=user_id, name=habit_name)  # Associate habit with the user
+
+        db.session.add(new_habit)
+        db.session.commit()
+
+        return jsonify({'message': 'Habit added successfully'}), 201
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while adding the habit.'}), 500
 
 @habit_bp.route('/log_entries', methods=['GET'])
 def get_log_entries():
