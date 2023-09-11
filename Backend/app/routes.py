@@ -38,8 +38,8 @@ def get_habits():
 
     habits_list = get_current_user_habits_in_a_dictionary(user_id)
 
-    if not habits_list:
-        return jsonify({'message': 'The current user does not have any habits'}), 401 # TODO: check if this can be optimized so that the Frontend accordingly adapts when there are no habits for this user
+    # if not habits_list:
+    #     return jsonify({'message': 'The current user does not have any habits'}), 401 # TODO: check if this can be optimized so that the Frontend accordingly adapts when there are no habits for this user
 
     return jsonify(habits_list)
 
