@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 # DB config:
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///habitTracker.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../habitTracker.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 cors = CORS(app)
