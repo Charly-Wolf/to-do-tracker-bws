@@ -1,76 +1,13 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for, make_response
-from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Date
-from sqlalchemy.orm import relationship, backref
+from flask import Blueprint, jsonify, request, render_template, redirect, url_for, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from app.models import User, HabitLog, NormalUser, db
+from app.helpers import reset_user_habits_status, get_current_user_habits_in_a_dictionary
 
-app = Flask(__name__)
+user_bp = Blueprint('user', __name__)
+habit_bp = Blueprint('habit', __name__)
 
-# DB config:
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///habitTracker.db'
-db = SQLAlchemy(app)
-cors = CORS(app)  # Enable CORS for all routes
-
-# Classes:
-class User(db.Model):
-    __tablename__ = 'users'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
-    lastname = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True, nullable=False)
-    password = Column(String(128), nullable=False)
-    last_login_date = Column(Date)
-    userType = Column(String(50))
-    
-    habits = relationship('Habit', backref=backref('user', uselist=False), lazy='dynamic') # Defines the habits relationship without a column in the database
-
-    __mapper_args__ = {
-        'polymorphic_on': userType,
-        'polymorphic_identity': 'user'
-    }
-
-class Admin(User):
-    __tablename__ = 'admins'
-
-    adminId = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'admin'
-    }
-
-class NormalUser(User):
-    __tablename__ = 'normal_users'
-
-    normalUserId = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    account_activated = Column(Boolean)
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'normal_user'
-    }
-
-class Habit(db.Model):
-    habit_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    name = Column(String(100), nullable=False)
-    status = Column(Boolean, default=False)
-    # created_at = Column(DateTime, default=datetime.utcnow)
-    @property
-    def habitLogs(self):
-        return HabitLog.query.filter_by(habit_id=self.habit_id).all()
-
-
-class HabitLog(db.Model):
-    log_id = Column(Integer, primary_key=True)
-    habit_id = Column(Integer, ForeignKey('habit.habit_id'), nullable=False)
-    log_date = Column(DateTime, nullable=False)
-
-# Routes
-@app.route('/users', methods=['GET'])
+@user_bp.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
 
@@ -91,32 +28,22 @@ def get_users():
 
     return jsonify(users_list)
 
-@app.route('/habits', methods=['GET'])
+@habit_bp.route('/habits', methods=['GET'])
 def get_habits():
-    #TODO user_id = request.cookies.get('user_id')  # Get user ID from the cookie
-    # if user_id is None:
-    #     return jsonify({'message': 'User not logged in'}), 401
-
-    # habit_list = get_current_user_habits_in_a_dictionary(user_id)
-
-    habits = Habit.query.all()
+    user_id = request.cookies.get('user_id')  # Get user ID from the cookie
+    if user_id is None:
+        return jsonify({'message': 'User not logged in'}), 401
 
     habits_list = []
 
-    for habit in habits:
-        habit_data = {
-            "habit_id": habit.habit_id,
-            "user_id": habit.user_id,
-            "name": habit.name,
-            "status": habit.status,
-            "habitLogs": [{"log_id": log.log_id, "log_date": log.log_date} for log in habit.habitLogs]
-        }
-        habits_list.append(habit_data)
+    habits_list = get_current_user_habits_in_a_dictionary(user_id)
 
+    if not habits_list:
+        return jsonify({'message': 'The current user does not have any habits'}), 401
 
     return jsonify(habits_list)
 
-@app.route('/log_entries', methods=['GET'])
+@habit_bp.route('/log_entries', methods=['GET'])
 def get_log_entries():
     log_entries = HabitLog.query.all() # Fetch all log entries from the database
     log_entry_list = []
@@ -132,16 +59,7 @@ def get_log_entries():
     
     return jsonify(log_entry_list)
 
-def reset_user_habits_status(user_id):   
-    habits = Habit.query.filter_by(user_id=user_id).all()
-    if habits:
-        for habit in habits:
-            habit.status = False
-        db.session.commit()
-    # else:
-        #TODO
-
-@app.route('/register', methods=['GET', 'POST'])
+@user_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         data = request.get_json()
@@ -170,11 +88,11 @@ def register():
         return jsonify({'message': 'User registered successfully'}), 201
     return render_template('register.html')
 
-@app.route('/activationPending')
+@user_bp.route('/activationPending')
 def activationPending():
     return render_template('activationPending.html') #TODO: only accessible after registering...
 
-@app.route('/login', methods=['GET', 'POST'])
+@user_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         data = request.get_json()
@@ -210,14 +128,14 @@ def login():
             return jsonify({'message': 'Wrong username or password'}), 401 
     return render_template('login.html')
 
-@app.route('/logout', methods=['POST'])
+@user_bp.route('/logout', methods=['POST'])
 def logout():
     response = make_response(jsonify({'message': 'Logged out'}), 200)
     response.delete_cookie('user_id')  # Clear the user_id cookie
     #TODO: failed logout (for example if the user already logged out...)
     return response
 
-@app.route('/')
+@habit_bp.route('/')
 def index():
     user_id = request.cookies.get('user_id')
     if user_id is None:
@@ -226,9 +144,3 @@ def index():
     if user.userType == 'admin':
         return render_template('index_admin.html')
     return render_template('index.html')
-
-# Create DB:
-db.create_all() 
-
-if __name__ == '__main__':
-    app.run()
