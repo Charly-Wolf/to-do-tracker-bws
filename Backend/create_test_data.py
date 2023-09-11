@@ -1,16 +1,17 @@
 from app import app, db, NormalUser, Admin, Habit, HabitLog
 from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash
 
 # Assuming you have defined your Flask app and database models in "your_application_module"
 
 with app.app_context():
     # Create 5 Normal Users
     normal_users = [
-        NormalUser(name='John', lastname='Doe', email='john@example.com', password='password1', last_login_date=datetime.now() - timedelta(days=2), account_activated=True),
-        NormalUser(name='Alice', lastname='Smith', email='alice@example.com', password='password2', last_login_date=datetime.now() - timedelta(days=1), account_activated=True),
-        NormalUser(name='Robert', lastname='Johnson', email='robert@example.com', password='password3', last_login_date=datetime.now() - timedelta(hours=2), account_activated=False),
-        NormalUser(name='Emily', lastname='Davis', email='emily@example.com', password='password4', last_login_date=datetime.now() - timedelta(hours=1), account_activated=False),
-        NormalUser(name='Michael', lastname='Wilson', email='michael@example.com', password='password5', last_login_date=datetime.now(), account_activated=True),
+        NormalUser(name='John', lastname='Doe', email='john@example.com', password=generate_password_hash('password1', method='sha256'), last_login_date=datetime.now() - timedelta(days=2), account_activated=True),
+        NormalUser(name='Alice', lastname='Smith', email='alice@example.com', password=generate_password_hash('password2', method='sha256'), last_login_date=datetime.now() - timedelta(days=1), account_activated=True),
+        NormalUser(name='Robert', lastname='Johnson', email='robert@example.com', password=generate_password_hash('password3', method='sha256'), last_login_date=datetime.now() - timedelta(hours=2), account_activated=False),
+        NormalUser(name='Emily', lastname='Davis', email='emily@example.com', password=generate_password_hash('password4', method='sha256'), last_login_date=datetime.now() - timedelta(hours=1), account_activated=False),
+        NormalUser(name='Michael', lastname='Wilson', email='michael@example.com', password=generate_password_hash('password5', method='sha256'), last_login_date=datetime.now(), account_activated=True),
     ]
 
     for user in normal_users:
@@ -18,9 +19,9 @@ with app.app_context():
 
     # Create 3 Admins
     admins = [
-        Admin(name='Admin', lastname='Adminson', email='admin1@example.com', password='adminpassword1'),
-        Admin(name='Super', lastname='Admin', email='admin2@example.com', password='adminpassword2'),
-        Admin(name='Admin', lastname='Master', email='admin3@example.com', password='adminpassword3'),
+        Admin(name='Admin', lastname='Adminson', email='admin1@example.com', password=generate_password_hash('adminpassword1', method='sha256'), last_login_date=datetime.now()),
+        Admin(name='Super', lastname='Admin', email='admin2@example.com', password=generate_password_hash('adminpassword2', method='sha256'), last_login_date=datetime.now()),
+        Admin(name='Admin', lastname='Master', email='admin3@example.com', password=generate_password_hash('adminpassword3', method='sha256'), last_login_date=datetime.now()),
     ]
 
     for admin in admins:

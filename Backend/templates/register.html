@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrackYou - Register</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='loginRegister.css') }}"
+    />
+    <link rel="shortcut icon" href="#" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>TrackYou - Register</h1>
+      <form id="register-form">
+        <input type="text" id="email_reg" placeholder="Email" required />
+        <input type="text" id="name_reg" placeholder="Name" required />
+        <input type="text" id="lastname_reg" placeholder="Lastname" required />
+        <input
+          type="password"
+          id="password_reg"
+          placeholder="Password"
+          required
+        />
+        <input
+          type="password"
+          id="password2_reg"
+          placeholder="Repeat Password"
+          required
+        />
+        <button type="submit">Register</button>
+      </form>
+      <div id="error-message" class="error-message"></div>
+
+      <br />
+      <p style="font-weight: bold; font-size: larger">
+        This is a Habit Tracker App ✅
+      </p>
+      <br />
+      <p style="font-weight: bold; font-size: larger">
+        That means you can add habits and mark them as done by tapping on them
+        😁
+      </p>
+      <br />
+      <p>
+        Note: Habits status reset each day, so what you marked as done today,
+        will not be done tomorrow 😉
+      </p>
+      <br />
+      <br />
+
+      <p>Already have an account? <a href="/login">Login here</a></p>
+    </div>
+    <script src="{{ url_for('static', filename='register.js') }}"></script>
+  </body>
+</html>
