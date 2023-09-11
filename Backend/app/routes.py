@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.models import User, Habit, HabitLog, NormalUser, db
 from app.helpers import reset_user_habits_status, get_current_user_habits_in_a_dictionary
+from validate_email_address import validate_email
 
 user_bp = Blueprint('user', __name__)
 habit_bp = Blueprint('habit', __name__)
@@ -90,7 +91,7 @@ def get_log_entries():
 def register():
     if request.method == 'POST':
         data = request.get_json()
-        email = data.get('email').strip() #TODO: regex validation!
+        email = data.get('email').strip() 
         name = data.get('name').strip()
         lastname = data.get('lastname').strip()
         password = data.get('password')
@@ -98,6 +99,9 @@ def register():
 
         if not email or not name or not lastname or not password or not password2:
             return jsonify({'message': 'Email address, name, lastname and password are required'}), 400
+        
+        if not validate_email(email):
+            return jsonify({'message': 'Wrong email address format'}), 400
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
