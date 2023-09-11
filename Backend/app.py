@@ -98,16 +98,17 @@ def get_habits():
 
     # habit_list = get_current_user_habits_in_a_dictionary(user_id)
 
-    habits = User.query.all()
+    habits = Habit.query.all()
 
     habits_list = []
 
     for habit in habits:
         habit_data = {
             "habit_id": habit.habit_id,
+            "user_id": habit.user_id,
             "name": habit.name,
             "status": habit.status,
-            "logs": [{"log_id": log.log_id, "log_date": log.log_date} for log in habit.logs]
+            "habitLogs": [{"log_id": log.log_id, "log_date": log.log_date} for log in habit.habitLogs]
         }
         habits_list.append(habit_data)
 
