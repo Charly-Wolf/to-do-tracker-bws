@@ -1,4 +1,5 @@
 from app.models import Habit, db
+import re # Regular Expressions
 
 def reset_user_habits_status(user_id):   
     habits = Habit.query.filter_by(user_id=user_id).all()
@@ -24,3 +25,30 @@ def get_current_user_habits_in_a_dictionary(user_id):
         habit_list.append(habit_data)
 
     return habit_list
+
+
+
+def validate_name_characters(name):
+    # Regular Expression for latin alphabet characters and common European characters
+    name_pattern = re.compile(r'^[A-Za-zÀ-ÿ\s\-\']+$')
+    
+    if not name_pattern.match(name):
+        return False
+    else: return True
+
+def validate_name_length(name):
+    name_lenght = len(name.strip())
+    if (name_lenght > 20) or (name_lenght < 2):
+        return False
+    else: return True
+
+def validate_password_format(password):
+    # Regular Expression for at least: 
+        # 8 characters,
+        # one uppercase letter, 
+        # one lowercase letter,one digit 
+        # and one special character. 
+        # Umlauts are allowed.
+    pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&äöüÄÖÜß]{8,}$'
+
+    return re.match(pattern, password) is not None
