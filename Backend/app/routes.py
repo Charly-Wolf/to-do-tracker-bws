@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, render_template, redirect, url_fo
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.models import User, Habit, HabitLog, NormalUser, db
-from app.helpers import reset_user_habits_status, get_current_user_habits_in_a_dictionary, validate_name_characters, validate_name_length, validate_password_format
+from app.helpers import reset_user_habits_status, get_current_user_habits_in_a_dictionary, validate_user_name_characters, validate_user_name_length, validate_password_format, validate_habit_name_format, validate_habit_name_length
 from validate_email_address import validate_email
 
 user_bp = Blueprint('user', __name__)
@@ -59,6 +59,12 @@ def add_habit():
 
         if not habit_name or not habit_name.strip():
             return jsonify({'message': 'Habit name cannot be empty!'}), 400
+        
+        if not validate_habit_name_length(habit_name):
+            return jsonify({'message': 'Habit name must be between 2 and 30 characters long'}), 400
+
+        if not validate_habit_name_format(habit_name):
+            return jsonify({'message': 'Invalid habit name'}), 400
 
         #Check if the user already has a habit with that name
         user_id = request.cookies.get('user_id')
@@ -115,7 +121,7 @@ def register():
         if not validate_name_characters(lastname):
             return jsonify({'message': 'Invalid last name format, characters not allowed'}), 400
         if not validate_password_format(password):
-            return jsonify({'message': 'Invalid password format (At least: 8 characters, one uppercase letter, one lowercase letter,one digit and one special character.)'}), 400
+            return jsonify({'message': 'Invalid password format (At least: 8 characters, one uppercase letter, one lowercase letter, one digit and one special character.)'}), 400
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
