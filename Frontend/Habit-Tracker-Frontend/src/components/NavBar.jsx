@@ -1,4 +1,4 @@
-import './components/NavBarStyles.css'
+import "../components/NavBarStyles.css"
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
 
 export default function Navbar() {
