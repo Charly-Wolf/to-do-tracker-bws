@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, render_template, redirect, url_fo
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.models import User, Habit, HabitLog, NormalUser, db
-from app.helpers import reset_user_habits_status, prepare_habit_list, validate_user_name_characters, validate_user_name_length, validate_password_format, validate_habit_name_format, validate_habit_name_length, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list
+from app.helpers import reset_user_habits_status, prepare_habit_list, validate_user_name_characters, validate_user_name_length, validate_password_format, validate_habit_name_format, validate_habit_name_length, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list, prepare_log_entries, get_logged_in_user
 from validate_email_address import validate_email
 
 user_bp = Blueprint('user', __name__)
@@ -10,10 +10,9 @@ habit_bp = Blueprint('habit', __name__)
 
 @habit_bp.route('/')
 def index():
-    user_id = request.cookies.get('user_id')
-    if user_id is None:
+    user = get_logged_in_user()
+    if user is None:
         return redirect(url_for('user.login'))  # Redirect to the login page if user is not logged in
-    user = User.query.filter_by(id=user_id).first()
     if user.userType == 'admin':
         return render_template('index_admin.html') # TODO: change this to fit REACT
     return render_template('index.html') # TODO: change this to fit REACT
@@ -29,11 +28,11 @@ def get_users():
 
 @habit_bp.route('/habits', methods=['GET'])
 def get_habits():
-    user_id = request.cookies.get('user_id')  # Get user ID from the cookie
-    if user_id is None:
+    user = get_logged_in_user()
+    if user is None:
         return jsonify({'message': 'No permissions to see the habits list'}), 401
 
-    habits_list = prepare_habit_list(user_id)
+    habits_list = prepare_habit_list()
 
     # if not habits_list:
     #     return jsonify({'message': 'The current user does not have any habits'}), 401 # TODO: check if this can be optimized so that the Frontend accordingly adapts when there are no habits for this user
@@ -45,7 +44,6 @@ def add_habit():
     try:
         data = request.get_json()
         habit_name = data.get('name')
-        user_id = request.cookies.get('user_id') 
 
         if not habit_name or not habit_name.strip():
             return jsonify({'message': 'Habit name cannot be empty!'}), 400
@@ -57,13 +55,12 @@ def add_habit():
             return jsonify({'message': 'Invalid habit name'}), 400
 
         #Check if the user already has a habit with that name
-        user_id = request.cookies.get('user_id')
-        user_habits = prepare_habit_list(user_id)  # Call the function to get the list of habits
-
+        user_habits = prepare_habit_list()  # Call the function to get the list of habits
         for user_habit in user_habits:
             if habit_name.lower() == user_habit['name'].lower():
                 return jsonify({'message': 'That habit already exists.'}), 400
 
+        user_id = get_logged_in_user().id
         new_habit = Habit(user_id=user_id, name=habit_name)  # Associate habit with the user
 
         db.session.add(new_habit)
@@ -75,18 +72,11 @@ def add_habit():
 
 @habit_bp.route('/log_entries', methods=['GET'])
 def get_log_entries():
-    log_entries = HabitLog.query.all() # Fetch all log entries from the database
-    log_entry_list = []
+    log_entry_list = prepare_log_entries()
+    
+    if log_entry_list is None:
+        return jsonify({'message': 'No permissions to see the log entries'}), 401
 
-    for log_entry in log_entries:
-        log_entry_data = {
-            "log_id": log_entry.log_id,
-            "habit_id": log_entry.habit_id,
-            "log_date": log_entry.log_date
-        }
-    
-        log_entry_list.append(log_entry_data)
-    
     return jsonify(log_entry_list)
 
 @user_bp.route('/register', methods=['GET', 'POST'])
@@ -223,8 +213,7 @@ def update_habit_name(habit_id):
         data = request.get_json()
         new_name = data.get('name').strip()
 
-        user_id = request.cookies.get('user_id')
-        user_habits = prepare_habit_list(user_id)  # Call the function to get the list of habits
+        user_habits = prepare_habit_list()  # Call the function to get the list of habits
 
         # Check if a habit already has that name
         for user_habit in user_habits:

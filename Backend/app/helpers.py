@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from app.models import User, NormalUser, Habit, HabitLog, db
+from app.models import User, Habit, HabitLog, db
 import re # Regular Expressions
 
 def reset_user_habits_status(user_id):   
@@ -11,8 +11,9 @@ def reset_user_habits_status(user_id):
     # else:
         #TODO
 
-def prepare_habit_list(user_id):
-    habits = Habit.query.filter_by(user_id=user_id).all() 
+def prepare_habit_list():
+    user = get_logged_in_user()
+    habits = Habit.query.filter_by(user_id=user.user_id).all() 
     habit_list = []
 
     for habit in habits:
@@ -28,10 +29,9 @@ def prepare_habit_list(user_id):
     return habit_list
 
 def prepare_user_list():
-    user_id = request.cookies.get('user_id')  # Get user ID from the cookie
-    user = User.query.filter_by(id=user_id).first()
+    user = get_logged_in_user()
 
-    if user_id is None or not user.userType == 'admin':
+    if user is None or not user.userType == 'admin':
         return None  # Return None to indicate no permission
 
     users = User.query.all()
@@ -56,6 +56,26 @@ def prepare_user_list():
         users_list.append(user_data)
 
     return users_list
+
+def prepare_log_entries():
+    user = get_logged_in_user()
+    if user is None:
+        return None  # Return None to indicate no permission
+
+    # Fetch all habits related to the user
+    habits = prepare_habit_list()
+    log_entry_list = []
+
+    # Loop through each habit and get its associated log entries
+    for habit in habits:
+        for log_entry in habit['habitLogs']:
+            log_entry_data = {
+                "log_id": log_entry['log_id'],
+                "log_date": log_entry['log_date']
+            }
+            log_entry_list.append(log_entry_data)
+
+    return log_entry_list
 
 def validate_user_name_characters(name):
     # Regular Expression for latin alphabet characters and common European characters
@@ -111,3 +131,8 @@ def filter_logs_by_date(logs, target_date): # TODO: maybe it would be better to 
 def filter_logs_by_habit_id(target_habit_id):
     log_entries = HabitLog.query.filter_by(habit_id=target_habit_id).all()
     return log_entries
+
+def get_logged_in_user():
+    user_id = request.cookies.get('user_id')  # Get user ID from the cookie
+    user = User.query.filter_by(id=user_id).first()    
+    return user
