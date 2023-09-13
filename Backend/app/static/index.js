@@ -12,6 +12,18 @@ addHabitButton.addEventListener("click", () => {
 const backToHabitsListButton = document.getElementById("back-to-habits");
 backToHabitsListButton.addEventListener("click", backtohabits);
 
+const usersListButton = document.getElementById("users-list");
+if (usersListButton) {
+  // The element with ID "users-list" exists
+  usersListButton.addEventListener("click", () => {
+    window.location.href = "/users_list";
+    alert("USERS clicked");
+  });
+} else {
+  // The element with ID "users-list" does not exist
+  // TO DO
+}
+
 async function backtohabits() {
   addHabitButton.style.display = "flex";
   renderHabitListPage();

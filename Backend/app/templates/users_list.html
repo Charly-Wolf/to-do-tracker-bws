@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TrackYou - Users</title>
-    <link rel="stylesheet" href="static/index.css" />
+    <link rel="stylesheet" href="static/users_list.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -17,9 +17,10 @@
   <body>
     <div class="container">
       <header>
-        <h1>TrackYou - Users</h1>
+        <h1>TrackYou - ADMIN</h1>
       </header>
       <main>
+        <h2>Manage users</h2>
         <div class="table-container">
           <table class="habit-table">
             <thead>
@@ -38,9 +39,30 @@
                 <td>{{ user.name }}</td>
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.userType }}</td>
-                <td>TODO STATUS</td>
-                <td>TODO BTNS for ACTIVATE/DEACTIVATE</td>
+                <td>
+                  {{ "ADMIN" if user.userType =="admin" else "Normal user" }}
+                </td>
+
+                <td>
+                  {% if user.userType == "normal_user" %}
+                  <span
+                    class="{{'activated-txt' if user.account_activated else 'blocked-txt'}}"
+                  >
+                    {{ "Activated" if user.account_activated else "Blocked" }}
+                  </span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if user.userType == "normal_user" %}
+                  <button
+                    id="action-btn {{user.id}}"
+                    class="{{'block-btn' if user.account_activated else 'activate-btn'}}"
+                    onclick="{{ 'toggleUserStatus(' + user.id|string + ')' }}"
+                  >
+                    {{ "Block" if user.account_activated else "Activate" }}
+                  </button>
+                  {% endif %}
+                </td>
               </tr>
               {% endfor %}
             </tbody>
@@ -50,9 +72,9 @@
     </div>
     <footer>
       <button id="stats">Stats</button>
-      <button id="back-to-habits">Habits</button>
+      <button id="habits">Habits</button>
       <button id="logout">Logout</button>
     </footer>
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <script src="{{ url_for('static', filename='users_list.js') }}"></script>
   </body>
 </html>

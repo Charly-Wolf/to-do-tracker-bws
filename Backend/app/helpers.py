@@ -1,4 +1,5 @@
-from app.models import Habit, HabitLog, db
+from flask import jsonify, request
+from app.models import User, NormalUser, Habit, HabitLog, db
 import re # Regular Expressions
 
 def reset_user_habits_status(user_id):   
@@ -10,7 +11,7 @@ def reset_user_habits_status(user_id):
     # else:
         #TODO
 
-def get_current_user_habits_in_a_dictionary(user_id):
+def prepare_habit_list(user_id):
     habits = Habit.query.filter_by(user_id=user_id).all() 
     habit_list = []
 
@@ -26,7 +27,35 @@ def get_current_user_habits_in_a_dictionary(user_id):
 
     return habit_list
 
+def prepare_user_list():
+    user_id = request.cookies.get('user_id')  # Get user ID from the cookie
+    user = User.query.filter_by(id=user_id).first()
 
+    if user_id is None or not user.userType == 'admin':
+        return None  # Return None to indicate no permission
+
+    users = User.query.all()
+    users_list = []
+
+    for user in users:
+        user_data = {
+            "id": user.id,
+            "name": user.name,
+            "lastname": user.lastname,
+            "email": user.email,
+            "password": user.password,
+            "last_login_date": user.last_login_date,
+            "userType": user.userType,
+            # "habits": user.habits
+        }
+
+        # Check if the user is a NormalUser and add the account_activated attribute
+        if user.userType == 'normal_user':
+            user_data["account_activated"] = user.account_activated
+
+        users_list.append(user_data)
+
+    return users_list
 
 def validate_user_name_characters(name):
     # Regular Expression for latin alphabet characters and common European characters

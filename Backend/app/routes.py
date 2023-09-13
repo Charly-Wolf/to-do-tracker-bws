@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, render_template, redirect, url_fo
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.models import User, Habit, HabitLog, NormalUser, db
-from app.helpers import reset_user_habits_status, get_current_user_habits_in_a_dictionary, validate_user_name_characters, validate_user_name_length, validate_password_format, validate_habit_name_format, validate_habit_name_length, filter_logs_by_date, filter_logs_by_habit_id
+from app.helpers import reset_user_habits_status, prepare_habit_list, validate_user_name_characters, validate_user_name_length, validate_password_format, validate_habit_name_format, validate_habit_name_length, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list
 from validate_email_address import validate_email
 
 user_bp = Blueprint('user', __name__)
@@ -15,35 +15,17 @@ def index():
         return redirect(url_for('user.login'))  # Redirect to the login page if user is not logged in
     user = User.query.filter_by(id=user_id).first()
     if user.userType == 'admin':
-        return render_template('index_admin.html')
-    return render_template('index.html')
+        return render_template('index_admin.html') # TODO: change this to fit REACT
+    return render_template('index.html') # TODO: change this to fit REACT
 
 @user_bp.route('/users', methods=['GET'])
 def get_users():
+    users_list_data = prepare_user_list()
 
-    user_id = request.cookies.get('user_id')  # Get user ID from the cookie
-    user = User.query.filter_by(id=user_id).first()
-
-    if user_id is None or not user.userType == 'admin':
+    if users_list_data is None:
         return jsonify({'message': 'No permissions to see the users list'}), 401
 
-    users = User.query.all()
-    users_list = []
-
-    for user in users:
-        user_data = {
-            "id": user.id,
-            "name": user.name,
-            "lastname": user.lastname,
-            "email": user.email,
-            "password": user.password,
-            "last_login_date": user.last_login_date,
-            "userType": user.userType,
-            # "habits": user.habits
-        }
-        users_list.append(user_data)
-
-    return jsonify(users_list)
+    return jsonify(users_list_data)
 
 @habit_bp.route('/habits', methods=['GET'])
 def get_habits():
@@ -51,9 +33,7 @@ def get_habits():
     if user_id is None:
         return jsonify({'message': 'No permissions to see the habits list'}), 401
 
-    habits_list = []
-
-    habits_list = get_current_user_habits_in_a_dictionary(user_id)
+    habits_list = prepare_habit_list(user_id)
 
     # if not habits_list:
     #     return jsonify({'message': 'The current user does not have any habits'}), 401 # TODO: check if this can be optimized so that the Frontend accordingly adapts when there are no habits for this user
@@ -78,7 +58,7 @@ def add_habit():
 
         #Check if the user already has a habit with that name
         user_id = request.cookies.get('user_id')
-        user_habits = get_current_user_habits_in_a_dictionary(user_id)  # Call the function to get the list of habits
+        user_habits = prepare_habit_list(user_id)  # Call the function to get the list of habits
 
         for user_habit in user_habits:
             if habit_name.lower() == user_habit['name'].lower():
@@ -147,11 +127,11 @@ def register():
         db.session.commit()
 
         return jsonify({'message': 'User registered successfully'}), 201
-    return render_template('register.html')
+    return render_template('register.html') # TODO: change this to fit REACT
 
 @user_bp.route('/activationPending')
 def activationPending():
-    return render_template('activationPending.html') #TODO: only accessible after registering...
+    return render_template('activationPending.html') # TODO: 1) change this to fit REACT TODO: 2) make it only accessible after registering...
 
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -187,7 +167,7 @@ def login():
             return response
         else:
             return jsonify({'message': 'Wrong username or password'}), 401 
-    return render_template('login.html')
+    return render_template('login.html') # TODO: change this to fit REACT
 
 @user_bp.route('/logout', methods=['POST'])
 def logout():
@@ -244,7 +224,7 @@ def update_habit_name(habit_id):
         new_name = data.get('name').strip()
 
         user_id = request.cookies.get('user_id')
-        user_habits = get_current_user_habits_in_a_dictionary(user_id)  # Call the function to get the list of habits
+        user_habits = prepare_habit_list(user_id)  # Call the function to get the list of habits
 
         # Check if a habit already has that name
         for user_habit in user_habits:
@@ -279,3 +259,27 @@ def delete_habit(habit_id):
         return jsonify({'message': 'Habit deleted successfully'}), 200
     except Exception as e:
         return jsonify({'message': 'An error occurred while deleting the habit.'}), 500
+
+@user_bp.route('/users_list', methods=['GET']) 
+def users_list():
+    users_list_data = prepare_user_list()
+
+    if users_list_data is None:
+        return jsonify({'message': 'No permissions to see the users list'}), 401
+
+    return render_template('users_list.html', users=users_list_data) # TODO: change this to fit REACT
+
+@user_bp.route('/users/toggle_user_status/<int:user_id>', methods=['PUT'])
+def blocl_user(user_id): # Get user ID from the cookie
+    user = User.query.filter_by(id=user_id).first()
+    
+    if user:
+        try:
+            user.account_activated = not user.account_activated
+            db.session.commit()
+
+            return jsonify({'message': 'User status succesfully toggled'}), 200
+        except Exception as e:
+            return jsonify({'message': 'An error occurred while toggling user status.'}), 500
+    else:
+        return jsonify({'message': 'User not found'}), 404
