@@ -54,6 +54,11 @@ footer button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+#stats {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
 .activate-btn {
   background-color: #65a765;
 }

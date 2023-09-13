@@ -83,6 +83,7 @@ async function fetchHabits() {
 
       if (habits.length > 0) {
         statsButton.style.display = "flex";
+        statsButton.style.backgroundColor = "gray";
       }
 
       habits.forEach((habit) => {

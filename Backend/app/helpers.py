@@ -164,16 +164,22 @@ def validate_add_habit(habit_name):
     return jsonify({'message': 'Habit added successfully'}), 201
 
 def validate_register_user(email, name, lastname, password, password2):
+    
     if not email or not name or not lastname or not password or not password2:
             return jsonify({'message': 'Email address, name, lastname and password are required'}), 400
+    
     if not validate_email(email):
         return jsonify({'message': 'Invalid email address format'}), 400
+    
     if not validate_user_name_length(name) or not validate_user_name_length(lastname):
         return jsonify({'message': 'First and last name must be between 2 and 20 characters long'}), 400 
+    
     if not validate_user_name_characters(name):
         return jsonify({'message': 'Invalid first name format, characters not allowed'}), 400
+    
     if not validate_user_name_characters(lastname):
         return jsonify({'message': 'Invalid last name format, characters not allowed'}), 400
+    
     if not validate_password_format(password):
         return jsonify({'message': 'Invalid password format (At least: 8 characters, one uppercase letter, one lowercase letter, one digit and one special character.)'}), 400
 

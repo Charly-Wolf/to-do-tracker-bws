@@ -69,6 +69,10 @@ footer button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+#stats {
+  cursor: not-allowed;
+}
+
 #app {
   width: 100%;
 }
