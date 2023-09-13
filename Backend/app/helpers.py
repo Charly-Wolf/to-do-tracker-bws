@@ -1,6 +1,8 @@
 from flask import jsonify, request
-from app.models import User, Habit, HabitLog, db
+from app.models import User, Habit, HabitLog, NormalUser, db
 import re # Regular Expressions
+from werkzeug.security import generate_password_hash, check_password_hash
+from validate_email_address import validate_email
 
 def reset_user_habits_status(user_id):   
     habits = Habit.query.filter_by(user_id=user_id).all()
@@ -136,3 +138,78 @@ def get_logged_in_user():
     user_id = request.cookies.get('user_id')  # Get user ID from the cookie
     user = User.query.filter_by(id=user_id).first()    
     return user
+
+def validate_add_habit(habit_name):
+    if not habit_name or not habit_name.strip():
+        return jsonify({'message': 'Habit name cannot be empty!'}), 400
+        
+    if not validate_habit_name_length(habit_name):
+        return jsonify({'message': 'Habit name must be between 2 and 30 characters long'}), 400
+
+    if not validate_habit_name_format(habit_name):
+        return jsonify({'message': 'Invalid habit name'}), 400
+    
+    #Check if the user already has a habit with that name
+    user_habits = prepare_habit_list()  # Call the function to get the list of habits
+    for user_habit in user_habits:
+        if habit_name.lower() == user_habit['name'].lower():
+            return jsonify({'message': 'That habit already exists.'}), 400
+
+    user_id = get_logged_in_user().id
+    new_habit = Habit(user_id=user_id, name=habit_name)  # Associate habit with the user
+
+    db.session.add(new_habit)
+    db.session.commit()
+
+    return jsonify({'message': 'Habit added successfully'}), 201
+
+def validate_register_user(email, name, lastname, password, password2):
+    if not email or not name or not lastname or not password or not password2:
+            return jsonify({'message': 'Email address, name, lastname and password are required'}), 400
+    if not validate_email(email):
+        return jsonify({'message': 'Invalid email address format'}), 400
+    if not validate_user_name_length(name) or not validate_user_name_length(lastname):
+        return jsonify({'message': 'First and last name must be between 2 and 20 characters long'}), 400 
+    if not validate_user_name_characters(name):
+        return jsonify({'message': 'Invalid first name format, characters not allowed'}), 400
+    if not validate_user_name_characters(lastname):
+        return jsonify({'message': 'Invalid last name format, characters not allowed'}), 400
+    if not validate_password_format(password):
+        return jsonify({'message': 'Invalid password format (At least: 8 characters, one uppercase letter, one lowercase letter, one digit and one special character.)'}), 400
+
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        return jsonify({'message': 'Email already in use'}), 409
+
+    if password != password2:
+        return jsonify({'message': 'Passwords must be the same'}), 400
+    # Hash the password
+    hashed_password = generate_password_hash(password, method='sha256')
+
+    new_user = NormalUser(email=email, name=name, lastname=lastname, password=hashed_password, account_activated = False)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User registered successfully'}), 201
+
+def validate_edit_habit_name(habit, new_name):
+    user_habits = prepare_habit_list()  # Call the function to get the list of habits
+
+    # Check if a habit already has that name
+    for user_habit in user_habits:
+        if new_name.lower() == user_habit['name'].lower():
+            return jsonify({'message': 'That habit already exists.'}), 400
+
+    if not new_name or not new_name.strip():
+        return jsonify({'message': 'New habit name cannot be empty!'}), 400
+    
+    if not validate_habit_name_length(new_name):
+        return jsonify({'message': 'Habit name must be between 2 and 30 characters long'}), 400
+    
+    if not validate_habit_name_format(new_name):
+        return jsonify({'message': 'Invalid habit name'}), 400
+    
+    habit.name = new_name
+    db.session.commit()
+    
+    return jsonify({'message': 'Habit name updated successfully'}), 200
