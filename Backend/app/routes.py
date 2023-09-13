@@ -266,3 +266,16 @@ def update_habit_name(habit_id):
         return jsonify({'message': 'Habit name updated successfully'}), 200
     except Exception as e:
         return jsonify({'message': 'An error occurred while updating the habit name.'}), 500
+    
+@habit_bp.route('/habit/<int:habit_id>', methods=['DELETE'])
+def delete_habit(habit_id):
+    habit = Habit.query.get_or_404(habit_id)
+    
+    try:
+        if (len(filter_logs_by_habit_id(habit_id)) > 0):
+            return jsonify({'message': 'Cannot delete habit. There are log entries for this habit'}), 400 # TODO: IDEA: Change to "Archive" instead of delete, so that the habits with logs can be then restored
+        db.session.delete(habit)
+        db.session.commit()
+        return jsonify({'message': 'Habit deleted successfully'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while deleting the habit.'}), 500

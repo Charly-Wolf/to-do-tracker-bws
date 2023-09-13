@@ -291,4 +291,27 @@ async function updateHabitName(habit) {
   }
 }
 
+async function deleteHabit(habit) {
+  try {
+    const confirmed = confirm(`Are you sure you want to delete ${habit.name}?`);
+    if (confirmed) {
+      const response = await fetch(`/habit/${habit.habit_id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        // Refresh the habit list after deleting
+        fetchHabits();
+      } else {
+        const errorData = await response.json(); // Assuming the server sends a JSON error response
+        console.error("Delete failed:", errorData.message);
+        alert(errorData.message);
+      }
+    }
+  } catch (error) {
+    console.error("Error deleting habit:", error);
+    // Handle error
+  }
+}
+
 renderHabitListPage();
