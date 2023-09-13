@@ -273,7 +273,7 @@ def users_list():
 def blocl_user(user_id): # Get user ID from the cookie
     user = User.query.filter_by(id=user_id).first()
     
-    if user:
+    if user: # TODO: Add validation to only allow this method when logged in as an ADMIN
         try:
             user.account_activated = not user.account_activated
             db.session.commit()
