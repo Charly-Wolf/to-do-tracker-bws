@@ -2,11 +2,21 @@ from flask import Blueprint, jsonify, request, render_template, redirect, url_fo
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.models import User, Habit, HabitLog, NormalUser, db
-from app.helpers import reset_user_habits_status, get_current_user_habits_in_a_dictionary, validate_user_name_characters, validate_user_name_length, validate_password_format, validate_habit_name_format, validate_habit_name_length
+from app.helpers import reset_user_habits_status, get_current_user_habits_in_a_dictionary, validate_user_name_characters, validate_user_name_length, validate_password_format, validate_habit_name_format, validate_habit_name_length, filter_logs_by_date, filter_logs_by_habit_id
 from validate_email_address import validate_email
 
 user_bp = Blueprint('user', __name__)
 habit_bp = Blueprint('habit', __name__)
+
+@habit_bp.route('/')
+def index():
+    user_id = request.cookies.get('user_id')
+    if user_id is None:
+        return redirect(url_for('user.login'))  # Redirect to the login page if user is not logged in
+    user = User.query.filter_by(id=user_id).first()
+    if user.userType == 'admin':
+        return render_template('index_admin.html')
+    return render_template('index.html')
 
 @user_bp.route('/users', methods=['GET'])
 def get_users():
@@ -114,11 +124,11 @@ def register():
         
         if not validate_email(email):
             return jsonify({'message': 'Invalid email address format'}), 400
-        if not validate_name_length(name) or not validate_name_length(lastname):
+        if not validate_user_name_length(name) or not validate_user_name_length(lastname):
             return jsonify({'message': 'First and last name must be between 2 and 20 characters long'}), 400 
-        if not validate_name_characters(name):
+        if not validate_user_name_characters(name):
             return jsonify({'message': 'Invalid first name format, characters not allowed'}), 400
-        if not validate_name_characters(lastname):
+        if not validate_user_name_characters(lastname):
             return jsonify({'message': 'Invalid last name format, characters not allowed'}), 400
         if not validate_password_format(password):
             return jsonify({'message': 'Invalid password format (At least: 8 characters, one uppercase letter, one lowercase letter, one digit and one special character.)'}), 400
@@ -186,12 +196,73 @@ def logout():
     #TODO: failed logout (for example if the user already logged out...)
     return response
 
-@habit_bp.route('/')
-def index():
-    user_id = request.cookies.get('user_id')
-    if user_id is None:
-        return redirect(url_for('user.login'))  # Redirect to the login page if user is not logged in
-    user = User.query.filter_by(id=user_id).first()
-    if user.userType == 'admin':
-        return render_template('index_admin.html')
-    return render_template('index.html')
+@habit_bp.route('/habit/mark_done/<int:habit_id>', methods=['POST'])
+def mark_habit_done(habit_id):
+    habit = Habit.query.get(habit_id)
+
+    if habit:
+        try:
+            new_log = HabitLog(habit_id=habit.habit_id, log_date=datetime.now())
+            db.session.add(new_log)
+
+            habit.status = not habit.status
+            db.session.commit()
+
+            return jsonify({'message': 'Habit marked as done and log entry created successfully'}), 200
+        except Exception as e:
+            return jsonify({'message': 'An error occurred while marking habit as done.'}), 500
+    else:
+        return jsonify({'message': 'Habit not found'}), 404
+    
+@habit_bp.route('/habit/mark_undone/<int:habit_id>', methods=['PUT'])
+def unmark_habit_done(habit_id):
+    habit = Habit.query.get(habit_id)
+    today_date = datetime.now().date()
+
+    if habit:
+        try:
+            habit_log_to_delete = filter_logs_by_date(filter_logs_by_habit_id(habit_id),today_date)
+
+            db.session.delete(habit_log_to_delete)
+
+            habit.status = not habit.status
+            db.session.commit()
+
+            return jsonify({'message': 'Habit marked as undone and corresponding log entry deleted successfully'}), 200
+    
+        except Exception as e:
+            return jsonify({'message': f'No log entry found for the habit_id {habit_id} today ({today_date}).'}), 500  
+    else:
+        return jsonify({'message': 'Habit not found'}), 404
+    
+@habit_bp.route('/habit/update_name/<int:habit_id>', methods=['PUT'])
+def update_habit_name(habit_id):
+    habit = Habit.query.get_or_404(habit_id) # TODO: Check if it's better to use get_or_404 instead of simply get for all methods
+    
+    try:
+        data = request.get_json()
+        new_name = data.get('name').strip()
+
+        user_id = request.cookies.get('user_id')
+        user_habits = get_current_user_habits_in_a_dictionary(user_id)  # Call the function to get the list of habits
+
+        # Check if a habit already has that name
+        for user_habit in user_habits:
+            if new_name.lower() == user_habit['name'].lower():
+                return jsonify({'message': 'That habit already exists.'}), 400
+
+        if not new_name or not new_name.strip():
+            return jsonify({'message': 'New habit name cannot be empty!'}), 400
+        
+        if not validate_habit_name_length(new_name):
+            return jsonify({'message': 'Habit name must be between 2 and 30 characters long'}), 400
+        
+        if not validate_habit_name_format(new_name):
+            return jsonify({'message': 'Invalid habit name'}), 400
+        
+        habit.name = new_name
+        db.session.commit()
+        
+        return jsonify({'message': 'Habit name updated successfully'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while updating the habit name.'}), 500

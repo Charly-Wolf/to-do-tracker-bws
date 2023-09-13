@@ -1,4 +1,4 @@
-from app.models import Habit, db
+from app.models import Habit, HabitLog, db
 import re # Regular Expressions
 
 def reset_user_habits_status(user_id):   
@@ -64,9 +64,6 @@ def validate_habit_name_format(habit_name):
         # Emojis are allowed
     pattern = r'^(?![ ]{3,})(?!.*[ ]{2,}$)(?=[\w\säöüÄÖÜß.,!?()\'"\-&@/:;😀-🙏]+)(?=.{2,30}$).*$'
 
-    print("SAAAPE")
-    print(f"\n\nR.E. MATCH? {str(re.match(pattern, habit_name) is not None)}\n\n")
-
     return re.match(pattern, habit_name) is not None
 
 def validate_habit_name_length(habit_name):
@@ -74,3 +71,14 @@ def validate_habit_name_length(habit_name):
     if (name_lenght > 30) or (name_lenght < 2):
         return False
     else: return True
+
+def filter_logs_by_date(logs, target_date): # TODO: maybe it would be better to use HabitLog.query.filter_by(...)
+    for log in logs:
+        log_date = log.log_date.date()
+        if log_date == target_date:
+            return log
+    return None
+
+def filter_logs_by_habit_id(target_habit_id):
+    log_entries = HabitLog.query.filter_by(habit_id=target_habit_id).all()
+    return log_entries

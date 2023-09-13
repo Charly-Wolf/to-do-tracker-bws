@@ -248,4 +248,47 @@ async function handleAddHabit(event) {
   }
 }
 
+async function markHabitDone(habit) {
+  await fetch(`/habit/mark_done/${habit.habit_id}`, {
+    method: "POST",
+  });
+  await fetchHabits();
+}
+
+async function unmarkHabitDone(habit) {
+  const confirmed = confirm("Unmark this habit?");
+  if (confirmed) {
+    await fetch(`/habit/mark_undone/${habit.habit_id}`, {
+      method: "PUT",
+    });
+    await fetchHabits();
+  }
+}
+
+async function updateHabitName(habit) {
+  try {
+    const newHabitName = prompt("Enter new habit name:", habit.name); // Populate the prompt with the current habit name
+    if (newHabitName !== null) {
+      const response = await fetch(`/habit/update_name/${habit.habit_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: newHabitName }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+      // Refresh the habit list after editing
+      fetchHabits();
+    }
+  } catch (error) {
+    console.error("Error updating habit name:", error);
+    alert(error);
+    // Handle error
+  }
+}
+
 renderHabitListPage();
