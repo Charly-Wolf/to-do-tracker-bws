@@ -1,2 +1,4 @@
 Backend/app/__pycache__/
 Backend/*.db
+node_modules
+.next/
