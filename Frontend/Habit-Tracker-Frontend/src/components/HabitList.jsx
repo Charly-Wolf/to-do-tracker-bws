@@ -1,9 +1,17 @@
 function HabitList() {
-  return <div class="card-body">
-    <h5 class="card-title">Habit Liste</h5>
-    <p class="card-text">Du hast noch keine Habits. Füge dein erstes Habit hinzu!</p>
-    <a href="#" class="btn btn-primary">Habit hinzufügen</a>
-  </div>;
+  return (
+    <div className="card-body">
+      <div className="container mx-auto border p-5">
+        <h5 className="card-title">Habit Liste</h5>
+        <p className="card-text">
+          Du hast noch keine Habits. Füge dein erstes Habit hinzu!
+        </p>
+        <a href="#" className="btn btn-primary">
+          Habit hinzufügen
+        </a>
+      </div>
+    </div>
+  );
 }
 
 export default HabitList;
