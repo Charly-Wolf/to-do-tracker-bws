@@ -17,7 +17,6 @@ if (usersListButton) {
   // The element with ID "users-list" exists
   usersListButton.addEventListener("click", () => {
     window.location.href = "/users_list";
-    alert("USERS clicked");
   });
 } else {
   // The element with ID "users-list" does not exist
