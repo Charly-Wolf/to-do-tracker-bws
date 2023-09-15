@@ -13,7 +13,7 @@ function App() {
 
     return (
         <>
-            <div className="container">
+            <div className="card text-center">
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/info" element={<Info />} />
