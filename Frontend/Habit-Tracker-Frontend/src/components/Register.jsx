@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: "http://127.0.0.1:5000/login",
+  baseURL: "http://127.0.0.1:5000/register",
 });
 
 function Register() {
@@ -24,10 +24,13 @@ function Register() {
       // Send data to the backend via POST
       await client.post("", {
         email: email,
+        name: name,
+        lastname: lastname,
         password: password,
+        password2: password2,
       });
 
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       setError(err.response.data.message);
     }
