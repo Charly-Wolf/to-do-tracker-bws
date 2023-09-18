@@ -1,7 +1,7 @@
 // Author: Carlos Paredes
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const client = axios.create({
@@ -74,7 +74,7 @@ function Login() {
               {error && <div className="alert alert-danger mt-3">{error}</div>}
               <p className="mt-3 text-center">
                 You don&#39;t have an account yet?{" "}
-                <a href="/register">Register</a>
+                <Link to="/register">Register</Link>
               </p>
             </div>
           </div>
