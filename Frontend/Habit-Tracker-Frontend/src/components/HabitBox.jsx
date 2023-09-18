@@ -1,44 +1,34 @@
-
-
-
 export default function HabitBox() {
-
-    return (
-        <>
-            {/* CREATING COLUMNS FOR CARDS */}
-            <section className="p-5">
-                <div className="container">
-                    <div className="row text-center g-4">
-                        <div className="col-md">
-                            <div className="card-body text-center bg-secondary">
-                                <div className="h1 mb-3">
-                                </div>
-                                <div className="container">
-                                        HabitListButtonList HERE
-                                    </div>
-                                <p className="card-title mb-3 ">TODO1</p>
-                            </div>
-                        </div>
-
-                        <div className="col-md">
-                            <div className="card-body text-center bg-secondary">
-                                <div className="h1 mb-3">
-                                </div>
-                                <p className="card-title mb-3">TODO2</p>
-                            </div>
-                        </div>
-
-                        <div className="col-md">
-                            <div className="card-body text-center bg-secondary">
-                                <div className="h1 mb-3">
-                                </div>
-                                <p className="card-title mb-3">TODO3</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-        </>
-    );
+  return (
+    <>
+      <div className="card text-bg-dark mb-3" style={{ maxWidth: "18rem" }}>
+        <div className="card-body row">
+          <div className="col-8 d-flex flex-column justify-content-center">
+            <h5 className="card-title">Primary card title</h5>
+            {/*<p className="card-text" id="habitDescription">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>*/}
+          </div>
+          <div className="col-1"></div>
+          <div className="col-2">
+            <form>
+              <div className="row">
+                <input type="checkbox" className="my-1"></input>
+              </div>
+              <div className="row">
+                <button className="btn btn-outline-success bi bi-pencil my-1"></button>
+              </div>
+              <div className="row">
+                <button className="btn btn-outline-danger bi bi-trash3 my-1"></button>
+              </div>
+            </form>
+          </div>
+          <div className="col-1"></div>
+        </div>
+      </div>
+    </>
+  );
 }
+
+//style="max-width: 18rem;"
