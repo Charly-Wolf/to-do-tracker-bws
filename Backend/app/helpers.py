@@ -101,7 +101,8 @@ def validate_password_format(password):
         # one digit, 
         # and one special character. 
         # Umlauts are allowed.
-    pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&äöüÄÖÜß]{8,}$'
+    special_chars = "@$!%*?&_-/"
+    pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[' + re.escape(special_chars) + r'])[A-Za-z\d' + re.escape(special_chars) + r'äöüÄÖÜß]{8,}$'
 
     return re.match(pattern, password) is not None
 
