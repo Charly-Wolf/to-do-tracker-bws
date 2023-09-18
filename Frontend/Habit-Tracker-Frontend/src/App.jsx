@@ -13,7 +13,7 @@ function App() {
 
     return (
         <>
-            <div className="card text-center">
+            <div className="card text-center border-0">
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/info" element={<Info />} />
