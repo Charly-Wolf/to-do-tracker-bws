@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Backend",
+    "\\Backend\\app",
+    "\\Frontend",
+    "\\Frontend\\Habit-Tracker-Frontend",
+    "\\Frontend\\Habit-Tracker-Frontend\\src",
+    "\\Frontend\\Habit-Tracker-Frontend\\src\\assets",
+    "\\Frontend\\Habit-Tracker-Frontend\\src\\components",
+    "\\Frontend\\Habit-Tracker-Frontend\\src\\pages"
+  ],
+  "SelectedNode": "\\Frontend\\Habit-Tracker-Frontend\\src\\components\\NavBar.jsx",
+  "PreviewInSolutionExplorer": false
+}
