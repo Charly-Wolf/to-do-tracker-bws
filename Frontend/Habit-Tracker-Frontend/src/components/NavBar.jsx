@@ -1,19 +1,20 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
-import { Navbar, Nav, Container } from "react-bootstrap";
+// import { Navbar, Nav, Container } from "react-bootstrap";
+import "../components/ScreenStyles.css";
 
 export default function NavBar() {
   return (
-    <div className="card-header">
-      <nav className="navbar bg-body-tertiary fixed-top navbar navbar-expand-lg bg-dark">
-        <div className="container-fluid">
+    <div className="card-header p-0">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
+        <div className="container">
           <Link to="/" className="navbar-brand">
             Habit-Tracker
           </Link>
           <button
             className="navbar-toggler"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
+            data-toggle="collapse"
+            data-target="#navbarNav"
             aria-controls="navbarNav"
             aria-expanded="false"
             aria-label="Toggle navigation"
@@ -24,11 +25,11 @@ export default function NavBar() {
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <CustomLink className="nav-link" aria-current="page" to="/info">
-                  Info
+                  Info&FAQ
                 </CustomLink>
               </li>
               <li className="nav-item">
-                <CustomLink className="nav-link" to="/logout">
+                <CustomLink className="nav-link" to="/login">
                   Log Out
                 </CustomLink>
               </li>
@@ -52,14 +53,3 @@ function CustomLink({ to, children, ...props }) {
     </li>
   );
 }
-
-//COULD BE HELPFUL, hier bitte stehen lassen. Mahir
-// <nav className="NavbarItems">
-//     <Link to="/" className="navbar-logo">
-//         Habit.Tracker
-//     </Link>
-//     <ul className="nav-menu">
-//         <CustomLink className="nav-links" to="/logout">Log Out</CustomLink>
-//         <CustomLink className="nav-links" to="/info">Info</CustomLink>
-//     </ul>
-//     </nav>
