@@ -1,5 +1,6 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
+import '../components/ScreenStyles.css';
 
 export default function NavBar() {
   return (
@@ -24,7 +25,7 @@ export default function NavBar() {
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <CustomLink className="nav-link" aria-current="page" to="/info">
-                  Info
+                  Info&FAQ
                 </CustomLink>
               </li>
               <li className="nav-item">
@@ -52,14 +53,3 @@ function CustomLink({ to, children, ...props }) {
     </li>
   );
 }
-
-//COULD BE HELPFUL, hier bitte stehen lassen. Mahir
-// <nav className="NavbarItems">
-//     <Link to="/" className="navbar-logo">
-//         Habit.Tracker
-//     </Link>
-//     <ul className="nav-menu">
-//         <CustomLink className="nav-links" to="/logout">Log Out</CustomLink>
-//         <CustomLink className="nav-links" to="/info">Info</CustomLink>
-//     </ul>
-//     </nav>
