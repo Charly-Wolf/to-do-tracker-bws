@@ -91,17 +91,19 @@ function UsersTable() {
                     <td>{user.lastname}</td>
                     <td>{user.email}</td>
                     <td>
-                      {user.userType === "admin" ? "ADMIN" : "Normal User"}
+                      {user.userType === "admin" ? (
+                        <span className="badge text-bg-primary">ADMIN</span> 
+                      ) : ( 
+                        "Normal User"
+                      )}
                     </td>
                     <td>
-                      {user.userType === "normal_user" ? (
+                      {user.userType === "normal_user" && (
                         user.account_activated ? (
                           <span className="badge text-bg-success">Active</span>
                         ) : (
                           <span className="badge text-bg-danger">Blocked</span>
                         )
-                      ) : (
-                        ""
                       )}
                     </td>
                     <td>
