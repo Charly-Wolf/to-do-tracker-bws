@@ -1,6 +1,6 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
-import { Navbar, Nav, Container } from "react-bootstrap";
-import '../components/ScreenStyles.css';
+// import { Navbar, Nav, Container } from "react-bootstrap";
+import "../components/ScreenStyles.css";
 
 export default function NavBar() {
   return (
@@ -29,7 +29,7 @@ export default function NavBar() {
                 </CustomLink>
               </li>
               <li className="nav-item">
-                <CustomLink className="nav-link" to="/logout">
+                <CustomLink className="nav-link" to="/login">
                   Log Out
                 </CustomLink>
               </li>
