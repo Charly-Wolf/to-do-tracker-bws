@@ -5,6 +5,7 @@ export default function LogOut() {
         <>
             <NavBar/>
             <p>Logout page</p>
+            <Footer/>
         </>
     );
 };

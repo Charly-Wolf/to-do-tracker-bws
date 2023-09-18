@@ -5,6 +5,7 @@ export default function Info() {
         <>
             <NavBar/>
             <p>Info page</p>
+            <Footer/>
         </>
     );
 };
