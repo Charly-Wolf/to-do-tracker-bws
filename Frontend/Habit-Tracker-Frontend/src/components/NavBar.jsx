@@ -4,7 +4,7 @@ import "../components/ScreenStyles.css";
 
 export default function NavBar() {
   return (
-    <div className="card-header p-0">
+    <div className="card-header p-0 border-0">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
         <div className="container">
           <Link to="/" className="navbar-brand">
