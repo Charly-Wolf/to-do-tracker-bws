@@ -2,7 +2,7 @@
 function Footer() {
   return (
     <>
-        <div class="card-footer text-muted">(c) Dzafic, Paredes, Schroeder {new Date().getFullYear()}</div>
+        <div class="card-footer text-muted fixed-bottom">(c) Dzafic, Paredes, Schroeder {new Date().getFullYear()}</div>
     </>
   );
 }
