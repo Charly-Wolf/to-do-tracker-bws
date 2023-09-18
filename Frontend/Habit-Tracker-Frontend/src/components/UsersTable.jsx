@@ -77,7 +77,6 @@ function UsersTable() {
               <thead className="table-dark">
                 <tr>
                   <th>Name</th>
-                  <th>Last Name</th>
                   <th>Email</th>
                   <th>Role</th>
                   <th>Status</th>
@@ -87,8 +86,7 @@ function UsersTable() {
               <tbody>
                 {sortedUsers.map((user) => (
                   <tr key={user.id}>
-                    <td>{user.name}</td>
-                    <td>{user.lastname}</td>
+                    <td>{user.name} {user.lastname}</td>
                     <td>{user.email}</td>
                     <td>
                       {user.userType === "admin" ? (
