@@ -46,6 +46,21 @@ function UsersTable() {
     }
   };
 
+  const sortUsersByName = (a, b) => {
+    // Compare first names
+    const lastNameComparison = a.name.localeCompare(b.name);
+
+    // If first names are the same, compare by last names
+    if (lastNameComparison === 0) {
+      return a.name.localeCompare(b.lastname);
+    }
+
+    return lastNameComparison;
+  };
+
+  // Sort the users array using the custom comparison function
+  const sortedUsers = users.slice().sort(sortUsersByName);
+
   return (
     <>
       <div className="row justify-content-center">
@@ -70,7 +85,7 @@ function UsersTable() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {sortedUsers.map((user) => (
                   <tr key={user.id}>
                     <td>{user.name}</td>
                     <td>{user.lastname}</td>
