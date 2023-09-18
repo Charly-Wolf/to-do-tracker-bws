@@ -8,9 +8,12 @@ const client = axios.create({
   baseURL: "http://127.0.0.1:5000/login",
 });
 
-function Login() {
+function Register() {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -40,7 +43,7 @@ function Login() {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h2 className="text-center">Login</h2>
+              <h2 className="text-center">Register</h2>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <input
@@ -50,6 +53,30 @@ function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
+                    required
+                  />
+                </div>
+                <br />
+                <div className="form-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="First name"
+                    required
+                  />
+                </div>
+                <br />
+                <div className="form-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="lastname"
+                    value={lastname}
+                    onChange={(e) => setLastname(e.target.value)}
+                    placeholder="Lastname"
                     required
                   />
                 </div>
@@ -66,14 +93,26 @@ function Login() {
                   />
                 </div>
                 <br />
+                <div className="form-group">
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password2"
+                    value={password2}
+                    onChange={(e) => setPassword2(e.target.value)}
+                    placeholder="Repeat Password"
+                    required
+                  />
+                </div>
+                <br />
                 <button type="submit" className="btn btn-primary btn-block">
-                  Login
+                  Register
                 </button>
               </form>
               {/* Display the error message with Bootstrap danger style */}
               {error && <div className="alert alert-danger mt-3">{error}</div>}
               <p className="mt-3 text-center">
-                You don't have an account yet? <a href="/register">Register</a>
+                Do you already have an account? <a href="/login">Login</a>
               </p>
             </div>
           </div>
@@ -83,4 +122,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
