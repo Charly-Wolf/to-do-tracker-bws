@@ -1,3 +1,5 @@
+import HabitBox from "../components/HabitBox";//Muss noch für jedes Habit angezeigt werden.
+
 function HabitList() {
   return (
     <div className="card-body">
@@ -9,6 +11,7 @@ function HabitList() {
         <a href="#" className="btn btn-primary">
           Habit hinzufügen
         </a>
+        <HabitBox/>
       </div>
     </div>
   );
