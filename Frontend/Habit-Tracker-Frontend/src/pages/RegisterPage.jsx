@@ -1,3 +1,5 @@
+// Author: Carlos Paredes
+
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import Register from "../components/Register";

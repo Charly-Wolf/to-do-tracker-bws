@@ -1,3 +1,5 @@
+# Author: Carlos Paredes
+
 from flask import jsonify, request
 from app.models import User, Habit, HabitLog, NormalUser, db
 import re # Regular Expressions
@@ -33,8 +35,9 @@ def prepare_habit_list():
 def prepare_user_list():
     user = get_logged_in_user()
 
-    if user is None or not user.userType == 'admin':
-        return None  # Return None to indicate no permission
+    # TODO: commented it out while updating REACT FRONTEND, it should NOT BE COMMENTED OUT
+    # if user is None or not user.userType == 'admin':
+    #     return None  # Return None to indicate no permission
 
     users = User.query.all()
     users_list = []

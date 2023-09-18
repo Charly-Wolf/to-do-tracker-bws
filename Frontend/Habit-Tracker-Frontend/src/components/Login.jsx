@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: "http://127.0.0.1:5000/login",
+  baseURL: "http://127.0.0.1:5000/api/login", // Connection with the Backend
 });
 
 function Login() {

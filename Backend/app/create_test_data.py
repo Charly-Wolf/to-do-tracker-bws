@@ -1,3 +1,5 @@
+# Author: Carlos Paredes
+
 from app import app, db, NormalUser, Admin, Habit, HabitLog
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash
