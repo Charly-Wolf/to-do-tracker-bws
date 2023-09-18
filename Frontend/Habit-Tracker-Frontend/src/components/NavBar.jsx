@@ -4,17 +4,17 @@ import "../components/ScreenStyles.css";
 
 export default function NavBar() {
   return (
-    <div className="card-header">
-      <nav className="navbar bg-body-tertiary fixed-top navbar navbar-expand-lg bg-dark">
-        <div className="container-fluid">
+    <div className="card-header p-0">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
+        <div className="container">
           <Link to="/" className="navbar-brand">
             Habit-Tracker
           </Link>
           <button
             className="navbar-toggler"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
+            data-toggle="collapse"
+            data-target="#navbarNav"
             aria-controls="navbarNav"
             aria-expanded="false"
             aria-label="Toggle navigation"
