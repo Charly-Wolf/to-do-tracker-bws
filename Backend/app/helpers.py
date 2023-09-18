@@ -48,7 +48,7 @@ def prepare_user_list():
             "name": user.name,
             "lastname": user.lastname,
             "email": user.email,
-            "password": user.password,
+            "password": user.password, #TODO: IS THIS NECESSARY?? otherwise delete (more secure)
             "last_login_date": user.last_login_date,
             "userType": user.userType,
             # "habits": user.habits
