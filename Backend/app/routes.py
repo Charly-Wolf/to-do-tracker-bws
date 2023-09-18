@@ -77,9 +77,9 @@ def activationPending():
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        data = request.get_json()
-        email= data.get('email')
-        password = data.get('password')
+        credentials = request.get_json()
+        email= credentials.get('email')
+        password = credentials.get('password')
 
         if not email or not password:
             return jsonify({'message': 'Email address and password are required'}), 400
