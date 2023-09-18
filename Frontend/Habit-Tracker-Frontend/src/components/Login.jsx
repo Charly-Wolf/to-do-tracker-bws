@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: "http://127.0.0.1:5000/login",
+  baseURL: "http://127.0.0.1:5000/api/login", // Connection with the Backend
 });
 
 function Login() {
@@ -73,7 +73,8 @@ function Login() {
               {/* Display the error message with Bootstrap danger style */}
               {error && <div className="alert alert-danger mt-3">{error}</div>}
               <p className="mt-3 text-center">
-                Do you already have an account? <a href="/register">Register</a>
+                You don&#39;t have an account yet?{" "}
+                <a href="/register">Register</a>
               </p>
             </div>
           </div>

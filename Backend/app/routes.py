@@ -1,3 +1,5 @@
+# Author: Carlos Paredes
+
 from flask import Blueprint, jsonify, request, render_template, redirect, url_for, make_response
 from werkzeug.security import check_password_hash
 from datetime import datetime
@@ -17,7 +19,7 @@ def index():
         return render_template('index_admin.html') # TODO: change this to fit REACT
     return render_template('index.html') # TODO: change this to fit REACT
 
-@user_bp.route('/users', methods=['GET'])
+@user_bp.route('/api/users', methods=['GET'])
 def get_users():
     users_list_data = prepare_user_list()
 
@@ -26,7 +28,7 @@ def get_users():
 
     return jsonify(users_list_data)
 
-@habit_bp.route('/habits', methods=['GET'])
+@habit_bp.route('/api/habits', methods=['GET'])
 def get_habits():
     user = get_logged_in_user()
     if user is None:
@@ -37,7 +39,7 @@ def get_habits():
     #     return jsonify({'message': 'The current user does not have any habits'}), 401 # TODO: check if this can be optimized so that the Frontend accordingly adapts when there are no habits for this user
     return jsonify(habits_list)
 
-@habit_bp.route('/add_habit', methods=['POST'])
+@habit_bp.route('/api/add_habit', methods=['POST'])
 def add_habit():
     try:
         data = request.get_json()
@@ -48,7 +50,7 @@ def add_habit():
     except Exception as e:
         return jsonify({'message': 'An error occurred while adding the habit.'}), 500
 
-@habit_bp.route('/log_entries', methods=['GET'])
+@habit_bp.route('/api/log_entries', methods=['GET'])
 def get_log_entries():
     log_entry_list = prepare_log_entries()
     
@@ -57,7 +59,7 @@ def get_log_entries():
 
     return jsonify(log_entry_list)
 
-@user_bp.route('/register', methods=['GET', 'POST'])
+@user_bp.route('/api/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         data = request.get_json()
@@ -68,13 +70,13 @@ def register():
         password2 = data.get('password2')
 
         return validate_register_user(email, name, lastname, password, password2)
-    return render_template('register.html') # TODO: change this to fit REACT
+    # return render_template('register.html') # TODO: change this to fit REACT
 
-@user_bp.route('/activationPending')
+@user_bp.route('/api/activationPending')
 def activationPending():
     return render_template('activationPending.html') # TODO: 1) change this to fit REACT TODO: 2) make it only accessible after registering...
 
-@user_bp.route('/login', methods=['GET', 'POST'])
+@user_bp.route('/api/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         credentials = request.get_json()
@@ -110,14 +112,14 @@ def login():
             return jsonify({'message': 'Wrong username or password'}), 401 
     return render_template('login.html') # TODO: change this to fit REACT
 
-@user_bp.route('/logout', methods=['POST'])
+@user_bp.route('/api/logout', methods=['POST'])
 def logout():
     response = make_response(jsonify({'message': 'Logged out'}), 200)
     response.delete_cookie('user_id')  # Clear the user_id cookie
     #TODO: failed logout (for example if the user already logged out...)
     return response
 
-@habit_bp.route('/habit/mark_done/<int:habit_id>', methods=['POST'])
+@habit_bp.route('/api/habit/mark_done/<int:habit_id>', methods=['POST'])
 def mark_habit_done(habit_id):
     habit = Habit.query.get(habit_id)
 
@@ -135,7 +137,7 @@ def mark_habit_done(habit_id):
     else:
         return jsonify({'message': 'Habit not found'}), 404
     
-@habit_bp.route('/habit/mark_undone/<int:habit_id>', methods=['PUT'])
+@habit_bp.route('/api/habit/mark_undone/<int:habit_id>', methods=['PUT'])
 def unmark_habit_done(habit_id):
     habit = Habit.query.get(habit_id)
     today_date = datetime.now().date()
@@ -156,7 +158,7 @@ def unmark_habit_done(habit_id):
     else:
         return jsonify({'message': 'Habit not found'}), 404
     
-@habit_bp.route('/habit/update_name/<int:habit_id>', methods=['PUT'])
+@habit_bp.route('/api/habit/update_name/<int:habit_id>', methods=['PUT'])
 def update_habit_name(habit_id):
     habit = Habit.query.get_or_404(habit_id) # TODO: Check if it's better to use get_or_404 instead of simply get for all methods
     
@@ -169,7 +171,7 @@ def update_habit_name(habit_id):
     except Exception as e:
         return jsonify({'message': 'An error occurred while updating the habit name.'}), 500
     
-@habit_bp.route('/habit/<int:habit_id>', methods=['DELETE'])
+@habit_bp.route('/api/habit/<int:habit_id>', methods=['DELETE'])
 def delete_habit(habit_id):
     habit = Habit.query.get_or_404(habit_id)
     
@@ -182,16 +184,17 @@ def delete_habit(habit_id):
     except Exception as e:
         return jsonify({'message': 'An error occurred while deleting the habit.'}), 500
 
-@user_bp.route('/users_list', methods=['GET']) 
-def users_list():
-    users_list_data = prepare_user_list()
+# @user_bp.route('/api/users_list', methods=['GET']) 
+# def users_list():
+#     users_list_data = prepare_user_list()
 
-    if users_list_data is None:
-        return jsonify({'message': 'No permissions to see the users list'}), 401
+#     if users_list_data is None:
+#         return jsonify({'message': 'No permissions to see the users list'}), 401
 
-    return render_template('users_list.html', users=users_list_data) # TODO: change this to fit REACT
+#     # return render_template('users_list.html', users=users_list_data) # TODO: change this to fit REACT
 
-@user_bp.route('/users/toggle_user_status/<int:user_id>', methods=['PUT'])
+
+@user_bp.route('/api/users/toggle_user_status/<int:user_id>', methods=['PUT'])
 def block_user(user_id): # Get user ID from the cookie
     user = User.query.filter_by(id=user_id).first()
     
