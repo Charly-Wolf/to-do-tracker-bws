@@ -5,12 +5,16 @@ import NavBar from '../components/NavBar';
 import Newsletter from '../components/Newsletter';
 import DailyMsg from '../components/DailyMsg';
 import InfoComp from '../components/InfoComp';
+import Table from '../components/Table';
 
-export default function Info() {
+export default function Stats() {
     return (
         <>
             <NavBar />
-            <InfoComp />
+            <br />
+            <br />
+            <p>Stats page.</p>
+            {/* <Table/> */}
             <Footer />
         </>
     );

@@ -8,6 +8,8 @@ import Home from './pages/Home';
 import 'bootstrap/dist/css/bootstrap.css'
 import Info from './pages/Info';
 import LogOut from './pages/LogOut'
+import Stats from './pages/Stats';
+import HabitNeu from './pages/HabitNeu';
 
 function App() {
 
@@ -18,6 +20,8 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/info" element={<Info />} />
                     <Route path="/logout" element={<LogOut />} />
+                    <Route path="/stats" element={<Stats/>} />
+                    <Route path="/habitNeu" element={<HabitNeu/>} />
                 </Routes>
             </div>
         </>
