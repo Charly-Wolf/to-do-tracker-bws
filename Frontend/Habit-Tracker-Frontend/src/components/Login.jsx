@@ -72,8 +72,14 @@ function Login() {
               </form>
               {/* Display the error message with Bootstrap danger style */}
               {error && <div className="alert alert-danger mt-3">{error}</div>}
+              
+              {/* TODO */}
               <p className="mt-3 text-center">
-                You don&#39;t have an account yet?{" "}
+                Forgot your <Link to="#">Password</Link>? 
+              </p>
+              
+              <p className="mt-3 text-center">
+                You don&#39;t have an account yet?
                 <Link to="/register">Register</Link>
               </p>
             </div>
