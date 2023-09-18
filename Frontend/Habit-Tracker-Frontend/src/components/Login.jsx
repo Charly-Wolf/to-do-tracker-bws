@@ -1,13 +1,33 @@
+// Author: Carlos Paredes
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const client = axios.create({
+  baseURL: "http://127.0.0.1:5000/login",
+});
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    try {
+      // Send data to the backend via POST
+      await client.post("", {
+        email: email,
+        password: password,
+      });
+
+      navigate("/");
+    } catch (err) {
+      setError(err.response.data.message);
+    }
   };
 
   return (
@@ -50,6 +70,8 @@ function Login() {
                   Login
                 </button>
               </form>
+              {/* Display the error message with Bootstrap danger style */}
+              {error && <div className="alert alert-danger mt-3">{error}</div>}
               <p className="mt-3 text-center">
                 Do you already have an account? <a href="/register">Register</a>
               </p>
