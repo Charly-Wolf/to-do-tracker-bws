@@ -3,6 +3,7 @@
 import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/api/register",
@@ -40,8 +41,6 @@ function Register() {
 
   return (
     <div className="container h-100">
-      <br />
-      <br />
       <br />
       <br />
       <div className="row h-100 justify-content-center align-items-center">
@@ -137,7 +136,7 @@ function Register() {
               )}
               <p className="mt-3 text-center">
                 Do you already have an ACTIVATED account?{" "}
-                <a href="/login">Login</a>
+                <Link to="/login">Login</Link>
               </p>
             </div>
           </div>

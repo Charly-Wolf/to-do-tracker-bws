@@ -34,13 +34,12 @@ function Login() {
     <div className="container h-100">
       <br />
       <br />
-      <br />
-      <br />
       <div className="row h-100 justify-content-center align-items-center">
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
               <h2 className="text-center">Login</h2>
+              <br />
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <input
