@@ -1,7 +1,6 @@
 // Author: Carlos Paredes
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -56,13 +55,12 @@ function Register() {
                   <form onSubmit={handleSubmit}>
                     <div className="form-group">
                       <input
-                        type="email"
+                        type="text"
                         className="form-control"
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email"
-                        required
                       />
                     </div>
                     <br />
@@ -139,7 +137,7 @@ function Register() {
               )}
               <p className="mt-3 text-center">
                 Do you already have an ACTIVATED account?{" "}
-                <Link to="/login">Login</Link>
+                <a href="/login">Login</a>
               </p>
             </div>
           </div>
