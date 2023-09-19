@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 cors = CORS(app)
 
 # Register blueprints
-from app.routes import user_bp, habit_bp
+from app.endpoints import user_bp, habit_bp
 app.register_blueprint(user_bp)
 app.register_blueprint(habit_bp)
 
