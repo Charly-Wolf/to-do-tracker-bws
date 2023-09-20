@@ -16,8 +16,9 @@ def reset_user_habits_status(user_id):
         #TODO
 
 def prepare_habit_list():
-    user = get_logged_in_user()
-    habits = Habit.query.filter_by(user_id=user.user_id).all() 
+    #user = get_logged_in_user() #TODO: USE AUTHORIZATION
+    # habits = Habit.query.filter_by(user_id=user.user_id).all() 
+    habits = Habit.query.all() #TODO: USE AUTHORIZATION
     habit_list = []
 
     for habit in habits:

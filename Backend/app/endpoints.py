@@ -30,9 +30,9 @@ def get_users():
 
 @habit_bp.route('/api/habits', methods=['GET'])
 def get_habits():
-    user = get_logged_in_user()
-    if user is None:
-        return jsonify({'message': 'No permissions to see the habits list'}), 401
+    #user = get_logged_in_user() #TODO: USE AUTHORIZATION 
+    # if user is None:
+    #     return jsonify({'message': 'No permissions to see the habits list'}), 401
 
     habits_list = prepare_habit_list()
     # if not habits_list:
@@ -59,58 +59,50 @@ def get_log_entries():
 
     return jsonify(log_entry_list)
 
-@user_bp.route('/api/register', methods=['GET', 'POST'])
+@user_bp.route('/api/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-        data = request.get_json()
-        email = data.get('email').strip() 
-        name = data.get('name').strip()
-        lastname = data.get('lastname').strip()
-        password = data.get('password')
-        password2 = data.get('password2')
+    data = request.get_json()
+    email = data.get('email').strip() 
+    name = data.get('name').strip()
+    lastname = data.get('lastname').strip()
+    password = data.get('password')
+    password2 = data.get('password2')
 
-        return validate_register_user(email, name, lastname, password, password2)
-    # return render_template('register.html') # TODO: change this to fit REACT
+    return validate_register_user(email, name, lastname, password, password2)
 
 @user_bp.route('/api/activationPending')
 def activationPending():
     return render_template('activationPending.html') # TODO: 1) change this to fit REACT TODO: 2) make it only accessible after registering...
 
-@user_bp.route('/api/login', methods=['GET', 'POST'])
+@user_bp.route('/api/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        credentials = request.get_json()
-        email= credentials.get('email')
-        password = credentials.get('password')
+    credentials = request.get_json()
+    email= credentials.get('email')
+    password = credentials.get('password')
 
-        if not email or not password:
-            return jsonify({'message': 'Email address and password are required'}), 400
-        
-        user = User.query.filter_by(email=email.strip()).first()
+    if not email or not password:
+        return jsonify({'message': 'Email address and password are required'}), 400
+    
+    user = User.query.filter_by(email=email.strip()).first()
 
-        if user and check_password_hash(user.password, password):
+    if user and check_password_hash(user.password, password):
 
-            if user.userType == 'normal_user':
-                normal_user = NormalUser.query.filter_by(user_id=user.id).first()
-                if not normal_user.account_activated:
-                    return jsonify({'message': 'Account not yet activated'}), 401 
+        if user.userType == 'normal_user':
+            normal_user = NormalUser.query.filter_by(user_id=user.id).first()
+            if not normal_user.account_activated:
+                return jsonify({'message': 'Account not yet activated'}), 401 
 
-            if user.last_login_date != datetime.today().date():
-                reset_user_habits_status(user.id)
+        if user.last_login_date != datetime.today().date():
+            reset_user_habits_status(user.id)
 
-            #else:
-                #TODO
-                print("\nLast login was today\n")
+        user.last_login_date = datetime.today()  # Update the last login date
+        db.session.commit()
+        response = make_response(jsonify({'message': 'Login successful'}), 200)
+        response.set_cookie('user_id', str(user.id))  # Set the user_id cookie
 
-            user.last_login_date = datetime.today()  # Update the last login date
-            db.session.commit()
-            response = make_response(jsonify({'message': 'Login successful'}), 200)
-            response.set_cookie('user_id', str(user.id))  # Set the user_id cookie
-
-            return response
-        else:
-            return jsonify({'message': 'Wrong username or password'}), 401 
-    return render_template('login.html') # TODO: change this to fit REACT
+        return response
+    else:
+        return jsonify({'message': 'Wrong username or password'}), 401 
 
 @user_bp.route('/api/logout', methods=['POST'])
 def logout():

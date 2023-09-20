@@ -3,17 +3,21 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 
-# DB config:
+# Config:
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../habitTracker.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 cors = CORS(app)
+load_dotenv()
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # Register blueprints
-from app.routes import user_bp, habit_bp
+from app.endpoints import user_bp, habit_bp
 app.register_blueprint(user_bp)
 app.register_blueprint(habit_bp)
 
