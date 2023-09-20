@@ -22,14 +22,7 @@ function App() {
               </ProtectedPage>
             }
           />
-          <Route
-            path="/info"
-            element={
-              <ProtectedPage>
-                <Info />
-              </ProtectedPage>
-            }
-          />
+          <Route path="/info" element={<Info />} />
           <Route
             path="/login"
             element={

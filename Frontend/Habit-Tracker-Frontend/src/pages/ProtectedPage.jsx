@@ -5,19 +5,25 @@ import LoginPage from "./LoginPage";
 
 function ProtectedPage({ children }) {
   const token = localStorage.getItem("token");
-  if (token && token != undefined) {
-    if (children.type === UserList) {
-      const isAdmin = localStorage.getItem("userType") == "admin";
-      if (!isAdmin) {
-        return <Navigate to="/" />;
+  if (children.type != LoginPage) {
+    if (token && token != undefined) {
+      console.log("THERE IS A TOKEN");
+      if (children.type === UserList) {
+        const isAdmin = localStorage.getItem("userType") == "admin";
+        if (!isAdmin) {
+          return <Navigate to="/" />;
+        }
       }
-    } else if (children.type === LoginPage) {
-      return <Navigate to="/" />;
+      return children;
+    } else {
+      console.log("NO TOKEN");
+      return <Navigate to="/login" />;
     }
-    return children;
-  } else {
-    return <Navigate to="/login" />;
   }
+  if (token && token != undefined) {
+    return <Navigate to="/" />;
+  }
+  return children;
 }
 
 ProtectedPage.propTypes = {
