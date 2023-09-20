@@ -30,9 +30,9 @@ def get_users():
 
 @habit_bp.route('/api/habits', methods=['GET'])
 def get_habits():
-    user = get_logged_in_user()
-    if user is None:
-        return jsonify({'message': 'No permissions to see the habits list'}), 401
+    #user = get_logged_in_user() #TODO: USE AUTHORIZATION 
+    # if user is None:
+    #     return jsonify({'message': 'No permissions to see the habits list'}), 401
 
     habits_list = prepare_habit_list()
     # if not habits_list:
