@@ -4,7 +4,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
-import os
+# import os
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 cors = CORS(app)
 load_dotenv()
-SECRET_KEY = os.environ["SECRET_KEY"]
+# SECRET_KEY = os.environ["SECRET_KEY"]
 
 # Register blueprints
 from app.endpoints import user_bp, habit_bp
