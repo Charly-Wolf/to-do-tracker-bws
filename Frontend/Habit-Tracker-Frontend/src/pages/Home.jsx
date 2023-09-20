@@ -20,10 +20,8 @@ export default function Home() {
   return (
     <>
       <NavBar />
-      <DailyMsg />
       {/* <NavBarUnten /> */}
       <HabitList/>
-      <Newsletter />
       <Footer />
     </>
   );
