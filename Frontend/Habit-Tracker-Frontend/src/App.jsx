@@ -6,7 +6,6 @@ import Info from "./pages/Info";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Stats from "./pages/Stats";
-import HabitNeu from "./pages/HabitNeu";
 import UserList from "./pages/UserList";
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/stats" element={<Stats />} />
-          <Route path="/habitNeu" element={<HabitNeu />} />
           <Route path="/userList" element={<UserList />} />
         </Routes>
       </div>

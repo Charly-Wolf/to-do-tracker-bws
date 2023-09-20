@@ -1,7 +1,7 @@
 import Footer from "../components/Footer";
 import HabitList from '../components/HabitList';
 import NavBar from "../components/NavBar";
-import Newsletter from "../components/Newsletter";
+// import Newsletter from "../components/Newsletter";
 import DailyMsg from "../components/DailyMsg";
 // import NavBarUnten from '../components/NavBarUnten';
 // import { useEffect, useState } from "react";
@@ -20,10 +20,7 @@ export default function Home() {
   return (
     <>
       <NavBar />
-      <DailyMsg />
-      {/* <NavBarUnten /> */}
       <HabitList/>
-      <Newsletter />
       <Footer />
     </>
   );

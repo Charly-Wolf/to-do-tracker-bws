@@ -3,8 +3,8 @@ import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import "../components/ScreenStyles.css";
 
 export default function NavBar() {
-  return (
-    <div className="card-header p-0">
+  return ( 
+    <div className="card-header p-0 border-0 sticky-top">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
         <div className="container">
           <Link to="/" className="navbar-brand">
@@ -31,8 +31,8 @@ export default function NavBar() {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
+                    width="22"
+                    height="22"
                     fill="currentColor"
                     className="bi bi-people-fill"
                     viewBox="0 0 16 16"
@@ -43,13 +43,15 @@ export default function NavBar() {
               </li>
               <li className="nav-item">
                 <CustomLink className="nav-link" aria-current="page" to="/info">
-                  Info&FAQ
+                  <i className="bi bi-question-circle-fill"></i>
                 </CustomLink>
               </li>
               <li className="nav-item">
                 <CustomLink className="nav-link" to="/login">
                   Log Out
+                  <i className="bi-box-arrow-left"></i>
                 </CustomLink>
+                
               </li>
             </ul>
           </div>
