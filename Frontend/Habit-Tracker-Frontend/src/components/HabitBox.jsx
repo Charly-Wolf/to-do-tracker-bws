@@ -32,5 +32,3 @@ export default function HabitBox() {
     </>
   );
 }
-
-//style="max-width: 18rem;"
