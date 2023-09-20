@@ -46,15 +46,31 @@ export default function NavBar() {
               {isLoggedIn && (
                 <li
                   className="nav-item"
-                  style={{ border: "1px solid white", borderRadius: "5px", marginLeft: "10px" }}
+                  style={{
+                    border: "1px solid white",
+                    borderRadius: "5px",
+                    marginLeft: "10px",
+                  }}
                 >
-                  <CustomLink className="nav-link" to="/login">
-                    <i
-                      className="bi-box-arrow-left"
-                      style={{ marginRight: "9px" }}
-                    ></i>
-                    Log Out
-                  </CustomLink>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("userType");
+                    }}
+                    style={{
+                      cursor: "pointer",
+                      border: "none",
+                      background: "none",
+                    }}
+                  >
+                    <CustomLink className="nav-link" to="/login">
+                      <i
+                        className="bi-box-arrow-left"
+                        style={{ marginRight: "9px" }}
+                      ></i>
+                      Log Out
+                    </CustomLink>
+                  </button>
                 </li>
               )}
             </ul>
