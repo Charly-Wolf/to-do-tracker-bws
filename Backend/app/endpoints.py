@@ -98,7 +98,7 @@ def login():
         user.last_login_date = datetime.today()  # Update the last login date
         db.session.commit()
         access_token = create_session_token(email)
-        response = make_response(jsonify({'message': 'Login successful', 'access_token': access_token}), 200)
+        response = make_response(jsonify({'message': 'Login successful', 'access_token': access_token, 'user_type': user.userType}), 200)
         response.set_cookie('user_id', str(user.id))  # Set the user_id cookie
 
         return response

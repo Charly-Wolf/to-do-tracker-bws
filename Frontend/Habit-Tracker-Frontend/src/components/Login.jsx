@@ -28,6 +28,7 @@ function Login() {
 
       // Save the access token in the session storage of the Browser
       sessionStorage.setItem("token", response.data.access_token);
+      sessionStorage.setItem("userType", response.data.user_type);
 
       navigate("/");
     } catch (err) {
