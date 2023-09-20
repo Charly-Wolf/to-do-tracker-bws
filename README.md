@@ -51,8 +51,8 @@ To get started with TrackYou, follow these easy steps:
 12. 😎 **Have fun tracking your habits!** 🎯📅
 ## Technologies used
 
-- **Frontend**: [⚛️ React](https://react.dev/) - *Javascript* 
-- **Backend**: [🐍 Flask](https://palletsprojects.com/p/flask/) - *Python*
+- **Frontend**: [⚛️ React](https://react.dev/) - *Javascript + HTML + CSS + Bootstrap* 
+- **Backend**: [🐍 Flask](https://palletsprojects.com/p/flask/) - *Python + SQLAlchemy*
 - **Database**: [🪶SQLite](https://www.sqlite.org/index.html)
 
 ---
