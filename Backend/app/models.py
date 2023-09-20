@@ -1,3 +1,5 @@
+# Author: Carlos Paredes
+
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Date
 from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash

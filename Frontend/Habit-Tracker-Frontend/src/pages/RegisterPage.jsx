@@ -1,14 +1,14 @@
 // Author: Carlos Paredes
 
 import Footer from "../components/Footer";
-import Login from "../components/Login";
 import NavBar from "../components/NavBar";
+import Register from "../components/Register";
 
 export default function LoginPage() {
   return (
     <>
       <NavBar />
-      <Login />
+      <Register />
       <Footer />
     </>
   );

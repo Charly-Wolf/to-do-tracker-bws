@@ -1,19 +1,37 @@
+// Author: Carlos Paredes
+
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const client = axios.create({
+  baseURL: "http://127.0.0.1:5000/api/login", // Connection with the Backend
+});
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    try {
+      // Send data to the backend via POST
+      await client.post("", {
+        email: email,
+        password: password,
+      });
+
+      navigate("/");
+    } catch (err) {
+      setError(err.response.data.message);
+    }
   };
 
   return (
     <div className="container h-100">
-      <br />
-      <br />
       <br />
       <br />
       <div className="row h-100 justify-content-center align-items-center">
@@ -21,6 +39,7 @@ function Login() {
           <div className="card">
             <div className="card-body">
               <h2 className="text-center">Login</h2>
+              <br />
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <input
@@ -50,8 +69,17 @@ function Login() {
                   Login
                 </button>
               </form>
+              {/* Display the error message with Bootstrap danger style */}
+              {error && <div className="alert alert-danger mt-3">{error}</div>}
+              
+              {/* TODO */}
               <p className="mt-3 text-center">
-                Do you already have an account? <a href="/register">Register</a>
+                Forgot your <Link to="#">Password</Link>? 
+              </p>
+              
+              <p className="mt-3 text-center">
+                You don&#39;t have an account yet?
+                <Link to="/register">Register</Link>
               </p>
             </div>
           </div>
