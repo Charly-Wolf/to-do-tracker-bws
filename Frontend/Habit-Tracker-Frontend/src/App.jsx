@@ -30,7 +30,14 @@ function App() {
               </ProtectedPage>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/login"
+            element={
+              <ProtectedPage>
+                <LoginPage />
+              </ProtectedPage>
+            }
+          />
           <Route path="/register" element={<RegisterPage />} />
           <Route
             path="/stats"

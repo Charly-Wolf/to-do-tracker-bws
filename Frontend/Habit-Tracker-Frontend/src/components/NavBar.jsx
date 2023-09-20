@@ -3,9 +3,9 @@ import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import "../components/ScreenStyles.css";
 
 export default function NavBar() {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const isLoggedIn = token && token != undefined;
-  const isAdmin = sessionStorage.getItem("userType") == "admin";
+  const isAdmin = localStorage.getItem("userType") == "admin";
 
   return (
     <div className="card-header p-0 border-0 sticky-top">

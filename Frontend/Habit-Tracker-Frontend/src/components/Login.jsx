@@ -26,9 +26,9 @@ function Login() {
       // Send data to the backend via POST
       const response = await client.post("", requestData);
 
-      // Save the access token in the session storage of the Browser
-      sessionStorage.setItem("token", response.data.access_token);
-      sessionStorage.setItem("userType", response.data.user_type);
+      // Save the access token in the local storage of the Browser
+      localStorage.setItem("token", response.data.access_token);
+      localStorage.setItem("userType", response.data.user_type);
 
       navigate("/");
     } catch (err) {
