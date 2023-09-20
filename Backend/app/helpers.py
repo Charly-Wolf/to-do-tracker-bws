@@ -1,11 +1,11 @@
 # Author: Carlos Paredes
 
-from flask import jsonify, request
+from flask import jsonify
 from app.models import User, Habit, HabitLog, NormalUser, db
 import re # Regular Expressions
 from werkzeug.security import generate_password_hash, check_password_hash
 from validate_email_address import validate_email
-from flask_jwt_extended import create_access_token
+from app import logged_user
 
 def reset_user_habits_status(user_id):   
     habits = Habit.query.filter_by(user_id=user_id).all()
@@ -37,9 +37,10 @@ def prepare_habit_list():
 def prepare_user_list():
     user = get_logged_in_user()
 
-    # TODO: commented it out while updating REACT FRONTEND, it should NOT BE COMMENTED OUT
-    # if user is None or not user.userType == 'admin':
-    #     return None  # Return None to indicate no permission
+
+
+    if user is None or not user.userType == 'admin':
+        return None  # Return None to indicate no permission
 
     users = User.query.all()
     users_list = []
@@ -141,8 +142,7 @@ def filter_logs_by_habit_id(target_habit_id):
     return log_entries
 
 def get_logged_in_user():
-    user_id = request.cookies.get('user_id')  # Get user ID from the cookie
-    user = User.query.filter_by(id=user_id).first()    
+    user = User.query.filter_by(id=logged_user.get_id()).first()
     return user
 
 def validate_add_habit(habit_name):
@@ -161,7 +161,7 @@ def validate_add_habit(habit_name):
         if habit_name.lower() == user_habit['name'].lower():
             return jsonify({'message': 'That habit already exists.'}), 400
 
-    user_id = get_logged_in_user().id
+    user_id = logged_user.get_id()
     new_habit = Habit(user_id=user_id, name=habit_name)  # Associate habit with the user
 
     db.session.add(new_habit)
