@@ -2,10 +2,11 @@ import { Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import UserList from "./UserList";
 import LoginPage from "./LoginPage";
+import RegisterPage from "./RegisterPage"
 
 function ProtectedPage({ children }) {
   const token = localStorage.getItem("token");
-  if (children.type != LoginPage) {
+  if (children.type != LoginPage && children.type != RegisterPage ) {
     if (token && token != undefined) {
       console.log("THERE IS A TOKEN");
       if (children.type === UserList) {

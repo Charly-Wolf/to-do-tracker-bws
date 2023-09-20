@@ -31,7 +31,14 @@ function App() {
               </ProtectedPage>
             }
           />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/register"
+            element={
+              <ProtectedPage>
+                <RegisterPage />
+              </ProtectedPage>
+            }
+          />
           <Route
             path="/stats"
             element={
