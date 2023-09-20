@@ -24,7 +24,10 @@ function Login() {
       };
 
       // Send data to the backend via POST
-      await client.post("", requestData);
+      const response = await client.post("", requestData);
+
+      // Save the access token in the session storage of the Browser
+      sessionStorage.setItem("token", response.data.access_token);
 
       navigate("/");
     } catch (err) {
