@@ -14,7 +14,6 @@ export default function Stats() {
             <br />
             <br />
             <p>Stats page.</p>
-            {/* <Table/> */}
             <Footer />
         </>
     );
