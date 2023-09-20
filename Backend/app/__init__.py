@@ -1,3 +1,5 @@
+# Author: Carlos Paredes
+
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -16,4 +18,4 @@ app.register_blueprint(user_bp)
 app.register_blueprint(habit_bp)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
