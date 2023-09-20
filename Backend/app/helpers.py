@@ -5,6 +5,7 @@ from app.models import User, Habit, HabitLog, NormalUser, db
 import re # Regular Expressions
 from werkzeug.security import generate_password_hash, check_password_hash
 from validate_email_address import validate_email
+from flask_jwt_extended import create_access_token
 
 def reset_user_habits_status(user_id):   
     habits = Habit.query.filter_by(user_id=user_id).all()
@@ -224,3 +225,7 @@ def validate_edit_habit_name(habit, new_name):
     db.session.commit()
     
     return jsonify({'message': 'Habit name updated successfully'}), 200
+
+def create_session_token(email):
+    access_token = create_access_token(identity=email)
+    return access_token

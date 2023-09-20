@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, render_template, redirect, url_fo
 from werkzeug.security import check_password_hash
 from datetime import datetime
 from app.models import User, Habit, HabitLog, NormalUser, db
-from app.helpers import reset_user_habits_status, prepare_habit_list, validate_habit_name_format, validate_habit_name_length, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list, prepare_log_entries, get_logged_in_user, validate_add_habit, validate_register_user, validate_edit_habit_name
+from app.helpers import reset_user_habits_status, prepare_habit_list, validate_habit_name_format, validate_habit_name_length, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list, prepare_log_entries, get_logged_in_user, validate_add_habit, validate_register_user, validate_edit_habit_name, create_session_token
 
 
 user_bp = Blueprint('user', __name__)
@@ -97,7 +97,8 @@ def login():
 
         user.last_login_date = datetime.today()  # Update the last login date
         db.session.commit()
-        response = make_response(jsonify({'message': 'Login successful'}), 200)
+        access_token = create_session_token(email)
+        response = make_response(jsonify({'message': 'Login successful', 'access_token': access_token}), 200)
         response.set_cookie('user_id', str(user.id))  # Set the user_id cookie
 
         return response
