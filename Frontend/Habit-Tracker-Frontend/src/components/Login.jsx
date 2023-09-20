@@ -79,12 +79,12 @@ function Login() {
               {error && <div className="alert alert-danger mt-3">{error}</div>}
 
               {/* TODO */}
-              <p className="mt-3 text-center">
+              {/* <p className="mt-3 text-center">
                 Forgot your <Link to="#">Password</Link>?
-              </p>
+              </p> */}
 
               <p className="mt-3 text-center">
-                You don&#39;t have an account yet?
+                You don&#39;t have an account yet?{" "}
                 <Link to="/register">Register</Link>
               </p>
             </div>

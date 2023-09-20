@@ -8,7 +8,7 @@ export default function UserList() {
   return (
     <>
       <NavBar />
-        <UsersTable />
+      <UsersTable />
       <Footer />
     </>
   );
