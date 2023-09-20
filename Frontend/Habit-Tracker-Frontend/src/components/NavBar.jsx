@@ -3,8 +3,8 @@ import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import "../components/ScreenStyles.css";
 
 export default function NavBar() {
-  const token = localStorage.getItem("token");
-  const isLoggedIn = token && token != undefined;
+  const userId = localStorage.getItem("userId");
+  const isLoggedIn = userId && userId != undefined;
   const isAdmin = localStorage.getItem("userType") == "admin";
 
   return (
@@ -54,7 +54,7 @@ export default function NavBar() {
                 >
                   <button
                     onClick={() => {
-                      localStorage.removeItem("token");
+                      localStorage.removeItem("userId");
                       localStorage.removeItem("userType");
                     }}
                     style={{

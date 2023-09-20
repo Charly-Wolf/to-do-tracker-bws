@@ -5,10 +5,9 @@ import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage"
 
 function ProtectedPage({ children }) {
-  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
   if (children.type != LoginPage && children.type != RegisterPage ) {
-    if (token && token != undefined) {
-      console.log("THERE IS A TOKEN");
+    if (userId && userId != undefined) {
       if (children.type === UserList) {
         const isAdmin = localStorage.getItem("userType") == "admin";
         if (!isAdmin) {
@@ -17,11 +16,10 @@ function ProtectedPage({ children }) {
       }
       return children;
     } else {
-      console.log("NO TOKEN");
       return <Navigate to="/login" />;
     }
   }
-  if (token && token != undefined) {
+  if (userId && userId != undefined) {
     return <Navigate to="/" />;
   }
   return children;

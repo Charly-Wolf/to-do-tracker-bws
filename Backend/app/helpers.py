@@ -225,7 +225,3 @@ def validate_edit_habit_name(habit, new_name):
     db.session.commit()
     
     return jsonify({'message': 'Habit name updated successfully'}), 200
-
-def create_session_token(email):
-    access_token = create_access_token(identity=email)
-    return access_token
