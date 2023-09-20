@@ -30,7 +30,7 @@ To get started with TrackYou, follow these easy steps:
 4. **🌐 Frontend Setup**: Navigate to the Frontend directory, which contains the React code:
    ```bash
    cd Frontend/
-5. **📦 Install dependencies**: Install the necessary frontend dependencies using npm (Node Package Manager).
+5. **📦 Install NPM dependencies**: Install the necessary frontend dependencies using npm (Node Package Manager).
    ```bash
    npm install
 6. **▶️ Run the Frontend**: Launch the React frontend locally.
@@ -39,7 +39,7 @@ To get started with TrackYou, follow these easy steps:
 7. **🌐 Backend Setup**: Now, without closing the open terminal, open a new one and navigate to the Backend directory.
    ```bash
     cd Backend/
-8. **📦 Install Python Dependencies**: Install the required Python dependencies using pip.
+8. **📦 Install Python dependencies**: Install the required Python dependencies using pip.
    ```bash
    pip install -r requirements.txt
 9. **▶️ Run the Backend**: Start the flask backend server.
