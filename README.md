@@ -56,6 +56,5 @@ To get started with TrackYou, follow these easy steps:
 - **Database**: [🪶SQLite](https://www.sqlite.org/index.html)
 
 ---
-<br>
-<center><h2><strong>🚀 Happy habit tracking with TrackYou! 🚀
+## 🚀 Happy habit tracking with TrackYou! 🚀
 
