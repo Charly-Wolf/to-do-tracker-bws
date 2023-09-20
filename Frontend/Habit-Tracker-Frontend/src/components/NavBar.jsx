@@ -52,25 +52,13 @@ export default function NavBar() {
                     marginLeft: "10px",
                   }}
                 >
-                  <button
-                    onClick={() => {
-                      localStorage.removeItem("userId");
-                      localStorage.removeItem("userType");
-                    }}
-                    style={{
-                      cursor: "pointer",
-                      border: "none",
-                      background: "none",
-                    }}
-                  >
-                    <CustomLink className="nav-link" to="/login">
-                      <i
-                        className="bi-box-arrow-left"
-                        style={{ marginRight: "9px" }}
-                      ></i>
-                      Log Out
-                    </CustomLink>
-                  </button>
+                  <CustomLink className="nav-link" to="/logout">
+                    <i
+                      className="bi-box-arrow-left"
+                      style={{ marginRight: "9px" }}
+                    ></i>
+                    Log Out
+                  </CustomLink>
                 </li>
               )}
             </ul>

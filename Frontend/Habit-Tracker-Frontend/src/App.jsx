@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import Stats from "./pages/Stats";
 import UserList from "./pages/UserList";
 import ProtectedPage from "./pages/ProtectedPage";
+import Logout from "./pages/Logout";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
               </ProtectedPage>
             }
           />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </div>
     </>

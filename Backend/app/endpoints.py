@@ -104,10 +104,11 @@ def login():
     else:
         return jsonify({'message': 'Wrong username or password'}), 401 
 
-@user_bp.route('/api/logout', methods=['POST'])
+@user_bp.route('/api/logout', methods=['GET'])
 def logout():
     response = make_response(jsonify({'message': 'Logged out'}), 200)
-    response.delete_cookie('user_id')  # Clear the user_id cookie
+    logged_user.set_id(None)  
+
     #TODO: failed logout (for example if the user already logged out...)
     return response
 
@@ -189,8 +190,10 @@ def delete_habit(habit_id):
 @user_bp.route('/api/users/toggle_user_status/<int:user_id>', methods=['PUT'])
 def block_user(user_id): # Get user ID from the cookie
     user = User.query.filter_by(id=user_id).first()
-    
-    if user: # TODO: Add validation to only allow this method when logged in as an ADMIN
+    # is_logged_user_admin = get_logged_in_user().userType == 'admin' TODO: Implement this and Test this with POSTMAN
+    # is_user_to_toggle_admin = user.userType == 'admin' # TODO: Implement this and Test this with POSTMAN
+    # if is_logged_user_admin:
+    if user:
         try:
             user.account_activated = not user.account_activated
             db.session.commit()
@@ -200,3 +203,5 @@ def block_user(user_id): # Get user ID from the cookie
             return jsonify({'message': 'An error occurred while toggling user status.'}), 500
     else:
         return jsonify({'message': 'User not found'}), 404
+    # else:
+    #     return jsonify({'message': 'You have no permissions'}), 401

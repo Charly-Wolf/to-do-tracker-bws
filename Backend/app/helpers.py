@@ -37,8 +37,6 @@ def prepare_habit_list():
 def prepare_user_list():
     user = get_logged_in_user()
 
-
-
     if user is None or not user.userType == 'admin':
         return None  # Return None to indicate no permission
 
@@ -66,9 +64,9 @@ def prepare_user_list():
     return users_list
 
 def prepare_log_entries():
-    user = get_logged_in_user()
-    if user is None:
-        return None  # Return None to indicate no permission
+    print("\n\nUSER ID: ", logged_user.get_id(), "\n\n")
+    if logged_user.get_id() == None:
+        return None
 
     # Fetch all habits related to the user
     habits = prepare_habit_list()
