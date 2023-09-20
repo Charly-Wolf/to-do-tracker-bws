@@ -45,14 +45,14 @@ To get started with TrackYou, follow these easy steps:
 9. **▶️ Run the Backend**: Start the flask backend server.
     ```bash
     flask run
-10. **📱 Access the App**: You can now access the TrackYou app in your web browser by navigating to http://localhost:5173. You should see the application up and running.
+10. **📱 Access the App**: You can now access the TrackYou app in your web browser by navigating to http://localhost:5173. You should see the application up and running 😁🔥.
 11. **👤 Login or create a new user**: In case you already have an account, simply login with your Email and passowrd, otherwise create a new user and wait for an admin to activate your account.
 
 12. 😎 **Have fun tracking your habits!** 🎯📅
 ## Technologies used
 
-- **Frontend**: [⚛️ React](https://react.dev/) - *Javascript + HTML + CSS + Bootstrap* 
-- **Backend**: [🐍 Flask](https://palletsprojects.com/p/flask/) - *Python + SQLAlchemy*
+- **Frontend**: [⚛️ React](https://react.dev/) - *Javascript, HTML, CSS & Bootstrap* 
+- **Backend**: [🐍 Flask](https://palletsprojects.com/p/flask/) - *Python & SQLAlchemy*
 - **Database**: [🪶SQLite](https://www.sqlite.org/index.html)
 
 ---
