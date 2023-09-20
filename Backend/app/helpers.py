@@ -1,3 +1,5 @@
+# Author: Carlos Paredes
+
 from flask import jsonify, request
 from app.models import User, Habit, HabitLog, NormalUser, db
 import re # Regular Expressions
@@ -33,8 +35,9 @@ def prepare_habit_list():
 def prepare_user_list():
     user = get_logged_in_user()
 
-    if user is None or not user.userType == 'admin':
-        return None  # Return None to indicate no permission
+    # TODO: commented it out while updating REACT FRONTEND, it should NOT BE COMMENTED OUT
+    # if user is None or not user.userType == 'admin':
+    #     return None  # Return None to indicate no permission
 
     users = User.query.all()
     users_list = []
@@ -45,7 +48,7 @@ def prepare_user_list():
             "name": user.name,
             "lastname": user.lastname,
             "email": user.email,
-            "password": user.password,
+            "password": user.password, #TODO: IS THIS NECESSARY?? otherwise delete (more secure)
             "last_login_date": user.last_login_date,
             "userType": user.userType,
             # "habits": user.habits
@@ -101,7 +104,8 @@ def validate_password_format(password):
         # one digit, 
         # and one special character. 
         # Umlauts are allowed.
-    pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&äöüÄÖÜß]{8,}$'
+    special_chars = "@$!%*?&_-/"
+    pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[' + re.escape(special_chars) + r'])[A-Za-z\d' + re.escape(special_chars) + r'äöüÄÖÜß]{8,}$'
 
     return re.match(pattern, password) is not None
 
@@ -164,16 +168,22 @@ def validate_add_habit(habit_name):
     return jsonify({'message': 'Habit added successfully'}), 201
 
 def validate_register_user(email, name, lastname, password, password2):
+    
     if not email or not name or not lastname or not password or not password2:
             return jsonify({'message': 'Email address, name, lastname and password are required'}), 400
+    
     if not validate_email(email):
         return jsonify({'message': 'Invalid email address format'}), 400
+    
     if not validate_user_name_length(name) or not validate_user_name_length(lastname):
         return jsonify({'message': 'First and last name must be between 2 and 20 characters long'}), 400 
+    
     if not validate_user_name_characters(name):
         return jsonify({'message': 'Invalid first name format, characters not allowed'}), 400
+    
     if not validate_user_name_characters(lastname):
         return jsonify({'message': 'Invalid last name format, characters not allowed'}), 400
+    
     if not validate_password_format(password):
         return jsonify({'message': 'Invalid password format (At least: 8 characters, one uppercase letter, one lowercase letter, one digit and one special character.)'}), 400
 
