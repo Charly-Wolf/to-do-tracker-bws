@@ -5,8 +5,8 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 # from dotenv import load_dotenv
 # import os
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
+# from flask_jwt_extended import get_jwt_identity
+# from flask_jwt_extended import jwt_required
 from .logged_in_user import LoggedUser
 
 app = Flask(__name__)
