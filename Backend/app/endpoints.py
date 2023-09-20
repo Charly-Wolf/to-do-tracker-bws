@@ -59,18 +59,16 @@ def get_log_entries():
 
     return jsonify(log_entry_list)
 
-@user_bp.route('/api/register', methods=['GET', 'POST'])
+@user_bp.route('/api/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-        data = request.get_json()
-        email = data.get('email').strip() 
-        name = data.get('name').strip()
-        lastname = data.get('lastname').strip()
-        password = data.get('password')
-        password2 = data.get('password2')
+    data = request.get_json()
+    email = data.get('email').strip() 
+    name = data.get('name').strip()
+    lastname = data.get('lastname').strip()
+    password = data.get('password')
+    password2 = data.get('password2')
 
-        return validate_register_user(email, name, lastname, password, password2)
-    # return render_template('register.html') # TODO: change this to fit REACT
+    return validate_register_user(email, name, lastname, password, password2)
 
 @user_bp.route('/api/activationPending')
 def activationPending():
