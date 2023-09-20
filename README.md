@@ -46,7 +46,7 @@ To get started with TrackYou, follow these easy steps:
     ```bash
     flask run
 10. **📱 Access the App**: You can now access the TrackYou app in your web browser by navigating to http://localhost:5173. You should see the application up and running 😁🔥.
-11. **👤 Login or create a new user**: In case you already have an account, simply login with your Email and passowrd, otherwise create a new user and wait for an admin to activate your account.
+11. **👤 Login or create a new user**: In case you already have an account, simply login with your Email and Password, otherwise create a new user and wait for an admin to activate your account.
 
 12. 😎 **Have fun tracking your habits!** 🎯📅
 ## Technologies used
