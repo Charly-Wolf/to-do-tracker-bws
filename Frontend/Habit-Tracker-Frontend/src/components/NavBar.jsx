@@ -28,7 +28,7 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
               {isLoggedIn && (
                 <Link className="nav-link" aria-current="page" to="/">
                   <li
-                    className="nav-item"
+                    className="nav-item navbar-item"
                     style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
                   >
                     <i className="bi bi-card-checklist"></i>
@@ -39,7 +39,7 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
               {isAdmin && (
                 <Link className="nav-link" aria-current="page" to="/userlist">
                   <li
-                    className="nav-item"
+                    className="nav-item navbar-item"
                     style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
                   >
                     <i className="bi bi-people"></i>
@@ -49,7 +49,7 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
               )}
               <Link className="nav-link" aria-current="page" to="/info">
                 <li
-                  className="nav-item"
+                  className="nav-item navbar-item"
                   style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
                 >
                   <i className="bi bi-question-circle-fill"></i>
@@ -59,7 +59,7 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
               {isLoggedIn && (
                 <Link className="nav-link" to="/logout">
                   <li
-                    className="nav-item"
+                    className="nav-item navbar-item"
                     style={{ "--i": "#d44fae", "--j": "#ef1e22" }}
                   >
                     <i
