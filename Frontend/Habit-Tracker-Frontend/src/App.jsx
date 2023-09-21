@@ -11,24 +11,19 @@ import ProtectedPage from "./pages/ProtectedPage";
 import Logout from "./pages/Logout";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("userId")); // !! converts the expression into a boolean value.
   const [isAdmin, setIsAdmin] = useState(localStorage.getItem("userType") === "admin");
   const [currentPage, setCurrentPage] = useState("login");
 
-  useEffect(() => {
-    setIsAdmin(localStorage.getItem("userType") === "admin");
-  }, [isLoggedIn]);
-
   return (
     <>
       <div className="card text-center border-0">
         <NavBar isLoggedIn={isLoggedIn} isAdmin={isAdmin} currentPage={currentPage}/>
         <Routes>
-          <Route
-            path="/"
+          <Route path="/"
             element={
               <ProtectedPage>
                 <Home setCurrentPage={setCurrentPage} />
@@ -36,8 +31,7 @@ function App() {
             }
           />
           <Route path="/info" element={<Info setCurrentPage={setCurrentPage} />} />
-          <Route
-            path="/login"
+          <Route path="/login"
             element={
               <ProtectedPage>
                 <LoginPage
@@ -48,32 +42,28 @@ function App() {
               </ProtectedPage>
             }
           />
-          <Route
-            path="/register"
+          <Route path="/register"
             element={
               <ProtectedPage>
                 <RegisterPage setCurrentPage={setCurrentPage} />
               </ProtectedPage>
             }
           />
-          <Route
-            path="/stats"
+          <Route path="/stats"
             element={
               <ProtectedPage>
                 <Stats />
               </ProtectedPage>
             }
           />
-          <Route
-            path="/userList"
+          <Route path="/userList"
             element={
               <ProtectedPage>
                 <UserList setCurrentPage={setCurrentPage} />
               </ProtectedPage>
             }
           />
-          <Route
-            path="/logout"
+          <Route path="/logout"
             element={
               <Logout setIsAdmin={setIsAdmin} setIsLoggedIn={setIsLoggedIn} />
             }

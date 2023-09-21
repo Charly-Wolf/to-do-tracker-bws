@@ -191,3 +191,15 @@
   font-size: 1.8em;
   transition: 0.5s;
 }
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo {
+  height: 2.5em;
+  border-radius: 2.5em;
+  margin-left: 0.5em;
+  transition: 0.5s;
+}

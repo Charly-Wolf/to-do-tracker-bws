@@ -3,6 +3,7 @@
 import { Link } from "react-router-dom";
 import "../components/ScreenStyles.css";
 import PropTypes from "prop-types";
+import trackYouLogo from "../assets/favicon2.png"
 
 export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
 
@@ -13,7 +14,7 @@ export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
         <div className="container">
           <Link to="/" className="navbar-brand">
-            <span className="brand-name">TrackYou</span>
+            <span className="brand-name">TrackYou</span> <img className="brand-logo" src={trackYouLogo} alt="TrackYou logo" />
           </Link>
           <button
             className="navbar-toggler"
