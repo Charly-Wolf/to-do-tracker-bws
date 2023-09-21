@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import "../components/ScreenStyles.css";
 import PropTypes from "prop-types";
 
-export default function NavBar({ isLoggedIn, isAdmin }) {
+export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
+
+  
+
   return (
     <div className="card-header p-0 border-0 sticky-top">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
@@ -25,7 +28,7 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
           </button>
           <div className="collapse navbar-collapse ml-auto" id="navbarNav">
             <ul className="navbar-nav ms-auto">
-              {isLoggedIn && (
+              {isLoggedIn && currentPage !== "home" && (
                 <Link className="nav-link" aria-current="page" to="/">
                   <li
                     className="nav-item navbar-item"
@@ -36,7 +39,7 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
                   </li>
                 </Link>
               )}
-              {isAdmin && (
+              {isAdmin && currentPage !== "userList" && (
                 <Link className="nav-link" aria-current="page" to="/userlist">
                   <li
                     className="nav-item navbar-item"
@@ -47,7 +50,16 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
                   </li>
                 </Link>
               )}
-              <Link className="nav-link" aria-current="page" to="/info">
+              {currentPage === "info" && !isLoggedIn && <Link className="nav-link" aria-current="page" to="/login">
+                <li
+                  className="nav-item navbar-item"
+                  style={{ "--i": "rgb(106, 253, 8)", "--j": "rgb(5, 165, 130)" }}
+                >
+                  <i className="bi bi-box-arrow-in-right"></i>
+                  <span className="title">Login</span>
+                </li>
+              </Link>}
+              {currentPage !== "info" && <Link className="nav-link" aria-current="page" to="/info">
                 <li
                   className="nav-item navbar-item"
                   style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
@@ -55,7 +67,7 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
                   <i className="bi bi-question-circle-fill"></i>
                   <span className="title">Info</span>
                 </li>
-              </Link>
+              </Link>}
               {isLoggedIn && (
                 <Link className="nav-link" to="/logout">
                   <li
@@ -81,4 +93,5 @@ export default function NavBar({ isLoggedIn, isAdmin }) {
 NavBar.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired,
+  currentPage : PropTypes.string.isRequired
 };

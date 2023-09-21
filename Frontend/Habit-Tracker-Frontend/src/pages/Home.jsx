@@ -1,10 +1,13 @@
 import HabitList from '../components/HabitList';
+import PropTypes from "prop-types";
 
-export default function Home() {
+export default function Home({setCurrentPage}) {
 
-  return (
-    <>
-      <HabitList/>
-    </>
-  );
+  setCurrentPage("home");
+
+  return <HabitList/>;
 }
+
+Home.propTypes = {
+  setCurrentPage: PropTypes.func.isRequired
+};

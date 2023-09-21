@@ -14,12 +14,9 @@ import Footer from "./components/Footer";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    !!localStorage.getItem("userId")
-  ); // !! converts the expression into a boolean value.
-  const [isAdmin, setIsAdmin] = useState(
-    localStorage.getItem("userType") === "admin"
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("userId")); // !! converts the expression into a boolean value.
+  const [isAdmin, setIsAdmin] = useState(localStorage.getItem("userType") === "admin");
+  const [currentPage, setCurrentPage] = useState("login");
 
   useEffect(() => {
     setIsAdmin(localStorage.getItem("userType") === "admin");
@@ -28,17 +25,17 @@ function App() {
   return (
     <>
       <div className="card text-center border-0">
-        <NavBar isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
+        <NavBar isLoggedIn={isLoggedIn} isAdmin={isAdmin} currentPage={currentPage}/>
         <Routes>
           <Route
             path="/"
             element={
               <ProtectedPage>
-                <Home />
+                <Home setCurrentPage={setCurrentPage} />
               </ProtectedPage>
             }
           />
-          <Route path="/info" element={<Info />} />
+          <Route path="/info" element={<Info setCurrentPage={setCurrentPage} />} />
           <Route
             path="/login"
             element={
@@ -46,6 +43,7 @@ function App() {
                 <LoginPage
                   setIsAdmin={setIsAdmin}
                   setIsLoggedIn={setIsLoggedIn}
+                  setCurrentPage={setCurrentPage}
                 />
               </ProtectedPage>
             }
@@ -54,7 +52,7 @@ function App() {
             path="/register"
             element={
               <ProtectedPage>
-                <RegisterPage />
+                <RegisterPage setCurrentPage={setCurrentPage} />
               </ProtectedPage>
             }
           />
@@ -70,7 +68,7 @@ function App() {
             path="/userList"
             element={
               <ProtectedPage>
-                <UserList />
+                <UserList setCurrentPage={setCurrentPage} />
               </ProtectedPage>
             }
           />
