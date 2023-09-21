@@ -1,4 +1,4 @@
-# TrackYou ![TrackYou Logo](/Frontend/Habit-Tracker-Frontend/src/assets/favicon.ico) - Habit Tracker App
+# TrackYou ![TrackYou Logo](/Frontend/Habit-Tracker-Frontend/src/assets/favicon2.png) - Habit Tracker App
 
 TrackYou is a simple and effective habit tracker app designed to help you build discipline and consistency for the habits that are important and healthy for your life.
 
