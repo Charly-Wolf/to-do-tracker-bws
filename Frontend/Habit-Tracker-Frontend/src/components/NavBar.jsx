@@ -1,18 +1,16 @@
-import { Link, useMatch, useResolvedPath } from "react-router-dom";
-// import { Navbar, Nav, Container } from "react-bootstrap";
+// Authors: Mahir Dzafic, Carlos Paredes and Marius Schröder
+
+import { Link } from "react-router-dom";
 import "../components/ScreenStyles.css";
+import PropTypes from "prop-types";
 
-export default function NavBar() {
-  const userId = localStorage.getItem("userId");
-  const isLoggedIn = userId && userId != undefined;
-  const isAdmin = localStorage.getItem("userType") == "admin";
-
+export default function NavBar({ isLoggedIn, isAdmin }) {
   return (
     <div className="card-header p-0 border-0 sticky-top">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
         <div className="container">
           <Link to="/" className="navbar-brand">
-            Habit-Tracker
+            <span className="brand-name">TrackYou</span>
           </Link>
           <button
             className="navbar-toggler"
@@ -27,39 +25,50 @@ export default function NavBar() {
           </button>
           <div className="collapse navbar-collapse ml-auto" id="navbarNav">
             <ul className="navbar-nav ms-auto">
-              {isAdmin && (
-                <li className="nav-item">
-                  <CustomLink
-                    className="nav-link"
-                    aria-current="page"
-                    to="/userlist"
-                  >
-                    <i className="bi bi-people-fill"></i>
-                  </CustomLink>
-                </li>
-              )}
-              <li className="nav-item">
-                <CustomLink className="nav-link" aria-current="page" to="/info">
-                  <i className="bi bi-question-circle-fill"></i>
-                </CustomLink>
-              </li>
               {isLoggedIn && (
+                <Link className="nav-link" aria-current="page" to="/">
+                  <li
+                    className="nav-item"
+                    style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
+                  >
+                    <i className="bi bi-card-checklist"></i>
+                    <span className="title">Habit List</span>
+                  </li>
+                </Link>
+              )}
+              {isAdmin && (
+                <Link className="nav-link" aria-current="page" to="/userlist">
+                  <li
+                    className="nav-item"
+                    style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
+                  >
+                    <i className="bi bi-people"></i>
+                    <span className="title">User List</span>
+                  </li>
+                </Link>
+              )}
+              <Link className="nav-link" aria-current="page" to="/info">
                 <li
                   className="nav-item"
-                  style={{
-                    border: "1px solid white",
-                    borderRadius: "5px",
-                    marginLeft: "10px",
-                  }}
+                  style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
                 >
-                  <CustomLink className="nav-link" to="/logout">
+                  <i className="bi bi-question-circle-fill"></i>
+                  <span className="title">Info</span>
+                </li>
+              </Link>
+              {isLoggedIn && (
+                <Link className="nav-link" to="/logout">
+                  <li
+                    className="nav-item"
+                    style={{ "--i": "#d44fae", "--j": "#ef1e22" }}
+                  >
                     <i
                       className="bi-box-arrow-left"
                       style={{ marginRight: "9px" }}
                     ></i>
-                    Log Out
-                  </CustomLink>
-                </li>
+                    <span className="title">Log Out</span>
+                  </li>
+                </Link>
               )}
             </ul>
           </div>
@@ -69,15 +78,7 @@ export default function NavBar() {
   );
 }
 
-function CustomLink({ to, children, ...props }) {
-  const resolvedPath = useResolvedPath(to);
-  const isActive = useMatch({ path: resolvedPath.pathname, end: true });
-
-  return (
-    <li className={isActive ? "active" : ""}>
-      <Link to={to} {...props}>
-        {children}
-      </Link>
-    </li>
-  );
-}
+NavBar.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
+};

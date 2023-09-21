@@ -9,11 +9,26 @@ import Stats from "./pages/Stats";
 import UserList from "./pages/UserList";
 import ProtectedPage from "./pages/ProtectedPage";
 import Logout from "./pages/Logout";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("userId")
+  ); // !! converts the expression into a boolean value.
+  const [isAdmin, setIsAdmin] = useState(
+    localStorage.getItem("userType") === "admin"
+  );
+
+  useEffect(() => {
+    setIsAdmin(localStorage.getItem("userType") === "admin");
+  }, [isLoggedIn]);
+
   return (
     <>
       <div className="card text-center border-0">
+        <NavBar isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
         <Routes>
           <Route
             path="/"
@@ -28,7 +43,10 @@ function App() {
             path="/login"
             element={
               <ProtectedPage>
-                <LoginPage />
+                <LoginPage
+                  setIsAdmin={setIsAdmin}
+                  setIsLoggedIn={setIsLoggedIn}
+                />
               </ProtectedPage>
             }
           />
@@ -56,8 +74,14 @@ function App() {
               </ProtectedPage>
             }
           />
-          <Route path="/logout" element={<Logout />} />
+          <Route
+            path="/logout"
+            element={
+              <Logout setIsAdmin={setIsAdmin} setIsLoggedIn={setIsLoggedIn} />
+            }
+          />
         </Routes>
+        <Footer />
       </div>
     </>
   );

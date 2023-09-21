@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/api/login", // Connection with the Backend
 });
 
-function Login() {
+function Login({ setIsLoggedIn, setIsAdmin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -31,6 +32,8 @@ function Login() {
       localStorage.setItem("userType", response.data.user_type);
 
       navigate("/");
+      setIsLoggedIn(true);
+      setIsAdmin(response.data.user_type === "admin");
     } catch (err) {
       setError(err.response.data.message);
     }
@@ -94,5 +97,10 @@ function Login() {
     </div>
   );
 }
+
+Login.propTypes = {
+  setIsLoggedIn: PropTypes.func.isRequired,
+  setIsAdmin: PropTypes.func.isRequired,
+};
 
 export default Login;
