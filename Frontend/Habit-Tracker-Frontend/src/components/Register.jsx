@@ -40,7 +40,7 @@ function Register() {
 
   return (
     <div className="main-body">
-      <div className="card main-card">
+      <div className="card main-card" id="register-card">
         {!registeredSuccessful ? (
           <>
             <h2 className="text-center card-title">Register</h2>
