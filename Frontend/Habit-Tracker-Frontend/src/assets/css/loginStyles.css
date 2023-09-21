@@ -1,0 +1,17 @@
+.main-body {
+    height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../Background_IMGs/Minimalist_3.jpg);
+    background-size: cover;
+}
+
+.main-card {
+    padding: 2em;
+    box-shadow: 0 10px 25px rgba(117, 117, 117, 0.329);
+}
+
+.card-title {
+    margin-bottom: 0.5em
+}
