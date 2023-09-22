@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import "../assets/css/loginStyles.css"
 
 const client = axios.create({
-  baseURL: "http://127.0.0.1:5000/api/login", // Connection with the Backend
+  baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
 });
 
 function Login({ setIsLoggedIn, setIsAdmin }) {
@@ -26,7 +26,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       };
 
       // Send data to the backend via POST
-      const response = await client.post("", requestData);
+      const response = await client.post("api/login", requestData);
 
       // Save the user_id in the local storage of the Browser
       localStorage.setItem("userId", response.data.user_id);
@@ -36,7 +36,12 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       setIsLoggedIn(true);
       setIsAdmin(response.data.user_type === "admin");
     } catch (err) {
-      setError(err.response.data.message);
+      if (error) {
+        setError(err.response.data.message);
+      } else {
+        setError("Connection with the Server failed");
+      }
+      
     }
   };
 
