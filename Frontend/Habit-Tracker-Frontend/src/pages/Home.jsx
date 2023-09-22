@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
 import HabitList from '../components/HabitList';
 import PropTypes from "prop-types";
 
 export default function Home({setCurrentPage}) {
 
-  setCurrentPage("home");
+  useEffect(() => {
+    setCurrentPage("home");
+  }, [setCurrentPage]); // Empty dependency array to run the effect once
 
   return <HabitList/>;
 }

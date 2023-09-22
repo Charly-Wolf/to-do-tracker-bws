@@ -2,9 +2,12 @@
 
 import UsersTable from "../components/UsersTable";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 export default function UserList({ setCurrentPage }) {
-  setCurrentPage("userList")
+  useEffect(() => {
+    setCurrentPage("userList")
+  }, [setCurrentPage])
   return <UsersTable />;
 }
 
