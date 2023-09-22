@@ -24,3 +24,8 @@
 #register-card {
     top: 7em;
 }
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+}

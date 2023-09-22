@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 import "../assets/css/loginStyles.css"
+import LoadingSpinner from "./spinner";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -14,10 +15,12 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); 
 
     try {
       const requestData = {
@@ -41,7 +44,8 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       } else {
         setError("Connection with the Server failed");
       }
-      
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,13 +79,16 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
             />
           </div>
           <br />
+          {isLoading ? (
+            <div className="spinner-container"><LoadingSpinner /></div>
+            ) : (
           <button type="submit" className="btn btn-primary btn-block">
             Login
           </button>
+            )}
         </form>
         {/* Display the error message with Bootstrap danger style */}
         {error && <div className="alert alert-danger mt-3">{error}</div>}
-
         {/* TODO */}
         {/* <p className="mt-3 text-center">
           Forgot your <Link to="#">Password</Link>?
