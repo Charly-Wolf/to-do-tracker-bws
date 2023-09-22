@@ -2,9 +2,11 @@
 
 import Register from "../components/Register";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 export default function RegisterPage({setCurrentPage}) {
-  setCurrentPage("register");
+  useEffect(() => setCurrentPage("register"), [setCurrentPage])
+  
   return <Register />;
 }
 
