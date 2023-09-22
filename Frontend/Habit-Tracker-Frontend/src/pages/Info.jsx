@@ -1,17 +1,11 @@
-import Box from '../components/InfoComp';
-import Boxes from '../components/HabitBox';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
-import Newsletter from '../components/Newsletter';
-import DailyMsg from '../components/DailyMsg';
-import InfoComp from '../components/InfoComp';
+import InfoComp from "../components/InfoComp";
+import PropTypes from "prop-types";
 
-export default function Info() {
-    return (
-        <>
-            <NavBar />
-            <InfoComp />
-            <Footer />
-        </>
-    );
+export default function Info({ setCurrentPage }) {
+  setCurrentPage("info");
+  return <InfoComp />;
+}
+
+Info.propTypes = {
+  setCurrentPage: PropTypes.func.isRequired
 };

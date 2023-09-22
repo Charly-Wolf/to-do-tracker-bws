@@ -1,15 +1,13 @@
 // Author: Carlos Paredes
 
-import Footer from "../components/Footer";
 import UsersTable from "../components/UsersTable";
-import NavBar from "../components/NavBar";
+import PropTypes from "prop-types";
 
-export default function LoginPage() {
-  return (
-    <>
-      <NavBar />
-      <UsersTable />
-      <Footer />
-    </>
-  );
+export default function UserList({ setCurrentPage }) {
+  setCurrentPage("userList")
+  return <UsersTable />;
 }
+
+UserList.propTypes = {
+  setCurrentPage: PropTypes.func.isRequired
+};

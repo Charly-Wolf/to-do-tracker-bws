@@ -3,3 +3,4 @@ flask-sqlalchemy
 python-dotenv
 flask-cors
 flask-validate-email
+flask-jwt-extended
