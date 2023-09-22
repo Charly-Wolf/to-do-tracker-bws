@@ -10,6 +10,15 @@ const client = axios.create({
 function HabitList() {
   const [habits, setHabits] = useState([]);
   const [habitsError, setHabitsError] = useState("");
+  
+    // Teilt die habits in Gruppen von drei auf
+    const test = "test";
+    let groupedHabits = [];
+    for (let i = 0; i < habits.length; i += 3) {
+      groupedHabits.push(habits.slice(i, i + 3));
+    }
+    console.log(test)
+    console.log(groupedHabits)
 
   useEffect(() => {
     const fetchHabits = async () => {
@@ -23,7 +32,7 @@ function HabitList() {
     };
     fetchHabits();
   }, []);
-  
+
   return (
     <div className="card text-center">
       <div className="card-header">
@@ -78,9 +87,21 @@ function HabitList() {
           <a href="#" className="btn btn-primary">
             Habit hinzufügen
           </a>
-          {habits.map((habit) => (
-          <HabitBox />
-          ))}
+          <div className="container">
+            {groupedHabits.map((group, groupIndex) => (
+              <div className="row" key={groupIndex}>
+                {group.map((habit, index) => (
+                  <div className="col" key={index} sm={4}>
+                    <HabitBox
+                      title={
+                        habit.name
+                      } /*description={habit.description} checked={habit.status}*/
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
