@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../assets/css/loginStyles.css"
+import LoadingSpinner from "./spinner";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/api/register",
@@ -17,9 +18,11 @@ function Register() {
   const [password2, setPassword2] = useState("");
   const [error, setError] = useState("");
   const [registeredSuccessful, setregisteredSuccessful] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       // Send data to the backend via POST
@@ -34,7 +37,13 @@ function Register() {
       // navigate("/login");
       setregisteredSuccessful(true);
     } catch (err) {
-      setError(err.response.data.message);
+      if (error) {
+        setError(err.response.data.message);
+      } else {
+        setError("Connection with the Server failed");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -105,9 +114,13 @@ function Register() {
                 />
               </div>
               <br />
-              <button type="submit" className="btn btn-primary btn-block">
-                Register
-              </button>
+              {isLoading ? (
+                <div className="spinner-container"><LoadingSpinner /></div>
+                ) : (
+                <button type="submit" className="btn btn-primary btn-block">
+                  Register
+                </button>
+                )}
               {/* Display the error message with Bootstrap danger style */}
               {error && (
                 <div className="alert alert-danger mt-3">{error}</div>
