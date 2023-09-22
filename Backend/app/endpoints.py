@@ -23,8 +23,6 @@ def get_habits():
     if user is None:
         return jsonify({'message': 'No permissions to see the habits list'}), 401
     habits_list = prepare_habit_list()
-    if not habits_list:
-        return jsonify({'message': 'The current user does not have any habits'}), 401 # TODO: check if this can be optimized so that the Frontend accordingly adapts when there are no habits for this user
     return jsonify(habits_list)
 
 @habit_bp.route('/api/add_habit', methods=['POST'])
