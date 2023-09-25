@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/css/statsStyles.css";
+import SubNavBar from "./SubNavBar";
+import LoadingSpinner from "./spinner";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -58,56 +60,61 @@ function Stats() {
   }, [habits]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
-    <div className="table-responsive">
-      <h2 className="text-center">Stats</h2>
+    <>
+      <SubNavBar />
+      <div className="table-responsive">
+        <h2 className="text-center">Stats</h2>
 
-      {logsError ? (
-        <div className="alert alert-danger mt-3">{logsError}</div>
-      ) : (
-        <div className="table-wrapper">
-          <table className="table table-hover table-bordered table-striped table-sm">
-            <thead className="table-dark">
-              <tr>
-                <th className="fixed-row">Dates</th>
-                {habits.map((habit) => (
-                  <th key={habit.habit_id}>{habit.name}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {dateRange.map((date) => (
-                <tr key={date}>
-                  <td className="fixed-row">{date}</td>
-                  {habits.map((habit) => {
-                    const logDate = new Date(date).toLocaleDateString("en-US");
-                    const hasLog = habit.habitLogs.some(
-                      (log) =>
-                        new Date(log.log_date).toLocaleDateString("en-US") ===
-                        logDate
-                    );
-                    return (
-                      <td key={habit.habit_id}>
-                        {hasLog ? (
-                          <span role="img" aria-label="checkmark">
-                            ✅
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </td>
-                    );
-                  })}
+        {logsError ? (
+          <div className="alert alert-danger mt-3">{logsError}</div>
+        ) : (
+          <div className="table-wrapper">
+            <table className="table table-hover table-bordered table-striped table-sm">
+              <thead className="table-dark">
+                <tr>
+                  <th className="fixed-row">Dates</th>
+                  {habits.map((habit) => (
+                    <th key={habit.habit_id}>{habit.name}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+              </thead>
+              <tbody>
+                {dateRange.map((date) => (
+                  <tr key={date}>
+                    <td className="fixed-row">{date}</td>
+                    {habits.map((habit) => {
+                      const logDate = new Date(date).toLocaleDateString(
+                        "en-US"
+                      );
+                      const hasLog = habit.habitLogs.some(
+                        (log) =>
+                          new Date(log.log_date).toLocaleDateString("en-US") ===
+                          logDate
+                      );
+                      return (
+                        <td key={habit.habit_id}>
+                          {hasLog ? (
+                            <span role="img" aria-label="checkmark">
+                              ✅
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

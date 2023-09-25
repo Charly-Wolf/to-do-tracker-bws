@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import check_password_hash
 from datetime import datetime
 from app.models import User, Habit, HabitLog, NormalUser, db
-from app.helpers import reset_user_habits_status, prepare_habit_list, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list, prepare_log_entries, get_logged_in_user, validate_add_habit, validate_register_user, validate_edit_habit_name
+from app.helpers import reset_user_habits_status, prepare_habit_list, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list, get_logged_in_user, validate_add_habit, validate_register_user, validate_edit_habit_name
 from app import logged_user
 
 user_bp = Blueprint('user', __name__)
