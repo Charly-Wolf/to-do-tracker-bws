@@ -62,7 +62,6 @@ def prepare_user_list():
     return users_list
 
 def prepare_log_entries():
-    print("\n\nUSER ID: ", logged_user.get_id(), "\n\n")
     if logged_user.get_id() == None:
         return None
 
