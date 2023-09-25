@@ -1,9 +1,10 @@
 // Author: Carlos Paredes
 
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "../assets/css/loginStyles.css"
+import LoadingSpinner from "./spinner";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/api/register",
@@ -17,10 +18,11 @@ function Register() {
   const [password2, setPassword2] = useState("");
   const [error, setError] = useState("");
   const [registeredSuccessful, setregisteredSuccessful] = useState(false);
-  // const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       // Send data to the backend via POST
@@ -35,112 +37,114 @@ function Register() {
       // navigate("/login");
       setregisteredSuccessful(true);
     } catch (err) {
-      setError(err.response.data.message);
+      if (error) {
+        setError(err.response.data.message);
+      } else {
+        setError("Connection with the Server failed");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="container h-100">
-      <br />
-      <br />
-      <div className="row h-100 justify-content-center align-items-center">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              {!registeredSuccessful ? (
-                <>
-                  <h2 className="text-center">Register</h2>
-                  <br />
-                  <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
-                      />
-                    </div>
-                    <br />
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="First name"
-                        required
-                      />
-                    </div>
-                    <br />
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="lastname"
-                        value={lastname}
-                        onChange={(e) => setLastname(e.target.value)}
-                        placeholder="Lastname"
-                        required
-                      />
-                    </div>
-                    <br />
-                    <div className="form-group">
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        required
-                      />
-                    </div>
-                    <br />
-                    <div className="form-group">
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="password2"
-                        value={password2}
-                        onChange={(e) => setPassword2(e.target.value)}
-                        placeholder="Repeat Password"
-                        required
-                      />
-                    </div>
-                    <br />
-                    <button type="submit" className="btn btn-primary btn-block">
-                      Register
-                    </button>
-                    {/* Display the error message with Bootstrap danger style */}
-                    {error && (
-                      <div className="alert alert-danger mt-3">{error}</div>
-                    )}
-                  </form>
-                </>
-              ) : (
-                <div className="container">
-                  <div className="alert alert-warning" role="alert">
-                    <h4 className="alert-heading">
-                      Account Activation Pending
-                    </h4>
-                    <hr />
-                    <p className="mb-0">
-                      Please have some patience until an Admin activates your
-                      account 😁
-                    </p>
-                  </div>
-                </div>
+    <div className="main-body">
+      <div className="card main-card" id="register-card">
+        {!registeredSuccessful ? (
+          <>
+            <h2 className="text-center card-title">Register</h2>
+            <br />
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                />
+              </div>
+              <br />
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="First name"
+                  required
+                />
+              </div>
+              <br />
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="lastname"
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  placeholder="Lastname"
+                  required
+                />
+              </div>
+              <br />
+              <div className="form-group">
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <br />
+              <div className="form-group">
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password2"
+                  value={password2}
+                  onChange={(e) => setPassword2(e.target.value)}
+                  placeholder="Repeat Password"
+                  required
+                />
+              </div>
+              <br />
+              {isLoading ? (
+                <div className="spinner-container"><LoadingSpinner /></div>
+                ) : (
+                <button type="submit" className="btn btn-primary btn-block">
+                  Register
+                </button>
+                )}
+              {/* Display the error message with Bootstrap danger style */}
+              {error && (
+                <div className="alert alert-danger mt-3">{error}</div>
               )}
-              <p className="mt-3 text-center">
-                Do you already have an ACTIVATED account?{" "}
-                <Link to="/login">Login</Link>
+            </form>
+          </>
+        ) : (
+          <div className="container">
+            <div className="alert alert-warning" role="alert">
+              <h4 className="alert-heading">
+                Account Activation Pending
+              </h4>
+              <hr />
+              <p className="mb-0">
+                Please have some patience until an Admin activates your
+                account 😁
               </p>
             </div>
           </div>
-        </div>
+        )}
+        <p className="mt-3 text-center">
+          Do you already have an ACTIVATED account?{" "}
+          <Link to="/login">Login</Link>
+        </p>
       </div>
     </div>
   );

@@ -1,14 +1,20 @@
-import { Link, useMatch, useResolvedPath } from "react-router-dom";
-// import { Navbar, Nav, Container } from "react-bootstrap";
-import "../components/ScreenStyles.css";
+// Authors: Mahir Dzafic, Carlos Paredes and Marius Schröder
 
-export default function NavBar() {
+import { Link } from "react-router-dom";
+import "../components/ScreenStyles.css";
+import PropTypes from "prop-types";
+import trackYouLogo from "../assets/favicon2.png"
+
+export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
+
+  
+
   return (
-    <div className="card-header p-0">
+    <div className="card-header p-0 border-0 sticky-top">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
         <div className="container">
           <Link to="/" className="navbar-brand">
-            Habit-Tracker
+            <span className="brand-name">TrackYou</span> <img className="brand-logo" src={trackYouLogo} alt="TrackYou logo" />
           </Link>
           <button
             className="navbar-toggler"
@@ -23,34 +29,60 @@ export default function NavBar() {
           </button>
           <div className="collapse navbar-collapse ml-auto" id="navbarNav">
             <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <CustomLink
-                  className="nav-link"
-                  aria-current="page"
-                  to="/userlist"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-people-fill"
-                    viewBox="0 0 16 16"
+              {isLoggedIn && currentPage !== "home" && (
+                <Link className="nav-link" aria-current="page" to="/">
+                  <li
+                    className="nav-item navbar-item"
+                    style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
                   >
-                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                  </svg>
-                </CustomLink>
-              </li>
-              <li className="nav-item">
-                <CustomLink className="nav-link" aria-current="page" to="/info">
-                  Info&FAQ
-                </CustomLink>
-              </li>
-              <li className="nav-item">
-                <CustomLink className="nav-link" to="/login">
-                  Log Out
-                </CustomLink>
-              </li>
+                    <i className="bi bi-card-checklist"></i>
+                    <span className="title">Habit List</span>
+                  </li>
+                </Link>
+              )}
+              {isAdmin && currentPage !== "userList" && (
+                <Link className="nav-link" aria-current="page" to="/userlist">
+                  <li
+                    className="nav-item navbar-item"
+                    style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
+                  >
+                    <i className="bi bi-people"></i>
+                    <span className="title">User List</span>
+                  </li>
+                </Link>
+              )}
+              {currentPage === "info" && !isLoggedIn && <Link className="nav-link" aria-current="page" to="/login">
+                <li
+                  className="nav-item navbar-item"
+                  style={{ "--i": "rgb(106, 253, 8)", "--j": "rgb(5, 165, 130)" }}
+                >
+                  <i className="bi bi-box-arrow-in-right"></i>
+                  <span className="title">Login</span>
+                </li>
+              </Link>}
+              {currentPage !== "info" && <Link className="nav-link" aria-current="page" to="/info">
+                <li
+                  className="nav-item navbar-item"
+                  style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
+                >
+                  <i className="bi bi-question-circle-fill"></i>
+                  <span className="title">Info</span>
+                </li>
+              </Link>}
+              {isLoggedIn && (
+                <Link className="nav-link" to="/logout">
+                  <li
+                    className="nav-item navbar-item"
+                    style={{ "--i": "#d44fae", "--j": "#ef1e22" }}
+                  >
+                    <i
+                      className="bi-box-arrow-left"
+                      style={{ marginRight: "9px" }}
+                    ></i>
+                    <span className="title">Log Out</span>
+                  </li>
+                </Link>
+              )}
             </ul>
           </div>
         </div>
@@ -59,15 +91,8 @@ export default function NavBar() {
   );
 }
 
-function CustomLink({ to, children, ...props }) {
-  const resolvedPath = useResolvedPath(to);
-  const isActive = useMatch({ path: resolvedPath.pathname, end: true });
-
-  return (
-    <li className={isActive ? "active" : ""}>
-      <Link to={to} {...props}>
-        {children}
-      </Link>
-    </li>
-  );
-}
+NavBar.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
+  currentPage : PropTypes.string.isRequired
+};

@@ -9,16 +9,16 @@ export default function InfoComp() {
         <div className="container">
           <div className="row align-items-center justify-content-between">
             <div className="col-md">
-              <img src="#" className="img-fluid" alt=""></img>
-              <p>PICTURE BWS</p>
+              <img src="./assets/bwpic.png" className="img-fluid" alt=""></img>
+              <p>BWS PICTURE HIER</p>
             </div>
             <div className="col-md">
               <h2>Über uns</h2>
               <p className="lead">
-                Wir sind Schüler der BW Schule.
+                Wir sind Schüler der Brühlwiesenschule in Hofheim und befinden uns in der 12. Klasse.
+                Wir absolvieren eine leistungsorientierte Ausbildung im Bereich Fachinformatik.
               </p>
-              <p>Hier kann auch was stehen.</p>
-              <a href="#" className="btn btn-light mt-3">
+              <a href="https://bws-hofheim.de/" className="btn btn-primary mt-3">
                 Homepage der BWS
               </a>
             </div>

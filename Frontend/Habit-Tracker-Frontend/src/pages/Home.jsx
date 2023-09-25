@@ -1,28 +1,16 @@
-import Footer from "../components/Footer";
+import { useEffect } from 'react';
 import HabitList from '../components/HabitList';
-import NavBar from "../components/NavBar";
-import Newsletter from "../components/Newsletter";
-import DailyMsg from "../components/DailyMsg";
-// import NavBarUnten from '../components/NavBarUnten';
-// import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-export default function Home() {
-  // function FetchData() {
-  //     const [records, setRecords] = useState([])
+export default function Home({setCurrentPage}) {
 
-  //     useEffect(() => {
-  //         fetch('http://127.0.0.1:5000/habits')
-  //             .then(response => response.json())
-  //             .then(data => setRecords({ data }))
-  //             .catch(err => console.log(err))
-  //     }, [])
-  // }
-  return (
-    <>
-      <NavBar />
-      {/* <NavBarUnten /> */}
-      <HabitList/>
-      <Footer />
-    </>
-  );
+  useEffect(() => {
+    setCurrentPage("home");
+  }, [setCurrentPage]); // Empty dependency array to run the effect once
+
+  return <HabitList/>;
 }
+
+Home.propTypes = {
+  setCurrentPage: PropTypes.func.isRequired
+};

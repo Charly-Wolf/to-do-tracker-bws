@@ -1,0 +1,31 @@
+.main-body {
+    height: 600vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../Background_IMGs/Large_Background.png);
+    background-size: contain; 
+}
+
+.main-card {
+    padding: 2em;
+    position: fixed; /* Fix the child container */
+    box-shadow: 0 10px 25px rgba(117, 117, 117, 0.329);
+}
+
+.card-title {
+    margin-bottom: 0.5em
+}
+
+#login-card {
+    top: 10em;
+}
+
+#register-card {
+    top: 7em;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+}

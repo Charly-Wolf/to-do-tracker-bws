@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "../assets/css/usersTableStyles.css"
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -63,7 +64,7 @@ function UsersTable() {
 
   return (
     <>
-      <div className="row justify-content-center">
+      <div className="row justify-content-center main-container">
         <div className="col-10">
           <h1>Manage Users</h1>
           <br />

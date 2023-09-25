@@ -54,7 +54,6 @@ class Habit(db.Model):
     def habitLogs(self):
         return HabitLog.query.filter_by(habit_id=self.habit_id).all()
 
-
 class HabitLog(db.Model):
     log_id = Column(Integer, primary_key=True)
     habit_id = Column(Integer, ForeignKey('habit.habit_id'), nullable=False)
