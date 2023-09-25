@@ -115,5 +115,12 @@ function HabitList() {
     </div>
   );
 }
-
 export default HabitList;
+
+// HabitList.propTypes = {
+//   id: PropTypes.number.isRequired,
+//   title: PropTypes.string.isRequired,
+// };
+
+
+

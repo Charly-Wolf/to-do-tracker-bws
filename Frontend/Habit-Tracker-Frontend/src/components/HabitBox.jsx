@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import DeleteHabitModal from "./DeleteHabitModal";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -31,18 +32,6 @@ export default function HabitBox({ id, title, isDone }) {
       setIsChecked((isChecked) => !isChecked);
   };
 
-  const handleEditButtonClick = (habitId) => {
-    try {
-      client.delete(`/api/habit/${habitId}`).then((response) => {
-        setChangeMessage("save success");
-      });
-    } catch (err) {
-      setChangeMessage("failed save");
-    }
-  };
-
-  const handleDeleteButtonClick = (habitId) => {};
-
   return (
     <>
       <div
@@ -60,7 +49,7 @@ export default function HabitBox({ id, title, isDone }) {
             </h5>
             {/*<p className="card-text overflow-y-scroll" id="habitDescription">
               {props.description}
-  </p>*/}
+            </p>*/}
           </div>
           <div className="col-2">
             <form>
@@ -82,18 +71,11 @@ export default function HabitBox({ id, title, isDone }) {
               </div>
               <div className="row">
                 <button
-                  type="button"
-                  className="btn btn-outline-primary bi bi-pencil my-1"
-                  onClick={() => handleEditButtonClick(id)}
+                  className="btn btn-outline-primary bi bi-pencil my-1" //Modal placeholder <EditHabitModal>
                 />
-                {/* <button className="btn btn-outline-primary bi bi-pencil my-1"></button> */}
               </div>
               <div className="row">
-                <button
-                  type="button"
-                  className="btn btn-outline-danger bi bi-trash3 my-1"
-                  onClick={() => handleDeleteButtonClick(id)}
-                />
+                <DeleteHabitModal id = {id} title = {title}/>
               </div>
             </form>
           </div>
