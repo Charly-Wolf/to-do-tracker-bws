@@ -101,6 +101,9 @@ function HabitList() {
                     <HabitBox
                       title={
                         habit.name
+                      }
+                      habitId={
+                        habit.habit_id
                       } /*description={habit.description} checked={habit.status}*/
                       />
                   </div>
@@ -115,5 +118,12 @@ function HabitList() {
     </div>
   );
 }
-
 export default HabitList;
+
+// HabitList.propTypes = {
+//   id: PropTypes.number.isRequired,
+//   title: PropTypes.string.isRequired,
+// };
+
+
+
