@@ -34,12 +34,12 @@ def add_habit():
     except Exception as e:
         return jsonify({'message': 'An error occurred while adding the habit.'}), 500
 
-@habit_bp.route('/api/log_entries', methods=['GET'])
-def get_log_entries():
-    log_entry_list = prepare_log_entries()
-    if log_entry_list is None:
-        return jsonify({'message': 'No permissions to see the log entries'}), 401
-    return jsonify(log_entry_list)
+# @habit_bp.route('/api/log_entries', methods=['GET'])
+# def get_log_entries():
+#     log_entry_list = prepare_log_entries()
+#     if log_entry_list is None:
+#         return jsonify({'message': 'No permissions to see the log entries'}), 401
+#     return jsonify(log_entry_list)
 
 @user_bp.route('/api/register', methods=['POST'])
 def register():
