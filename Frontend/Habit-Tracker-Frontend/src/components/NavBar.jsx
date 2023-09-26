@@ -3,18 +3,20 @@
 import { Link } from "react-router-dom";
 import "../components/ScreenStyles.css";
 import PropTypes from "prop-types";
-import trackYouLogo from "../assets/favicon2.png"
+import trackYouLogo from "../assets/favicon2.png";
 
 export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
-
-  
-
   return (
     <div className="card-header p-0 border-0 sticky-top">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark  ">
         <div className="container">
           <Link to="/" className="navbar-brand">
-            <span className="brand-name">TrackYou</span> <img className="brand-logo" src={trackYouLogo} alt="TrackYou logo" />
+            <span className="brand-name">TrackYou</span>{" "}
+            <img
+              className="brand-logo"
+              src={trackYouLogo}
+              alt="TrackYou logo"
+            />
           </Link>
           <button
             className="navbar-toggler"
@@ -35,8 +37,8 @@ export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
                     className="nav-item navbar-item"
                     style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
                   >
-                    <i className="bi bi-card-checklist"></i>
-                    <span className="title">Habit List</span>
+                    <i className="bi bi-house"></i>
+                    <span className="title">Home</span>
                   </li>
                 </Link>
               )}
@@ -51,24 +53,31 @@ export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
                   </li>
                 </Link>
               )}
-              {currentPage === "info" && !isLoggedIn && <Link className="nav-link" aria-current="page" to="/login">
-                <li
-                  className="nav-item navbar-item"
-                  style={{ "--i": "rgb(106, 253, 8)", "--j": "rgb(5, 165, 130)" }}
-                >
-                  <i className="bi bi-box-arrow-in-right"></i>
-                  <span className="title">Login</span>
-                </li>
-              </Link>}
-              {currentPage !== "info" && <Link className="nav-link" aria-current="page" to="/info">
-                <li
-                  className="nav-item navbar-item"
-                  style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
-                >
-                  <i className="bi bi-question-circle-fill"></i>
-                  <span className="title">Info</span>
-                </li>
-              </Link>}
+              {currentPage === "info" && !isLoggedIn && (
+                <Link className="nav-link" aria-current="page" to="/login">
+                  <li
+                    className="nav-item navbar-item"
+                    style={{
+                      "--i": "rgb(106, 253, 8)",
+                      "--j": "rgb(5, 165, 130)",
+                    }}
+                  >
+                    <i className="bi bi-box-arrow-in-right"></i>
+                    <span className="title">Login</span>
+                  </li>
+                </Link>
+              )}
+              {currentPage !== "info" && (
+                <Link className="nav-link" aria-current="page" to="/info">
+                  <li
+                    className="nav-item navbar-item"
+                    style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
+                  >
+                    <i className="bi bi-question-circle-fill"></i>
+                    <span className="title">Info</span>
+                  </li>
+                </Link>
+              )}
               {isLoggedIn && (
                 <Link className="nav-link" to="/logout">
                   <li
@@ -94,5 +103,5 @@ export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
 NavBar.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired,
-  currentPage : PropTypes.string.isRequired
+  currentPage: PropTypes.string.isRequired,
 };

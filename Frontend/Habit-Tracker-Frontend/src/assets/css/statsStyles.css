@@ -2,7 +2,7 @@
   width: 80%; /* Limit the table width to 80% of the viewport */
   overflow-x: auto; /* Enable horizontal scrolling */
   margin: 0 auto; /* Center the table horizontally */
-  height: 70vh;
+  height: 60vh;
   border: 3px solid black;
 }
 
@@ -16,4 +16,3 @@ thead {
   position: sticky;
   top: 0;
 }
-

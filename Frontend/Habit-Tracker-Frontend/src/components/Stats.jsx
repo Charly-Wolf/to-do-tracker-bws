@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/css/statsStyles.css";
-import SubNavBar from "./SubNavBar";
 import LoadingSpinner from "./spinner";
 
 const client = axios.create({
@@ -67,7 +66,6 @@ function Stats() {
 
   return (
     <>
-      {/* <SubNavBar /> */}
       <div className="table-responsive">
         <h2 className="text-center">Stats</h2>
 
@@ -78,7 +76,7 @@ function Stats() {
             <table className="table table-hover table-bordered table-striped table-sm">
               <thead className="table-dark">
                 <tr>
-                  <th className="fixed-row">Dates</th>
+                  <th className="fixed-row">Date</th>
                   {habits.map((habit) => (
                     <th key={habit.habit_id}>{habit.name}</th>
                   ))}
