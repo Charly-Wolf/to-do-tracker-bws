@@ -1,3 +1,5 @@
+// Author: Carlos Paredes
+
 import Stats from "../components/Stats"
 import SubNavBar from "../components/SubNavBar";
 

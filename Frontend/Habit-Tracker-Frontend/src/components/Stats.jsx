@@ -1,3 +1,5 @@
+// Author: Carlos Paredes
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/css/statsStyles.css";
