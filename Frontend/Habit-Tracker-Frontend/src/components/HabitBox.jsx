@@ -1,36 +1,81 @@
-// import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import DeleteHabitModal from "./DeleteHabitModal";
 
-// let habitTitle = "Test Habit";
-// let habitDescription = "This is just an Description for this test habit. :)  I wonder whats happening, when there is an overflow. bbodso ifjdas ifdsaüf jadsfsadjfj"
+const client = axios.create({
+  baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
+});
 
-export default function HabitBox({ title, habitId}) {
-   return (
+export default function HabitBox({ id, title, isDone }) {
+  const [habitBoxId, setHabitBoxId] = useState(`habitBox-${id}`);
+  const [habitCheckboxId, setHabitCheckboxId] = useState(`habitCheckbox-${id}`);
+  const [changeMessage, setChangeMessage] = useState("");
+  const [isChecked, setIsChecked] = useState(isDone);
+
+  const handleCheckboxChange = (habitId) => {
+      const fetchData = async () => {
+        try {
+          if (!isChecked) {
+            await client.post(`/api/habit/mark_done/${habitId}`);
+            setChangeMessage("save success");
+          } else {
+            await client.put(`/api/habit/mark_undone/${habitId}`);
+            setChangeMessage("save success");
+          }
+        } catch (err) {
+          setChangeMessage("failed save");
+        }
+      };
+      fetchData(); // Add dependencies array
+      setIsChecked((isChecked) => !isChecked);
+  };
+
+  return (
     <>
-      <div className="card text-bg-dark mb-3 mx-auto" style={{ maxWidth: "18rem" }}>
+      <div
+        className="card text-bg-dark mb-3 mx-auto"
+        id={habitBoxId}
+        style={{ maxWidth: "18rem" }}
+      >
         <div className="card-body row">
-          <div className="col-9 d-flex flex-column justify-content-center" style={{ maxHeight: "20vh" }}>
-            <h5 className="card-title" id="habitTitle">{title}</h5>
+          <div
+            className="col-9 d-flex flex-column justify-content-center"
+            style={{ maxHeight: "20vh" }}
+          >
+            <h5 className="card-title" id="habitTitle">
+              {title}
+            </h5>
             {/*<p className="card-text overflow-y-scroll" id="habitDescription">
               {props.description}
-  </p>*/}
+            </p>*/}
           </div>
           <div className="col-2">
             <form>
               <div className="row">
-              <input type="checkbox" className="btn-check" id="btn-check-outlined" autoComplete="off"/>
-              <label className="btn btn-outline-success my-1" htmlFor="btn-check-outlined"><i className="bi bi-check2"></i></label>
+                <input
+                  type="checkbox"
+                  className="btn-check"
+                  id={habitCheckboxId}
+                  autoComplete="off"
+                  checked={isChecked}
+                  onChange={() => handleCheckboxChange(id)}
+                />
+                <label
+                  className="btn btn-outline-success my-1"
+                  htmlFor={habitCheckboxId}
+                >
+                  <i className="bi bi-check2"></i>
+                </label>
               </div>
               <div className="row">
-                <a href="#" className="btn btn-outline-primary bi bi-pencil my-1"></a>
-                <DeleteHabitModal id = {habitId} title = {title}/>
-                {/* <button className="btn btn-outline-primary bi bi-pencil my-1"></button> */}
+                <button
+                  className="btn btn-outline-primary bi bi-pencil my-1" //Modal placeholder <EditHabitModal>
+                />
               </div>
               <div className="row">
-              {/* <button className="btn btn-outline-danger bi bi-trash3 my-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            </button> */}
-                  {/* <DeleteHabitModal/> */}
+                <DeleteHabitModal id = {id} title = {title}/>
               </div>
             </form>
           </div>
@@ -42,6 +87,7 @@ export default function HabitBox({ title, habitId}) {
 }
 
 HabitBox.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  checked: PropTypes.bool.isRequired,
 };

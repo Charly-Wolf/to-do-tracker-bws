@@ -47,7 +47,7 @@ const DeleteHabitModal = ({ id, title }) => {
 
     return (
         <>
-            <Button variant="outline-danger bi bi-trash3 my-1" onClick={handleShow}></Button>
+            <Button variant="btn btn-outline-danger bi bi-trash3 my-1" onClick={handleShow}></Button>
 
             <Modal show={show} onHide={handleClose} centered backdrop="static">
                 <Modal.Header closeButton>
