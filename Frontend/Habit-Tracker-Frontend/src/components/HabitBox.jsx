@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import DeleteHabitModal from "./DeleteHabitModal";
+import AdditHabitModal from "./AdditHabitModal";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -70,9 +71,7 @@ export default function HabitBox({ id, title, isDone }) {
                 </label>
               </div>
               <div className="row">
-                <button
-                  className="btn btn-outline-primary bi bi-pencil my-1" //Modal placeholder <EditHabitModal>
-                />
+                <AdditHabitModal id = {id} title = {title}/>
               </div>
               <div className="row">
                 <DeleteHabitModal id = {id} title = {title}/>
