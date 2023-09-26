@@ -65,7 +65,7 @@ function Stats() {
 
   return (
     <>
-      <SubNavBar />
+      {/* <SubNavBar /> */}
       <div className="table-responsive">
         <h2 className="text-center">Stats</h2>
 

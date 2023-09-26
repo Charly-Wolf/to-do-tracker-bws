@@ -1,10 +1,10 @@
 import Stats from "../components/Stats"
+import SubNavBar from "../components/SubNavBar";
 
 function StatsPage() {
   return (
     <>
-      <br />
-      <br />
+      <SubNavBar activePage="stats" />
       <Stats />
     </>
   );
