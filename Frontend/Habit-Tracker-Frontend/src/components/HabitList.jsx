@@ -1,7 +1,7 @@
 import HabitBox from "../components/HabitBox"; //Muss noch für jedes Habit angezeigt werden.
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import SubNavBar from "./SubNavBar";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -35,6 +35,7 @@ function HabitList() {
 
   return (
     <div className="card text-center">
+      <SubNavBar />
       <div className="card-header">
         <ul className="nav nav-pills card-header-pills nav-light bg-white">
           <li className="nav-item ms-auto">

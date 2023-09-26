@@ -61,25 +61,24 @@ def prepare_user_list():
 
     return users_list
 
-def prepare_log_entries():
-    print("\n\nUSER ID: ", logged_user.get_id(), "\n\n")
-    if logged_user.get_id() == None:
-        return None
+# def prepare_log_entries():
+#     if logged_user.get_id() == None:
+#         return None
 
-    # Fetch all habits related to the user
-    habits = prepare_habit_list()
-    log_entry_list = []
+#     # Fetch all habits related to the user
+#     habits = prepare_habit_list()
+#     log_entry_list = []
 
-    # Loop through each habit and get its associated log entries
-    for habit in habits:
-        for log_entry in habit['habitLogs']:
-            log_entry_data = {
-                "log_id": log_entry['log_id'],
-                "log_date": log_entry['log_date']
-            }
-            log_entry_list.append(log_entry_data)
+#     # Loop through each habit and get its associated log entries
+#     for habit in habits:
+#         for log_entry in habit['habitLogs']:
+#             log_entry_data = {
+#                 "log_id": log_entry['log_id'],
+#                 "log_date": log_entry['log_date']
+#             }
+#             log_entry_list.append(log_entry_data)
 
-    return log_entry_list
+#     return log_entry_list
 
 def validate_user_name_characters(name):
     # Regular Expression for latin alphabet characters and common European characters

@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Info from "./pages/Info";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import Stats from "./pages/Stats";
+import StatsPage from "./pages/StatsPage";
 import UserList from "./pages/UserList";
 import ProtectedPage from "./pages/ProtectedPage";
 import Logout from "./pages/Logout";
@@ -52,7 +52,7 @@ function App() {
           <Route path="/stats"
             element={
               <ProtectedPage>
-                <Stats />
+                <StatsPage />
               </ProtectedPage>
             }
           />

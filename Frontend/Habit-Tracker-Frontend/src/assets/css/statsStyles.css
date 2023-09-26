@@ -1,0 +1,19 @@
+.table-wrapper {
+  width: 80%; /* Limit the table width to 80% of the viewport */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  margin: 0 auto; /* Center the table horizontally */
+  height: 70vh;
+  border: 3px solid black;
+}
+
+.fixed-column {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+}
+

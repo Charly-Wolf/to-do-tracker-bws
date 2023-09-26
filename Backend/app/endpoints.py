@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import check_password_hash
 from datetime import datetime
 from app.models import User, Habit, HabitLog, NormalUser, db
-from app.helpers import reset_user_habits_status, prepare_habit_list, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list, prepare_log_entries, get_logged_in_user, validate_add_habit, validate_register_user, validate_edit_habit_name
+from app.helpers import reset_user_habits_status, prepare_habit_list, filter_logs_by_date, filter_logs_by_habit_id, prepare_user_list, get_logged_in_user, validate_add_habit, validate_register_user, validate_edit_habit_name
 from app import logged_user
 
 user_bp = Blueprint('user', __name__)
@@ -34,12 +34,12 @@ def add_habit():
     except Exception as e:
         return jsonify({'message': 'An error occurred while adding the habit.'}), 500
 
-@habit_bp.route('/api/log_entries', methods=['GET'])
-def get_log_entries():
-    log_entry_list = prepare_log_entries()
-    if log_entry_list is None:
-        return jsonify({'message': 'No permissions to see the log entries'}), 401
-    return jsonify(log_entry_list)
+# @habit_bp.route('/api/log_entries', methods=['GET'])
+# def get_log_entries():
+#     log_entry_list = prepare_log_entries()
+#     if log_entry_list is None:
+#         return jsonify({'message': 'No permissions to see the log entries'}), 401
+#     return jsonify(log_entry_list)
 
 @user_bp.route('/api/register', methods=['POST'])
 def register():
