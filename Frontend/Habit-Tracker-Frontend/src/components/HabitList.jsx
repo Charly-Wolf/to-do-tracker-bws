@@ -2,6 +2,7 @@ import HabitBox from "../components/HabitBox"; //Muss noch für jedes Habit ange
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SubNavBar from "./SubNavBar";
+import { Link } from "react-router-dom";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -36,7 +37,7 @@ function HabitList() {
   return (
     <div className="card text-center">
       <SubNavBar />
-      <div className="card-header">
+      {/* <div className="card-header">
         <ul className="nav nav-pills card-header-pills nav-light bg-white">
           <li className="nav-item ms-auto">
             <Link className="nav-link active" to="/">
@@ -73,7 +74,7 @@ function HabitList() {
             </Link>
           </li>
         </ul>
-      </div>
+      </div> */}
 
       {habitsError ? (
         <div className="alert alert-danger mt-3">{habitsError}</div>
