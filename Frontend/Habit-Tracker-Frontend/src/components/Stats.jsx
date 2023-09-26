@@ -15,6 +15,12 @@ function Stats() {
   const [dateRange, setDateRange] = useState([]);
   const [logsError, setLogsError] = useState("");
 
+  // const debug = () => {
+  //   dateRange.maps(date => {
+  //     habits.map()
+  //   })
+  // }
+
   useEffect(() => {
     // Fetch habits from your API
     async function fetchData() {
@@ -33,7 +39,7 @@ function Stats() {
   }, []);
 
   useEffect(() => {
-    // Calculate the date range from the habits
+    // Calculate the date range from the habits (from oldest log date to today)
     if (habits.length > 0) {
       const allHabitLogs = habits.reduce(
         (acc, habit) => [...acc, ...habit.habitLogs],
@@ -51,7 +57,7 @@ function Stats() {
         const dateArray = [];
         let currentDate = new Date(oldestDate);
         while (currentDate <= today) {
-          dateArray.push(currentDate.toLocaleDateString("en-US"));
+          dateArray.push(currentDate.toLocaleDateString("de-DE"));
           currentDate.setDate(currentDate.getDate() + 1);
         }
 
@@ -87,13 +93,10 @@ function Stats() {
                   <tr key={date}>
                     <td className="fixed-row">{date}</td>
                     {habits.map((habit) => {
-                      const logDate = new Date(date).toLocaleDateString(
-                        "en-US"
-                      );
                       const hasLog = habit.habitLogs.some(
                         (log) =>
-                          new Date(log.log_date).toLocaleDateString("en-US") ===
-                          logDate
+                          new Date(log.log_date).toLocaleDateString("de-DE") ===
+                          date
                       );
                       return (
                         <td key={habit.habit_id}>
