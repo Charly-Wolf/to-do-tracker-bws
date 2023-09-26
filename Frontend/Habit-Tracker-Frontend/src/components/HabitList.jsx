@@ -41,40 +41,50 @@ function HabitList() {
         <div className="alert alert-danger mt-3">{habitsError}</div>
       ) : (
         <div className="card-body">
-          <div className="container mx-auto border p-5">
-            <h5 className="card-title">Habit Liste</h5>
-            {habits.length == 0 ? (
-              <>
-                <p className="card-text">
-                  Du hast noch keine Habits. Füge dein erstes Habit hinzu!
-                </p>
-                <a href="#" className="btn btn-primary">
-                  Habit hinzufügen
-                </a>
-              </>
-            ) : (
-              <div className="container">
-                {groupedHabits.map((group, groupIndex) => (
-                  <div className="row" key={groupIndex}>
-                    {group.map((habit, index) => (
-                      // <div className="col" key={index} sm={4}>
-                      <div className="col" key={index}>
-                        <HabitBox
-                          title={
-                            habit.name
-                          } /*description={habit.description} checked={habit.status}*/
-                        />
-                      </div>
-                    ))}
+        <div className="container mx-auto border p-5">
+          <h5 className="card-title">Habit Liste</h5>
+          {habits.length == 0 ? 
+          
+            <>
+              <p className="card-text">
+                Du hast noch keine Habits. Füge dein erstes Habit hinzu!
+              </p>
+              <a href="#" className="btn btn-primary">
+                Habit hinzufügen
+              </a>  
+            </> : 
+          <div className="container">
+            {groupedHabits.map((group, groupIndex) => (
+              <div className="row" key={groupIndex}>
+                {group.map((habit, index) => (
+                  // <div className="col" key={index} sm={4}>
+                  <div className="col" key={index}>
+                    <HabitBox
+                      title={
+                        habit.name
+                      }
+                      habitId={
+                        habit.habit_id
+                      } /*description={habit.description} checked={habit.status}*/
+                      />
                   </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              ))}
+            </div>
+            }
           </div>
         </div>
       )}
     </div>
   );
 }
-
 export default HabitList;
+
+// HabitList.propTypes = {
+//   id: PropTypes.number.isRequired,
+//   title: PropTypes.string.isRequired,
+// };
+
+
+

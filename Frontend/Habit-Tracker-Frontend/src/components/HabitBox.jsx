@@ -1,11 +1,12 @@
 // import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import PropTypes from "prop-types";
+import DeleteHabitModal from "./DeleteHabitModal";
 
 // let habitTitle = "Test Habit";
 // let habitDescription = "This is just an Description for this test habit. :)  I wonder whats happening, when there is an overflow. bbodso ifjdas ifdsaüf jadsfsadjfj"
 
-export default function HabitBox({ title }) {
-  return (
+export default function HabitBox({ title, habitId}) {
+   return (
     <>
       <div className="card text-bg-dark mb-3 mx-auto" style={{ maxWidth: "18rem" }}>
         <div className="card-body row">
@@ -23,10 +24,13 @@ export default function HabitBox({ title }) {
               </div>
               <div className="row">
                 <a href="#" className="btn btn-outline-primary bi bi-pencil my-1"></a>
+                <DeleteHabitModal id = {habitId} title = {title}/>
                 {/* <button className="btn btn-outline-primary bi bi-pencil my-1"></button> */}
               </div>
               <div className="row">
-                <a href="#" className="btn btn-outline-danger bi bi-trash3 my-1"></a>
+              {/* <button className="btn btn-outline-danger bi bi-trash3 my-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            </button> */}
+                  {/* <DeleteHabitModal/> */}
               </div>
             </form>
           </div>
@@ -38,5 +42,6 @@ export default function HabitBox({ title }) {
 }
 
 HabitBox.propTypes = {
+  id: PropTypes.number,
   title: PropTypes.string.isRequired,
 };
