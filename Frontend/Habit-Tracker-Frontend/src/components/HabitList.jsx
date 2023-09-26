@@ -1,31 +1,43 @@
+// Authors: Mahir Dzafic, Carlos Paredes & Marius Schröder
+
 import HabitBox from "../components/HabitBox"; //Muss noch für jedes Habit angezeigt werden.
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SubNavBar from "./SubNavBar";
-import { Link } from "react-router-dom";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
 });
+
+function sortHabitsByStatusAndName(habits) { // Author: Carlos Paredes
+  // Sort the habits array by status (ascending) and then by name (ascending)
+  console.log("HABIT", habits);
+  return habits.sort((a, b) => {
+    // Compare by status (true before false)
+    if (a.status === b.status) {
+      // If status is the same, compare by name
+      return a.name.localeCompare(b.name);
+    }
+
+    return a.status ? 1 : -1; // Sort true before false
+  });
+}
 
 function HabitList() {
   const [habits, setHabits] = useState([]);
   const [habitsError, setHabitsError] = useState("");
 
   // Teilt die habits in Gruppen von drei auf
-  // const test = "test";
   let groupedHabits = [];
   for (let i = 0; i < habits.length; i += 3) {
     groupedHabits.push(habits.slice(i, i + 3));
   }
-  // console.log(test)
-  // console.log(groupedHabits)
 
   useEffect(() => {
     const fetchHabits = async () => {
       try {
         await client.get("api/habits").then((response) => {
-          setHabits(response.data);
+          setHabits(sortHabitsByStatusAndName(response.data));
         });
       } catch (err) {
         setHabitsError(err.response.data.message);
@@ -60,7 +72,6 @@ function HabitList() {
                     {group.map((habit, index) => (
                       // <div className="col" key={index} sm={4}>
                       <div className="col" key={index}>
-{console.log(habit)}
                         <HabitBox
                           id={habit.habit_id}
                           title={habit.name}
@@ -80,11 +91,3 @@ function HabitList() {
   );
 }
 export default HabitList;
-
-// HabitList.propTypes = {
-//   id: PropTypes.number.isRequired,
-//   title: PropTypes.string.isRequired,
-// };
-
-
-
