@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
-import "../assets/css/loginStyles.css"
+import "../assets/css/loginStyles.css";
 import LoadingSpinner from "./spinner";
 
 const client = axios.create({
@@ -20,7 +20,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); 
+    setIsLoading(true);
 
     try {
       const requestData = {
@@ -39,7 +39,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       setIsLoggedIn(true);
       setIsAdmin(response.data.user_type === "admin");
     } catch (err) {
-      if (error) {
+      if (err.message != "Network Error") {
         setError(err.response.data.message);
       } else {
         setError("Connection with the Server failed");
@@ -80,12 +80,14 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
           </div>
           <br />
           {isLoading ? (
-            <div className="spinner-container"><LoadingSpinner /></div>
-            ) : (
-          <button type="submit" className="btn btn-primary btn-block">
-            Login
-          </button>
-            )}
+            <div className="spinner-container">
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <button type="submit" className="btn btn-primary btn-block">
+              Login
+            </button>
+          )}
         </form>
         {/* Display the error message with Bootstrap danger style */}
         {error && <div className="alert alert-danger mt-3">{error}</div>}
