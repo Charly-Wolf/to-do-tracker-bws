@@ -1,9 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
-import HabitList from "./HabitList";
-import { Link } from "react-router-dom";
-import SuccessfulDeleteHabitModal from "./SuccessfulDeleteHabitModal";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/",
