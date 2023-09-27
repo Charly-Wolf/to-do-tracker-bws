@@ -44,6 +44,7 @@ export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
             <h5
               className={`card-title ${isDone ? "done" : ""}`}
               id="habitTitle"
+              onClick={handleCheckboxChange}
             >
               {title}
             </h5>

@@ -9,9 +9,9 @@ h5.done {
   text-decoration: line-through;
 }
 
-.habit-card:hover h5 {
+/* .habit-card:hover h5 {
   transform: scale(1.3);
-}
+} */
 
 .habit-card {
   transition: all 0.3s ease;
@@ -28,6 +28,5 @@ button {
 }
 
 .done-habit-card {
-  opacity: 0.60;
-  
+  opacity: 0.6;
 }
