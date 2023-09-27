@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
 import axios from "axios";
 import DeleteHabitModal from "./DeleteHabitModal";
 import AdditHabitModal from "./AdditHabitModal";
@@ -12,10 +11,6 @@ const client = axios.create({
 export default function HabitBox({ id, title, isDone, renderHabitList }) {
   const handleCheckboxChange = () => {
     const fetchData = async () => {
-      console.log("Habit Id: ", id);
-      console.log("Habit title:", title);
-      console.log("Is it done?", isDone);
-
       try {
         if (!isDone) {
           await client.post(`/api/habit/mark_done/${id}`);
