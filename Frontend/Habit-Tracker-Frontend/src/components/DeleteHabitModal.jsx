@@ -26,6 +26,7 @@ const DeleteHabitModal = ({ id, title, renderHabitList }) => {
     } catch (error) {
       setDeleteError(error.response.data.message); // Author: Carlos Paredes
     }
+    handleClose();
   };
 
   const handleDelete = async () => {
