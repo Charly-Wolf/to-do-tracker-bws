@@ -1,3 +1,8 @@
-.main-container {
-    height: 100vh;
+.users-table {
+  width: 80%; /* Limit the table width to 80% of the viewport */
+  overflow-y: auto; /* Enable horizontal scrolling */
+  margin: 0 auto; /* Center the table horizontally */
+  height: 65vh;
+  margin-top: 1rem;
+  border: 3px solid black;
 }
