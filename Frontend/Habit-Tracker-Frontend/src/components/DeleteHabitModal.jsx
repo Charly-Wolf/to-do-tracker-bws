@@ -13,7 +13,10 @@ const client = axios.create({
 
 const DeleteHabitModal = ({ id, title, renderHabitList }) => {
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setDeleteError("");
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
   const [deleteError, setDeleteError] = useState(""); // Author: Carlos Paredes
 
