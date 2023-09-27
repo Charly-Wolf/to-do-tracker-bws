@@ -1,0 +1,32 @@
+.habit-card h5 {
+  transition: all 0.3s ease;
+  user-select: none;
+  cursor: pointer;
+}
+
+h5.done {
+  color: rgb(214, 214, 214) !important;
+  text-decoration: line-through;
+}
+
+.habit-card:hover h5 {
+  transform: scale(1.3);
+}
+
+.habit-card {
+  transition: all 0.3s ease;
+}
+
+.habit-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 10px rgb(85, 85, 85);
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+.checkbox-btn{
+ 
+}

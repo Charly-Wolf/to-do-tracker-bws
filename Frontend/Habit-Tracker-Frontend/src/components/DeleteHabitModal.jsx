@@ -12,9 +12,9 @@ const client = axios.create({
 const deleteHabit = async (habitId) => {
     try {
         const response = await client.delete(`api/habit/${habitId}`);
-        console.log(response.data);
+        // console.log(response.data);
     } catch (error) {
-        console.error(error);
+        // console.error(error);
     }
 }
 
@@ -23,8 +23,8 @@ const DeleteHabitModal = ({ id, title }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    console.log("HABIT ID:", id)
-    console.log("Title des Habits: ", title);
+    // console.log("HABIT ID:", id)
+    // console.log("Title des Habits: ", title);
 
     const handleDelete = async () => {
         try {
