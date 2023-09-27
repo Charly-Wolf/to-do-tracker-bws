@@ -32,13 +32,10 @@ const AdditHabitModal = ({ id, title }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  console.log("HABIT ID:", id);
-  console.log("Title des Habits: ", title);
-  
   const handleAdd = async () => {
     try {
       // Send a INSERT request to the backend
-      await addHabit();
+      await addHabit(newTitle);
 
       // Perform any additional actions after successful deletion
       // ...
@@ -57,7 +54,7 @@ const AdditHabitModal = ({ id, title }) => {
   const handleEdit = async () => {
     try {
       // Send a Update request to the backend
-      await editHabit(id);
+      await editHabit(id, newTitle);
 
       // Perform any additional actions after successful deletion
       // ...
@@ -84,14 +81,19 @@ const AdditHabitModal = ({ id, title }) => {
 
       <Modal show={show} onHide={handleClose} centered backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
+          <Modal.Title>{title ?? "New Habit"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <form>
-            How to name your new habit?
-            <input type="text" className="text-input"></input>
-            </form>
-            </Modal.Body>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="habitNameInput"
+                placeholder="Walk a mile"
+              />
+              <label for="habitNameInput">Give your habit a name!</label>
+            </div>
+        </Modal.Body>
         <Modal.Footer>
           <Button
             variant="primary"
