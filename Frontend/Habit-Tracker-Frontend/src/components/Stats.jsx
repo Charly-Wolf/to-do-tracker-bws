@@ -15,12 +15,6 @@ function Stats() {
   const [dateRange, setDateRange] = useState([]);
   const [logsError, setLogsError] = useState("");
 
-  // const debug = () => {
-  //   dateRange.maps(date => {
-  //     habits.map()
-  //   })
-  // }
-
   useEffect(() => {
     // Fetch habits from your API
     async function fetchData() {

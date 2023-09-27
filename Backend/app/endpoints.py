@@ -64,6 +64,7 @@ def login():
             normal_user = NormalUser.query.filter_by(user_id=user.id).first()
             if not normal_user.account_activated:
                 return jsonify({'message': 'Account not yet activated'}), 401 
+        
         if user.last_login_date != datetime.today().date():
             reset_user_habits_status(user.id)
         user.last_login_date = datetime.today()  # Update the last login date
