@@ -35,8 +35,8 @@ export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
   return (
     <>
       <div
-        className={`card text-bg-${
-          isDone ? "secondary" : "dark"
+        className={`card text-bg-dark ${
+          isDone ? "done-habit-card" : ""
         } mb-3 mx-auto habit-card`}
         id={id}
         style={{ maxWidth: "18rem" }}
