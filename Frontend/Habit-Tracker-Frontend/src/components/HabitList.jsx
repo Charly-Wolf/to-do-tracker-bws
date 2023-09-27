@@ -4,6 +4,7 @@ import HabitBox from "../components/HabitBox"; //Muss noch für jedes Habit ange
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SubNavBar from "./SubNavBar";
+import "../assets/css/habitListStyles.css"
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -64,7 +65,7 @@ function HabitList() {
         <div className="alert alert-danger mt-3">{habitsError}</div>
       ) : (
         // <div className="card-body">
-        <div className="container mx-auto border p-5">
+        <div className="container mx-auto border p-5 list-container">
           {habits.length == 0 ? (
             <>
               <p className="card-text">

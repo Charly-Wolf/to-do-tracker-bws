@@ -1,0 +1,5 @@
+.list-container {
+  width: 90%; /* Limit the table width to 80% of the viewport */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  height: 60vh;
+}
