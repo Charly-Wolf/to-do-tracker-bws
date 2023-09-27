@@ -15,6 +15,7 @@ def get_users():
     users_list_data = prepare_user_list()
     if users_list_data is None:
         return jsonify({'message': 'No permissions to see the users list'}), 401
+        #TODO: REDIRECT TO LOGIN!!
     return jsonify(users_list_data)
 
 @habit_bp.route('/api/habits', methods=['GET'])
@@ -127,20 +128,20 @@ def update_habit_name(habit_id):
 def delete_habit(habit_id):
     habit = Habit.query.get_or_404(habit_id)  
     try:
-        if (len(filter_logs_by_habit_id(habit_id)) > 0):
-            return jsonify({'message': 'Cannot delete habit. There are log entries for this habit'}), 400 # TODO: IDEA: Change to "Archive" instead of delete, so that the habits with logs can be then restored
+        habit_logs_to_delete = filter_logs_by_habit_id(habit_id)
+        if (len(habit_logs_to_delete) > 0):
+            for log in habit_logs_to_delete:
+                db.session.delete(log);
+            db.session.commit()
         db.session.delete(habit)
         db.session.commit()
         return jsonify({'message': 'Habit deleted successfully'}), 200
     except Exception as e:
-        return jsonify({'message': 'An error occurred while deleting the habit.'}), 500
+        return jsonify({'message': f'An error occurred while deleting the habit: {e}'}), 500
 
 @user_bp.route('/api/users/toggle_user_status/<int:user_id>', methods=['PUT'])
 def block_user(user_id): # Get user ID from the cookie
     user = User.query.filter_by(id=user_id).first()
-    # is_logged_user_admin = get_logged_in_user().userType == 'admin' TODO: Implement this and Test this with POSTMAN
-    # is_user_to_toggle_admin = user.userType == 'admin' # TODO: Implement this and Test this with POSTMAN
-    # if is_logged_user_admin:
     if user:
         try:
             user.account_activated = not user.account_activated
@@ -150,5 +151,3 @@ def block_user(user_id): # Get user ID from the cookie
             return jsonify({'message': 'An error occurred while toggling user status.'}), 500
     else:
         return jsonify({'message': 'User not found'}), 404
-    # else:
-    #     return jsonify({'message': 'You have no permissions'}), 401
