@@ -59,17 +59,15 @@ export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
             </p>*/}
           </div>
           <div className="col-2">
-            <button onClick={handleCheckboxChange} className="row">
-              <i
+            <div onClick={handleCheckboxChange} className="row">
+              <button
                 className={`bi bi-check2 btn btn${
                   isDone ? "" : "-outline"
                 }-success my-1`}
-              ></i>
-            </button>
+              ></button >
+            </div>
             <div className="row">
-              <button
-                className="btn btn-outline-primary bi bi-pencil my-1" //Modal placeholder <EditHabitModal>
-              />
+              <AdditHabitModal id = {id} title = {title}/>
             </div>
             <div className="row">
               <DeleteHabitModal id={id} title={title} />
