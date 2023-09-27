@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
 import axios from "axios";
 import DeleteHabitModal from "./DeleteHabitModal";
+import AdditHabitModal from "./AdditHabitModal";
 import "../assets/css/habitBoxStyles.css";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
 });
 
-export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
+export default function HabitBox({ id, title, isDone, renderHabitList }) {
   const handleCheckboxChange = () => {
     const fetchData = async () => {
       try {
@@ -19,7 +20,7 @@ export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
           // setChangeMessage("save success");
         }
         // Call the callback function to notify the parent (HabitList) of the change
-        onClickCheckbox();
+        renderHabitList();
       } catch (err) {
         // setChangeMessage("failed save");
       }
@@ -53,20 +54,18 @@ export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
             </p>*/}
           </div>
           <div className="col-2">
-            <button onClick={handleCheckboxChange} className="row">
-              <i
+            <div onClick={handleCheckboxChange} className="row">
+              <button
                 className={`bi bi-check2 btn btn${
                   isDone ? "" : "-outline"
                 }-success my-1`}
-              ></i>
-            </button>
-            <div className="row">
-              <button
-                className="btn btn-outline-primary bi bi-pencil my-1" //Modal placeholder <EditHabitModal>
-              />
+              ></button >
             </div>
             <div className="row">
-              <DeleteHabitModal id={id} title={title} />
+              <AdditHabitModal id = {id} title = {title} renderHabitList={renderHabitList} />
+            </div>
+            <div className="row">
+              <DeleteHabitModal id={id} title={title} renderHabitList={renderHabitList}/>
             </div>
           </div>
           <div className="col-1"></div>
@@ -80,5 +79,5 @@ HabitBox.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isDone: PropTypes.bool.isRequired,
-  onClickCheckbox: PropTypes.func.isRequired,
+  renderHabitList: PropTypes.func.isRequired,
 };
