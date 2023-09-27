@@ -1,43 +1,45 @@
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import DeleteHabitModal from "./DeleteHabitModal";
 import AdditHabitModal from "./AdditHabitModal";
+import "../assets/css/habitBoxStyles.css";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
 });
 
-export default function HabitBox({ id, title, isDone }) {
-  const [habitBoxId, setHabitBoxId] = useState(`habitBox-${id}`);
-  const [habitCheckboxId, setHabitCheckboxId] = useState(`habitCheckbox-${id}`);
-  const [changeMessage, setChangeMessage] = useState("");
-  const [isChecked, setIsChecked] = useState(isDone);
+export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
+  const handleCheckboxChange = () => {
+    const fetchData = async () => {
+      console.log("Habit Id: ", id);
+      console.log("Habit title:", title);
+      console.log("Is it done?", isDone);
 
-  const handleCheckboxChange = (habitId) => {
-      const fetchData = async () => {
-        try {
-          if (!isChecked) {
-            await client.post(`/api/habit/mark_done/${habitId}`);
-            setChangeMessage("save success");
-          } else {
-            await client.put(`/api/habit/mark_undone/${habitId}`);
-            setChangeMessage("save success");
-          }
-        } catch (err) {
-          setChangeMessage("failed save");
+      try {
+        if (!isDone) {
+          await client.post(`/api/habit/mark_done/${id}`);
+          // setChangeMessage("save success");
+        } else {
+          await client.put(`/api/habit/mark_undone/${id}`);
+          // setChangeMessage("save success");
         }
-      };
-      fetchData(); // Add dependencies array
-      setIsChecked((isChecked) => !isChecked);
+        // Call the callback function to notify the parent (HabitList) of the change
+        onClickCheckbox();
+      } catch (err) {
+        // setChangeMessage("failed save");
+      }
+    };
+    fetchData(); // Add dependencies array
   };
 
   return (
     <>
       <div
-        className="card text-bg-dark mb-3 mx-auto"
-        id={habitBoxId}
+        className={`card text-bg-dark ${
+          isDone ? "done-habit-card" : ""
+        } mb-3 mx-auto habit-card`}
+        id={id}
         style={{ maxWidth: "18rem" }}
       >
         <div className="card-body row">
@@ -45,7 +47,11 @@ export default function HabitBox({ id, title, isDone }) {
             className="col-9 d-flex flex-column justify-content-center"
             style={{ maxHeight: "20vh" }}
           >
-            <h5 className="card-title" id="habitTitle">
+            <h5
+              className={`card-title ${isDone ? "done" : ""}`}
+              id="habitTitle"
+              onClick={handleCheckboxChange}
+            >
               {title}
             </h5>
             {/*<p className="card-text overflow-y-scroll" id="habitDescription">
@@ -53,30 +59,21 @@ export default function HabitBox({ id, title, isDone }) {
             </p>*/}
           </div>
           <div className="col-2">
-            <form>
-              <div className="row">
-                <input
-                  type="checkbox"
-                  className="btn-check"
-                  id={habitCheckboxId}
-                  autoComplete="off"
-                  checked={isChecked}
-                  onChange={() => handleCheckboxChange(id)}
-                />
-                <label
-                  className="btn btn-outline-success my-1"
-                  htmlFor={habitCheckboxId}
-                >
-                  <i className="bi bi-check2"></i>
-                </label>
-              </div>
-              <div className="row">
-                <AdditHabitModal id = {id} title = {title}/>
-              </div>
-              <div className="row">
-                <DeleteHabitModal id = {id} title = {title}/>
-              </div>
-            </form>
+            <button onClick={handleCheckboxChange} className="row">
+              <i
+                className={`bi bi-check2 btn btn${
+                  isDone ? "" : "-outline"
+                }-success my-1`}
+              ></i>
+            </button>
+            <div className="row">
+              <button
+                className="btn btn-outline-primary bi bi-pencil my-1" //Modal placeholder <EditHabitModal>
+              />
+            </div>
+            <div className="row">
+              <DeleteHabitModal id={id} title={title} />
+            </div>
           </div>
           <div className="col-1"></div>
         </div>
@@ -88,5 +85,6 @@ export default function HabitBox({ id, title, isDone }) {
 HabitBox.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  checked: PropTypes.bool.isRequired,
+  isDone: PropTypes.bool.isRequired,
+  onClickCheckbox: PropTypes.func.isRequired,
 };
