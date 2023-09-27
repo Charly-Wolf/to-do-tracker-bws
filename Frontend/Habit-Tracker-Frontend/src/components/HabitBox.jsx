@@ -9,7 +9,7 @@ const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
 });
 
-export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
+export default function HabitBox({ id, title, isDone, renderHabitList }) {
   const handleCheckboxChange = () => {
     const fetchData = async () => {
       console.log("Habit Id: ", id);
@@ -25,7 +25,7 @@ export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
           // setChangeMessage("save success");
         }
         // Call the callback function to notify the parent (HabitList) of the change
-        onClickCheckbox();
+        renderHabitList();
       } catch (err) {
         // setChangeMessage("failed save");
       }
@@ -67,10 +67,10 @@ export default function HabitBox({ id, title, isDone, onClickCheckbox }) {
               ></button >
             </div>
             <div className="row">
-              <AdditHabitModal id = {id} title = {title}/>
+              <AdditHabitModal id = {id} title = {title} renderHabitList={renderHabitList} />
             </div>
             <div className="row">
-              <DeleteHabitModal id={id} title={title} />
+              <DeleteHabitModal id={id} title={title} renderHabitList={renderHabitList}/>
             </div>
           </div>
           <div className="col-1"></div>
@@ -84,5 +84,5 @@ HabitBox.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isDone: PropTypes.bool.isRequired,
-  onClickCheckbox: PropTypes.func.isRequired,
+  renderHabitList: PropTypes.func.isRequired,
 };

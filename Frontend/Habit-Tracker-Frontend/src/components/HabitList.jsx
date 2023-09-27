@@ -32,7 +32,7 @@ function HabitList() {
     groupedHabits.push(habits.slice(i, i + 3));
   }
 
-  const triggerRerenderWhenHabitStatusChanged = async () => {
+  const renderThis = async () => {
     try {
       await client.get("api/habits").then((response) => {
         setHabits(sortHabitsByStatusAndName(response.data));
@@ -57,7 +57,7 @@ function HabitList() {
 
   return (
     <div className="text-center">
-      <SubNavBar activePage="habits" />
+      <SubNavBar activePage={"habits"} renderHabitList={renderThis}/>
       <h2 className="text-center">Habit Liste</h2>
 
       {habitsError ? (
@@ -85,7 +85,7 @@ function HabitList() {
                         title={habit.name}
                         //description={habit.description}
                         isDone={habit.status}
-                        onClickCheckbox={triggerRerenderWhenHabitStatusChanged}
+                        renderHabitList={renderThis}
                       />
                     </div>
                   ))}

@@ -18,7 +18,7 @@ const deleteHabit = async (habitId) => {
     }
 }
 
-const DeleteHabitModal = ({ id, title }) => {
+const DeleteHabitModal = ({ id, title, renderHabitList }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -38,7 +38,7 @@ const DeleteHabitModal = ({ id, title }) => {
             handleClose();
             // <SuccessfulDeleteHabitModal/>
 
-            window.location.reload();
+            renderHabitList();
             // alert("HIERNOTHING")
         } catch (error) {
             console.error(error);

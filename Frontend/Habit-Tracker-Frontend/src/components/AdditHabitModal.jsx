@@ -9,26 +9,28 @@ const client = axios.create({
   baseURL: "http://127.0.0.1:5000/",
 });
 
-const addHabit = async () => {
+const addHabit = async (newTitle) => {
   try {
-    const response = await client.post(`api/habit/add_habit/${habitId}`);
+    console.log(newTitle)
+    const response = await client.post(`api/habit/add_habit`, {name: newTitle});
     console.log(response.data);
   } catch (error) {
     console.error(error);
   }
 };
 
-const editHabit = async () => {
+const editHabit = async (id, newTitle) => {
   try {
-    const response = await client.post(`api/habit/update_name/${habitId}`);
+    const response = await client.put(`api/habit/update_name/${id}`, {name: newTitle});
     console.log(response.data);
   } catch (error) {
     console.error(error);
   }
 };
 
-const AdditHabitModal = ({ id, title }) => {
+const AdditHabitModal = ({ id, title, renderHabitList }) => {
   const [show, setShow] = useState(false);
+  const [newTitle, setNewTitle] = useState(title);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -44,7 +46,7 @@ const AdditHabitModal = ({ id, title }) => {
       handleClose();
       // <SuccessfulDeleteHabitModal/>
 
-      window.location.reload();
+      //renderHabitList();
       // alert("HIERNOTHING")
     } catch (error) {
       console.error(error);
@@ -55,7 +57,6 @@ const AdditHabitModal = ({ id, title }) => {
     try {
       // Send a Update request to the backend
       await editHabit(id, newTitle);
-
       // Perform any additional actions after successful deletion
       // ...
       // <SuccessfulDeleteHabitModal/>
@@ -63,7 +64,7 @@ const AdditHabitModal = ({ id, title }) => {
       handleClose();
       // <SuccessfulDeleteHabitModal/>
 
-      window.location.reload();
+      renderHabitList();
       // alert("HIERNOTHING")
     } catch (error) {
       console.error(error);
@@ -89,6 +90,8 @@ const AdditHabitModal = ({ id, title }) => {
                 type="text"
                 class="form-control"
                 id="habitNameInput"
+                defaultValue={title}
+                onChange={(event) => setNewTitle(event.target.value)}
                 placeholder="Walk a mile"
               />
               <label for="habitNameInput">Give your habit a name!</label>
@@ -103,7 +106,7 @@ const AdditHabitModal = ({ id, title }) => {
           </Button>
 
           <Button variant="secondary" onClick={handleClose}>
-            Cancle
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>
