@@ -50,9 +50,17 @@ function Stats() {
 
         const dateArray = [];
         let currentDate = new Date(oldestDate);
-        while (currentDate <= today) {
-          dateArray.push(currentDate.toLocaleDateString("de-DE"));
-          currentDate.setDate(currentDate.getDate() + 1);
+
+        if (
+          oldestDate.toLocaleDateString("de-DE") ==
+          today.toLocaleDateString("de-DE")
+        ) {
+          dateArray.push(oldestDate.toLocaleDateString("de-DE"));
+        } else {
+          while (currentDate <= today) {
+            dateArray.push(currentDate.toLocaleDateString("de-DE"));
+            currentDate.setDate(currentDate.getDate() + 1);
+          }
         }
 
         setDateRange(dateArray);
