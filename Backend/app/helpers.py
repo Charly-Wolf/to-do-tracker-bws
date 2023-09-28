@@ -9,12 +9,9 @@ from app import logged_user
 
 def reset_user_habits_status(user_id):   
     habits = Habit.query.filter_by(user_id=user_id).all()
-    if habits:
-        for habit in habits:
-            habit.status = False
-        db.session.commit()
-    # else:
-        #TODO
+    for habit in habits:
+        habit.status = False
+    db.session.commit()
 
 def prepare_habit_list():
     habits = Habit.query.filter_by(user_id=logged_user.get_id()).all() 
@@ -47,7 +44,7 @@ def prepare_user_list():
             "name": user.name,
             "lastname": user.lastname,
             "email": user.email,
-            "password": user.password, #TODO: IS THIS NECESSARY?? otherwise delete (more secure)
+            "password": user.password, 
             "last_login_date": user.last_login_date,
             "userType": user.userType,
             # "habits": user.habits

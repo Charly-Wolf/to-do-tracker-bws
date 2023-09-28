@@ -73,7 +73,6 @@ def login():
 def logout():
     response = make_response(jsonify({'message': 'Logged out'}), 200)
     logged_user.set_id(None)  
-    #TODO: failed logout (for example if the user already logged out...)
     return response
 
 @habit_bp.route('/api/habit/mark_done/<int:habit_id>', methods=['POST'])
@@ -109,7 +108,7 @@ def unmark_habit_done(habit_id):
     
 @habit_bp.route('/api/habit/update_name/<int:habit_id>', methods=['PUT'])
 def update_habit_name(habit_id):
-    habit = Habit.query.get_or_404(habit_id) # TODO: Check if it's better to use get_or_404 instead of simply get for all methods    
+    habit = Habit.query.get_or_404(habit_id) 
     try:
         data = request.get_json()
         new_name = data.get('name').strip()       

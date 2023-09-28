@@ -14,10 +14,8 @@ export default function HabitBox({ id, title, isDone, renderHabitList }) {
       try {
         if (!isDone) {
           await client.post(`/api/habit/mark_done/${id}`);
-          // setChangeMessage("save success");
         } else {
           await client.put(`/api/habit/mark_undone/${id}`);
-          // setChangeMessage("save success");
         }
         // Call the callback function to notify the parent (HabitList) of the change
         renderHabitList();
@@ -31,7 +29,6 @@ export default function HabitBox({ id, title, isDone, renderHabitList }) {
   return (
     <>
       <div
-        // className={`card text-bg-dark ${
         className={`card text-bg habit-box ${
           isDone ? "done-habit-card" : ""
         } mb-3 mx-auto habit-card`}
@@ -50,9 +47,6 @@ export default function HabitBox({ id, title, isDone, renderHabitList }) {
             >
               {title}
             </h5>
-            {/*<p className="card-text overflow-y-scroll" id="habitDescription">
-              {props.description}
-            </p>*/}
           </div>
           <div className="col-2">
             <div onClick={handleCheckboxChange} className="row">
