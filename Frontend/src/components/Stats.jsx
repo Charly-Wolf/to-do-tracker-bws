@@ -43,7 +43,9 @@ function Stats() {
       const logDates = allHabitLogs.map((log) => new Date(log.log_date));
 
       if (logDates.length <= 0) {
-        setLogsError("No logs to show.");
+        setLogsError(
+          "Keine Log Entries vorhanden. Markiere zumindest ein Habit als erledigt!"
+        );
       } else {
         const oldestDate = new Date(Math.min(...logDates));
         const today = new Date();
