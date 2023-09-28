@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import AdditHabitModal from "./AdditHabitModal";
 
-function SubNavBar({ activePage}) {
+function SubNavBar({activePage, renderHabitList}) {
   return (
     <div className="card-header">
       <ul className="nav nav-pills card-header-pills nav-light bg-white">
@@ -26,7 +26,7 @@ function SubNavBar({ activePage}) {
           </Link>
         </li>
         <li className="nav-item">
-          <AdditHabitModal id={null} title={null}/>
+          <AdditHabitModal id={null} title={null} renderHabitList={renderHabitList}/>
         </li>
       </ul>
     </div>
