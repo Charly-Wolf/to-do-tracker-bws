@@ -64,7 +64,7 @@ function UsersTable() {
 
   return (
     <>
-      <h1>Manage Users</h1>
+      <h1>Userverwaltung</h1>
       <div className="col-10 users-table">
         {usersError ? (
           <div className="alert alert-danger mt-3">{usersError}</div>
@@ -74,9 +74,9 @@ function UsersTable() {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Role</th>
+                <th>Rolle</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <th>Aktionen</th>
               </tr>
             </thead>
             <tbody>

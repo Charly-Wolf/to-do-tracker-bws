@@ -49,7 +49,7 @@ export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
                     style={{ "--i": "#65CCF2", "--j": "#2F80ED" }}
                   >
                     <i className="bi bi-people"></i>
-                    <span className="title">User List</span>
+                    <span className="title">User Liste</span>
                   </li>
                 </Link>
               )}
@@ -88,7 +88,7 @@ export default function NavBar({ isLoggedIn, isAdmin, currentPage }) {
                       className="bi-box-arrow-left"
                       style={{ marginRight: "9px" }}
                     ></i>
-                    <span className="title">Log Out</span>
+                    <span className="title">Ausloggen</span>
                   </li>
                 </Link>
               )}

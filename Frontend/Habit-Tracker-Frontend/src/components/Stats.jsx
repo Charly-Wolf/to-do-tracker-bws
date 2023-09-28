@@ -84,7 +84,7 @@ function Stats() {
             <table className="table table-hover table-bordered table-striped table-sm">
               <thead className="table-dark">
                 <tr>
-                  <th className="fixed-row">Date</th>
+                  <th className="fixed-row">Datum</th>
                   {habits.map((habit) => (
                     <th key={habit.habit_id}>{habit.name}</th>
                   ))}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../assets/css/loginStyles.css"
+import "../assets/css/loginStyles.css";
 import LoadingSpinner from "./spinner";
 
 const client = axios.create({
@@ -52,7 +52,7 @@ function Register() {
       <div className="card main-card" id="register-card">
         {!registeredSuccessful ? (
           <>
-            <h2 className="text-center card-title">Register</h2>
+            <h2 className="text-center card-title">Registrieren</h2>
             <br />
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -73,7 +73,7 @@ function Register() {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="First name"
+                  placeholder="Vorname"
                   required
                 />
               </div>
@@ -85,7 +85,7 @@ function Register() {
                   id="lastname"
                   value={lastname}
                   onChange={(e) => setLastname(e.target.value)}
-                  placeholder="Lastname"
+                  placeholder="Nachname"
                   required
                 />
               </div>
@@ -97,7 +97,7 @@ function Register() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
+                  placeholder="Passwort"
                   required
                 />
               </div>
@@ -109,41 +109,37 @@ function Register() {
                   id="password2"
                   value={password2}
                   onChange={(e) => setPassword2(e.target.value)}
-                  placeholder="Repeat Password"
+                  placeholder="Passwort wiederholen"
                   required
                 />
               </div>
               <br />
               {isLoading ? (
-                <div className="spinner-container"><LoadingSpinner /></div>
-                ) : (
+                <div className="spinner-container">
+                  <LoadingSpinner />
+                </div>
+              ) : (
                 <button type="submit" className="btn btn-primary btn-block">
-                  Register
+                  Registrieren
                 </button>
-                )}
-              {/* Display the error message with Bootstrap danger style */}
-              {error && (
-                <div className="alert alert-danger mt-3">{error}</div>
               )}
+              {/* Display the error message with Bootstrap danger style */}
+              {error && <div className="alert alert-danger mt-3">{error}</div>}
             </form>
           </>
         ) : (
           <div className="container">
             <div className="alert alert-warning" role="alert">
-              <h4 className="alert-heading">
-                Account Activation Pending
-              </h4>
+              <h4 className="alert-heading">Kontoaktivierung ausstehend</h4>
               <hr />
               <p className="mb-0">
-                Please have some patience until an Admin activates your
-                account 😁
+                Wir bitten um Geduld 🙏🏻, bis ein Admin dein Konto aktiviert 😁
               </p>
             </div>
           </div>
         )}
         <p className="mt-3 text-center">
-          Do you already have an ACTIVATED account?{" "}
-          <Link to="/login">Login</Link>
+          Hast du schon ein AKTIVIERTES Konto? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>
