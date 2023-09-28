@@ -4,6 +4,7 @@ import HabitBox from "../components/HabitBox"; //Muss noch für jedes Habit ange
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SubNavBar from "./SubNavBar";
+import AdditHabitModal from "./AdditHabitModal";
 
 const client = axios.create({
   baseURL: "http://127.0.0.1:5000/", // Connection with the Backend
@@ -70,9 +71,7 @@ function HabitList() {
               <p className="card-text">
                 Du hast noch keine Habits. Füge dein erstes Habit hinzu!
               </p>
-              <a href="#" className="btn btn-primary">
-                Habit hinzufügen
-              </a>
+              <AdditHabitModal id={null} title={"Habit hinzufügen"} renderHabitList={renderThis}/>
             </>
           ) : (
             <div className="container">

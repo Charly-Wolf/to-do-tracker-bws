@@ -26,7 +26,7 @@ function SubNavBar({ activePage, renderHabitList}) {
           </Link>
         </li>
         <li className="nav-item">
-          <AdditHabitModal id={null} title={null}/>
+          <AdditHabitModal id={null} title={null} renderHabitList={renderHabitList}/>
         </li>
       </ul>
     </div>

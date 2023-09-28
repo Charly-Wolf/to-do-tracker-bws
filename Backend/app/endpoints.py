@@ -29,7 +29,7 @@ def get_habits():
 def add_habit():
     try:
         data = request.get_json()
-        habit_name = data.get('name')
+        habit_name = data.get('name').strip()
         return validate_add_habit(habit_name)     
     except Exception as e:
         return jsonify({'message': 'An error occurred while adding the habit.'}), 500

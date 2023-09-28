@@ -11,17 +11,16 @@ const client = axios.create({
 
 const addHabit = async (newTitle) => {
   try {
-    console.log(newTitle)
-    const response = await client.post(`api/habit/add_habit`, {name: newTitle});
-    console.log(response.data);
+    const response = await client.post(`api/add_habit`, { name: newTitle });
   } catch (error) {
-    console.error(error);
   }
 };
 
 const editHabit = async (id, newTitle) => {
   try {
-    const response = await client.put(`api/habit/update_name/${id}`, {name: newTitle});
+    const response = await client.put(`api/habit/update_name/${id}`, {
+      name: newTitle,
+    });
     console.log(response.data);
   } catch (error) {
     console.error(error);
@@ -33,6 +32,32 @@ const AdditHabitModal = ({ id, title, renderHabitList }) => {
   const [newTitle, setNewTitle] = useState(title);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  let showButton;
+
+  if (id === null && title === "Habit hinzufügen") {
+    showButton = (
+      <Button variant={"btn btn-primary"} onClick={handleShow}>
+        {title}
+      </Button>
+    );
+    title = null;
+  }
+  else if (id === null && title === null) {
+    showButton = (
+      <Button
+        variant={`btn btn-outline-primary bi bi-plus-circle-fill my-1`}
+        onClick={handleShow}
+      />
+    );
+  } else {
+    showButton = (
+      <Button
+        variant={"btn btn-outline-primary bi bi-pencil my-1"}
+        onClick={handleShow}
+      />
+    );
+  }
 
   const handleAdd = async () => {
     try {
@@ -46,7 +71,7 @@ const AdditHabitModal = ({ id, title, renderHabitList }) => {
       handleClose();
       // <SuccessfulDeleteHabitModal/>
 
-      //renderHabitList();
+      renderHabitList();
       // alert("HIERNOTHING")
     } catch (error) {
       console.error(error);
@@ -73,29 +98,24 @@ const AdditHabitModal = ({ id, title, renderHabitList }) => {
 
   return (
     <>
-      <Button
-        variant={`btn btn-outline-primary bi bi-${
-          id != null ? "pencil" : "plus-circle-fill"
-        } my-1`}
-        onClick={handleShow}
-      />
+      {showButton}
 
       <Modal show={show} onHide={handleClose} centered backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title ?? "New Habit"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <div class="form-floating mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="habitNameInput"
-                defaultValue={title}
-                onChange={(event) => setNewTitle(event.target.value)}
-                placeholder="Walk a mile"
-              />
-              <label for="habitNameInput">Give your habit a name!</label>
-            </div>
+          <div className="form-floating mb-3">
+            <input
+              type="text"
+              className="form-control"
+              id="habitNameInput"
+              defaultValue={title}
+              onChange={(event) => setNewTitle(event.target.value)}
+              placeholder="Walk a mile"
+            />
+            <label htmlFor="habitNameInput">Give your habit a name!</label>
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button
