@@ -50,7 +50,7 @@ const DeleteHabitModal = ({ id, title, renderHabitList }) => {
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Wollen Sie Ihren Habit wirklich löschen?</Modal.Body>
+        <Modal.Body>Willst du dein Habit wirklich löschen?</Modal.Body>
         {deleteError && (
           <div className="alert alert-danger mt-3">{deleteError}</div>
         )}
