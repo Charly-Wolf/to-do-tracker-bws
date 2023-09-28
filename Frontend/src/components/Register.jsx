@@ -34,13 +34,12 @@ function Register() {
         password2: password2,
       });
 
-      // navigate("/login");
       setregisteredSuccessful(true);
     } catch (err) {
-      if (error) {
+      if (err.message != "Network Error") {
         setError(err.response.data.message);
       } else {
-        setError("Connection with the Server failed");
+        setError("Verbindung zum Server fehlgeschlagen.");
       }
     } finally {
       setIsLoading(false);
