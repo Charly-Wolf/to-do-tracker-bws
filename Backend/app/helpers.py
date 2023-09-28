@@ -61,25 +61,6 @@ def prepare_user_list():
 
     return users_list
 
-# def prepare_log_entries():
-#     if logged_user.get_id() == None:
-#         return None
-
-#     # Fetch all habits related to the user
-#     habits = prepare_habit_list()
-#     log_entry_list = []
-
-#     # Loop through each habit and get its associated log entries
-#     for habit in habits:
-#         for log_entry in habit['habitLogs']:
-#             log_entry_data = {
-#                 "log_id": log_entry['log_id'],
-#                 "log_date": log_entry['log_date']
-#             }
-#             log_entry_list.append(log_entry_data)
-
-#     return log_entry_list
-
 def validate_user_name_characters(name):
     # Regular Expression for latin alphabet characters and common European characters
     name_pattern = re.compile(r'^[A-Za-zÀ-ÿ\s\-\']+$')
@@ -125,7 +106,7 @@ def validate_habit_name_length(habit_name):
         return False
     else: return True
 
-def filter_logs_by_date(logs, target_date): # TODO: maybe it would be better to use HabitLog.query.filter_by(...)
+def filter_logs_by_date(logs, target_date):
     for log in logs:
         log_date = log.log_date.date()
         if log_date == target_date:
@@ -142,19 +123,19 @@ def get_logged_in_user():
 
 def validate_add_habit(habit_name):
     if not habit_name or not habit_name.strip():
-        return jsonify({'message': 'Habit name cannot be empty!'}), 400
+        return jsonify({'message': 'Habit-Name kann nicht leer sein!'}), 400
         
     if not validate_habit_name_length(habit_name):
-        return jsonify({'message': 'Habit name must be between 2 and 30 characters long'}), 400
+        return jsonify({'message': 'Der Habit-Name muss zwischen 2 und 30 Zeichen lang sein.'}), 400
 
     if not validate_habit_name_format(habit_name):
-        return jsonify({'message': 'Invalid habit name'}), 400
+        return jsonify({'message': 'Ungültiger Habit-Name'}), 400
     
     #Check if the user already has a habit with that name
     user_habits = prepare_habit_list()  # Call the function to get the list of habits
     for user_habit in user_habits:
         if habit_name.lower() == user_habit['name'].lower():
-            return jsonify({'message': 'That habit already exists.'}), 400
+            return jsonify({'message': 'Ein Habit mit dem gleichen Namen ist schon vorhanden.'}), 400
 
     user_id = logged_user.get_id()
     new_habit = Habit(user_id=user_id, name=habit_name)  # Associate habit with the user
@@ -162,34 +143,34 @@ def validate_add_habit(habit_name):
     db.session.add(new_habit)
     db.session.commit()
 
-    return jsonify({'message': 'Habit added successfully'}), 201
+    return jsonify({'message': 'Habit erfolgreich hinzugefügt.'}), 201
 
 def validate_register_user(email, name, lastname, password, password2):
     
     if not email or not name or not lastname or not password or not password2:
-            return jsonify({'message': 'Email address, name, lastname and password are required'}), 400
+            return jsonify({'message': 'E-Mail-Adresse, Vorname, Nachname und das Passwort sind erforderlich.'}), 400
     
     if not validate_email(email):
-        return jsonify({'message': 'Invalid email address format'}), 400
+        return jsonify({'message': 'Ungültiges E-Mail-Adressformat.'}), 400
     
     if not validate_user_name_length(name) or not validate_user_name_length(lastname):
-        return jsonify({'message': 'First and last name must be between 2 and 20 characters long'}), 400 
+        return jsonify({'message': 'Vor- und Nachname müssen zwischen 2 und 20 Zeichen lang sein.'}), 400 
     
     if not validate_user_name_characters(name):
-        return jsonify({'message': 'Invalid first name format, characters not allowed'}), 400
+        return jsonify({'message': 'Ungültiges Format des Vornamens. Du hast nicht erlaubte Zeichen verwendet.'}), 400
     
     if not validate_user_name_characters(lastname):
-        return jsonify({'message': 'Invalid last name format, characters not allowed'}), 400
+        return jsonify({'message': 'Ungültiges Format des Nachnamens. Du hast nicht erlaubte Zeichen verwendet.'}), 400
     
     if not validate_password_format(password):
-        return jsonify({'message': 'Invalid password format (At least: 8 characters, one uppercase letter, one lowercase letter, one digit and one special character.)'}), 400
+        return jsonify({'message': 'Ungültiges Passwortformat (Mindestens: 8 Zeichen, ein Großbuchstabe, ein Kleinbuchstabe, eine Ziffer und ein Sonderzeichen).'}), 400
 
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
-        return jsonify({'message': 'Email already in use'}), 409
+        return jsonify({'message': 'E-Mail bereits registriert.'}), 409
 
     if password != password2:
-        return jsonify({'message': 'Passwords must be the same'}), 400
+        return jsonify({'message': 'Passwort muss richtig wiederholt werden.'}), 400
     # Hash the password
     hashed_password = generate_password_hash(password, method='sha256')
 
@@ -197,7 +178,7 @@ def validate_register_user(email, name, lastname, password, password2):
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({'message': 'User registered successfully'}), 201
+    return jsonify({'message': 'User erfolgreich registriert'}), 201
 
 def validate_edit_habit_name(habit, new_name):
     user_habits = prepare_habit_list()  # Call the function to get the list of habits
@@ -205,18 +186,18 @@ def validate_edit_habit_name(habit, new_name):
     # Check if a habit already has that name
     for user_habit in user_habits:
         if new_name.lower() == user_habit['name'].lower():
-            return jsonify({'message': 'That habit already exists.'}), 400
+            return jsonify({'message': 'Dieses Habit existiert bereits.'}), 400
 
     if not new_name or not new_name.strip():
-        return jsonify({'message': 'New habit name cannot be empty!'}), 400
+        return jsonify({'message': 'Habit-Name kann nicht leer sein!'}), 400
     
     if not validate_habit_name_length(new_name):
-        return jsonify({'message': 'Habit name must be between 2 and 30 characters long'}), 400
+        return jsonify({'message': 'Der Habit-Name muss zwischen 2 und 30 Zeichen lang sein.'}), 400
     
     if not validate_habit_name_format(new_name):
-        return jsonify({'message': 'Invalid habit name'}), 400
+        return jsonify({'message': 'Ungültiger Habit-Name'}), 400
     
     habit.name = new_name
     db.session.commit()
     
-    return jsonify({'message': 'Habit name updated successfully'}), 200
+    return jsonify({'message': 'Habit-Name erfolgreich geändert!'}), 200

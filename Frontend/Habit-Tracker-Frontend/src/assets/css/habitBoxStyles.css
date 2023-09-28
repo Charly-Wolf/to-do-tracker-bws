@@ -2,10 +2,11 @@
   transition: all 0.3s ease;
   user-select: none;
   cursor: pointer;
+  font-size: 1.5rem;
 }
 
 h5.done {
-  color: rgb(214, 214, 214) !important;
+  color: rgb(173, 173, 173) !important;
   text-decoration: line-through;
 }
 
@@ -28,5 +29,11 @@ button {
 }
 
 .done-habit-card {
+  background: linear-gradient(60deg, #272446, #0d232b, #012012 75%) !important;
   opacity: 0.6;
+}
+
+.habit-box {
+  background: linear-gradient(60deg, #6c4ca0, #161558, #02292e 75%);
+  color: white !important;
 }

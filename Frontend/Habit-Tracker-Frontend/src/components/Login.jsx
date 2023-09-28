@@ -42,7 +42,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       if (err.message != "Network Error") {
         setError(err.response.data.message);
       } else {
-        setError("Connection with the Server failed");
+        setError("Verbindung zum Server fehlgeschlagen.");
       }
     } finally {
       setIsLoading(false);
@@ -74,7 +74,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
+              placeholder="Passwort"
               required
             />
           </div>
@@ -97,8 +97,8 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
         </p> */}
 
         <p className="mt-3 text-center">
-          You don&#39;t have an account yet?{" "}
-          <Link to="/register">Register</Link>
+          Noch kein Konto?{" "}
+          <Link to="/register">Registrieren</Link>
         </p>
       </div>
     </div>

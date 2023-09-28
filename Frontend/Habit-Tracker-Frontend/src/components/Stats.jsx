@@ -50,9 +50,17 @@ function Stats() {
 
         const dateArray = [];
         let currentDate = new Date(oldestDate);
-        while (currentDate <= today) {
-          dateArray.push(currentDate.toLocaleDateString("de-DE"));
-          currentDate.setDate(currentDate.getDate() + 1);
+
+        if (
+          oldestDate.toLocaleDateString("de-DE") ==
+          today.toLocaleDateString("de-DE")
+        ) {
+          dateArray.push(oldestDate.toLocaleDateString("de-DE"));
+        } else {
+          while (currentDate <= today) {
+            dateArray.push(currentDate.toLocaleDateString("de-DE"));
+            currentDate.setDate(currentDate.getDate() + 1);
+          }
         }
 
         setDateRange(dateArray);
@@ -76,7 +84,7 @@ function Stats() {
             <table className="table table-hover table-bordered table-striped table-sm">
               <thead className="table-dark">
                 <tr>
-                  <th className="fixed-row">Date</th>
+                  <th className="fixed-row">Datum</th>
                   {habits.map((habit) => (
                     <th key={habit.habit_id}>{habit.name}</th>
                   ))}

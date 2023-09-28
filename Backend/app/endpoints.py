@@ -14,14 +14,15 @@ habit_bp = Blueprint('habit', __name__)
 def get_users():
     users_list_data = prepare_user_list()
     if users_list_data is None:
-        return jsonify({'message': 'No permissions to see the users list'}), 401
+        return jsonify({'message': 'Keine Berechtigungen, die Benutzerliste einzusehen.'}), 401
+        #TODO: REDIRECT TO LOGIN!!
     return jsonify(users_list_data)
 
 @habit_bp.route('/api/habits', methods=['GET'])
 def get_habits():
     user = get_logged_in_user() 
     if user is None:
-        return jsonify({'message': 'No permissions to see the habits list'}), 401
+        return jsonify({'message': 'Keine Berechtigung, die Habit-Liste anzusehen.'}), 401
     habits_list = prepare_habit_list()
     return jsonify(habits_list)
 
@@ -32,14 +33,7 @@ def add_habit():
         habit_name = data.get('name').strip()
         return validate_add_habit(habit_name)     
     except Exception as e:
-        return jsonify({'message': 'An error occurred while adding the habit.'}), 500
-
-# @habit_bp.route('/api/log_entries', methods=['GET'])
-# def get_log_entries():
-#     log_entry_list = prepare_log_entries()
-#     if log_entry_list is None:
-#         return jsonify({'message': 'No permissions to see the log entries'}), 401
-#     return jsonify(log_entry_list)
+        return jsonify({'message': 'Beim Hinzufügen des Habits ist ein Fehler aufgetreten.'}), 500
 
 @user_bp.route('/api/register', methods=['POST'])
 def register():
@@ -57,23 +51,23 @@ def login():
     email= credentials.get('email')
     password = credentials.get('password')
     if not email or not password:
-        return jsonify({'message': 'Email address and password are required'}), 400   
+        return jsonify({'message': 'Die E-Mail-Adresse und das Passwort sind erforderlich.'}), 400   
     user = User.query.filter_by(email=email.strip()).first()
     if user and check_password_hash(user.password, password):
         if user.userType == 'normal_user':
             normal_user = NormalUser.query.filter_by(user_id=user.id).first()
             if not normal_user.account_activated:
-                return jsonify({'message': 'Account not yet activated'}), 401 
+                return jsonify({'message': 'Konto noch nicht aktiviert.'}), 401 
         
         if user.last_login_date != datetime.today().date():
             reset_user_habits_status(user.id)
         user.last_login_date = datetime.today()  # Update the last login date
         db.session.commit()
-        response = make_response(jsonify({'message': 'Login successful', 'user_id': user.id, 'user_type': user.userType}), 200)
+        response = make_response(jsonify({'message': 'Login erfolgreich', 'user_id': user.id, 'user_type': user.userType}), 200)
         logged_user.set_id(user.id)
         return response
     else:
-        return jsonify({'message': 'Wrong username or password'}), 401 
+        return jsonify({'message': 'Falscher Benutzername oder falsches Passwort!'}), 401 
 
 @user_bp.route('/api/logout', methods=['GET'])
 def logout():
@@ -91,11 +85,11 @@ def mark_habit_done(habit_id):
             db.session.add(new_log)
             habit.status = not habit.status
             db.session.commit()
-            return jsonify({'message': 'Habit marked as done and log entry created successfully'}), 200
+            return jsonify({'message': 'Habit als erledigt markiert und Entry Log erfolgreich erstellt.'}), 200
         except Exception as e:
-            return jsonify({'message': 'An error occurred while marking habit as done.'}), 500
+            return jsonify({'message': 'Ein Fehler ist aufgetreten, während Habit als erledigt markiert wurde.'}), 500
     else:
-        return jsonify({'message': 'Habit not found'}), 404
+        return jsonify({'message': 'Habit nicht gefunden.'}), 404
     
 @habit_bp.route('/api/habit/mark_undone/<int:habit_id>', methods=['PUT'])
 def unmark_habit_done(habit_id):
@@ -107,11 +101,11 @@ def unmark_habit_done(habit_id):
             db.session.delete(habit_log_to_delete)
             habit.status = not habit.status
             db.session.commit()
-            return jsonify({'message': 'Habit marked as undone and corresponding log entry deleted successfully'}), 200
+            return jsonify({'message': 'Habit als rückgängig markiert und entsprechender Entry Log erfolgreich gelöscht'}), 200
         except Exception as e:
-            return jsonify({'message': f'No log entry found for the habit_id {habit_id} today ({today_date}).'}), 500  
+            return jsonify({'message': f'Kein Log Entry für die habit_id {habit_id} heute ({today_date}) gefunden.'}), 500  
     else:
-        return jsonify({'message': 'Habit not found'}), 404
+        return jsonify({'message': 'Habit nicht gefunden'}), 404
     
 @habit_bp.route('/api/habit/update_name/<int:habit_id>', methods=['PUT'])
 def update_habit_name(habit_id):
@@ -121,34 +115,32 @@ def update_habit_name(habit_id):
         new_name = data.get('name').strip()       
         return validate_edit_habit_name(habit, new_name)   
     except Exception as e:
-        return jsonify({'message': 'An error occurred while updating the habit name.'}), 500
+        return jsonify({'message': 'Ein Fehler ist aufgetreten, während der Habit-Name aktualisiert wurde.'}), 500
     
 @habit_bp.route('/api/habit/<int:habit_id>', methods=['DELETE'])
 def delete_habit(habit_id):
     habit = Habit.query.get_or_404(habit_id)  
     try:
-        if (len(filter_logs_by_habit_id(habit_id)) > 0):
-            return jsonify({'message': 'Cannot delete habit. There are log entries for this habit'}), 400 # TODO: IDEA: Change to "Archive" instead of delete, so that the habits with logs can be then restored
+        habit_logs_to_delete = filter_logs_by_habit_id(habit_id)
+        if (len(habit_logs_to_delete) > 0):
+            for log in habit_logs_to_delete:
+                db.session.delete(log);
+            db.session.commit()
         db.session.delete(habit)
         db.session.commit()
-        return jsonify({'message': 'Habit deleted successfully'}), 200
+        return jsonify({'message': 'Habit erfolgreich gelöscht'}), 200
     except Exception as e:
-        return jsonify({'message': 'An error occurred while deleting the habit.'}), 500
+        return jsonify({'message': f'Ein Fehler ist beim Löschen des Habit aufgetreten: {e}'}), 500
 
 @user_bp.route('/api/users/toggle_user_status/<int:user_id>', methods=['PUT'])
 def block_user(user_id): # Get user ID from the cookie
     user = User.query.filter_by(id=user_id).first()
-    # is_logged_user_admin = get_logged_in_user().userType == 'admin' TODO: Implement this and Test this with POSTMAN
-    # is_user_to_toggle_admin = user.userType == 'admin' # TODO: Implement this and Test this with POSTMAN
-    # if is_logged_user_admin:
     if user:
         try:
             user.account_activated = not user.account_activated
             db.session.commit()
-            return jsonify({'message': 'User status succesfully toggled'}), 200
+            return jsonify({'message': 'Userstatus erfolgreich umgeschaltet.'}), 200
         except Exception as e:
-            return jsonify({'message': 'An error occurred while toggling user status.'}), 500
+            return jsonify({'message': 'Ein Fehler ist aufgetreten, während der Userstatus umgeschaltet wurde.'}), 500
     else:
-        return jsonify({'message': 'User not found'}), 404
-    # else:
-    #     return jsonify({'message': 'You have no permissions'}), 401
+        return jsonify({'message': 'User nicht gefunden'}), 404

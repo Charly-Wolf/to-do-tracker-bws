@@ -1,3 +1,5 @@
+// Authors: Mahir Dzafic, Carlos Paredes & Marius Schröder
+
 import React, { useState } from "react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
@@ -6,64 +8,64 @@ import { Link } from "react-router-dom";
 import SuccessfulDeleteHabitModal from "./SuccessfulDeleteHabitModal";
 
 const client = axios.create({
-    baseURL: "http://127.0.0.1:5000/",
-})
-
-const deleteHabit = async (habitId) => {
-    try {
-        const response = await client.delete(`api/habit/${habitId}`);
-        // console.log(response.data);
-    } catch (error) {
-        // console.error(error);
-    }
-}
+  baseURL: "http://127.0.0.1:5000/",
+});
 
 const DeleteHabitModal = ({ id, title, renderHabitList }) => {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setDeleteError("");
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
+  const [deleteError, setDeleteError] = useState(""); // Author: Carlos Paredes
 
-    // console.log("HABIT ID:", id)
-    // console.log("Title des Habits: ", title);
-
-    const handleDelete = async () => {
-        try {
-            // Send a DELETE request to the backend
-            await deleteHabit(id);
-
-            // Perform any additional actions after successful deletion
-            // ...
-            // <SuccessfulDeleteHabitModal/>
-            // Close the modal
-            handleClose();
-            // <SuccessfulDeleteHabitModal/>
-
-            renderHabitList();
-            // alert("HIERNOTHING")
-        } catch (error) {
-            console.error(error);
-        }
+  const deleteHabit = async (habitId) => {
+    try {
+      await client.delete(`api/habit/${habitId}`);
+    } catch (error) {
+      setDeleteError(error.response.data.message); // Author: Carlos Paredes
     }
+    handleClose();
+  };
 
-    return (
-        <>
-            <Button variant="btn btn-outline-danger bi bi-trash3 my-1" onClick={handleShow}></Button>
+  const handleDelete = async () => {
+    try {
+      // Send a DELETE request to the backend
+      await deleteHabit(id);
+      renderHabitList();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-            <Modal show={show} onHide={handleClose} centered backdrop="static">
-                <Modal.Header closeButton>
-                    <Modal.Title>{title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Wollen Sie Ihren Habit wirklich löschen?
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={handleDelete}>Ja</Button>
+  return (
+    <>
+      <Button
+        variant="btn btn-outline-danger bi bi-trash3 my-1"
+        onClick={handleShow}
+      ></Button>
 
-                    <Button variant="success" onClick={handleClose}>Nein</Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
-}
+      <Modal show={show} onHide={handleClose} centered backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Wollen Sie Ihren Habit wirklich löschen?</Modal.Body>
+        {deleteError && (
+          <div className="alert alert-danger mt-3">{deleteError}</div>
+        )}
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleDelete}>
+            Ja
+          </Button>
+
+          <Button variant="success" onClick={handleClose}>
+            Nein
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
 
 export default DeleteHabitModal;

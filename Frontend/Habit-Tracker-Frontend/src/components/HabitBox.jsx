@@ -31,7 +31,8 @@ export default function HabitBox({ id, title, isDone, renderHabitList }) {
   return (
     <>
       <div
-        className={`card text-bg-dark ${
+        // className={`card text-bg-dark ${
+        className={`card text-bg habit-box ${
           isDone ? "done-habit-card" : ""
         } mb-3 mx-auto habit-card`}
         id={id}
