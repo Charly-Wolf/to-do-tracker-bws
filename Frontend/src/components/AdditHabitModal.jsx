@@ -106,7 +106,7 @@ const AdditHabitModal = ({ id, title, renderHabitList }) => {
               onChange={(event) => setNewTitle(event.target.value)}
               placeholder="Walk a mile"
             />
-            <label htmlFor="habitNameInput">Give your habit a name!</label>
+            <label htmlFor="habitNameInput">Gib dein Habit einen Namen!</label>
           </div>
         </Modal.Body>
         {addEditError && (
