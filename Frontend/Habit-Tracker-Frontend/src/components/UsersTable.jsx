@@ -27,7 +27,7 @@ function UsersTable() {
 
   const toggleUserStatus = async (userId) => {
     // TODO: Implement the logic to activate a user
-    const confirmed = confirm("Change user status?");
+    const confirmed = confirm("User-Status ändern?");
     try {
       if (confirmed) {
         await client.put(`/api/users/toggle_user_status/${userId}`);
@@ -43,7 +43,7 @@ function UsersTable() {
       }
     } catch (err) {
       // TODO: // Handle errors
-      console.error("Error toggling user status:", err);
+      console.error("Fehler beim Ändern vom User-Status:", err);
     }
   };
 
@@ -90,15 +90,15 @@ function UsersTable() {
                     {user.userType === "admin" ? (
                       <span className="badge text-bg-primary">ADMIN</span>
                     ) : (
-                      "Normal User"
+                      "Normaler User"
                     )}
                   </td>
                   <td>
                     {user.userType === "normal_user" &&
                       (user.account_activated ? (
-                        <span className="badge text-bg-success">Active</span>
+                        <span className="badge text-bg-success">Aktiviert</span>
                       ) : (
-                        <span className="badge text-bg-danger">Blocked</span>
+                        <span className="badge text-bg-danger">Gesperrt</span>
                       ))}
                   </td>
                   <td>
