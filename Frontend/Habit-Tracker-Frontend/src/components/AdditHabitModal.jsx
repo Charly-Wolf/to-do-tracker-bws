@@ -6,31 +6,39 @@ const client = axios.create({
   baseURL: "http://127.0.0.1:5000/",
 });
 
-const addHabit = async (newTitle) => {
-  try {
-    const response = await client.post(`api/add_habit`, { name: newTitle });
-  } catch (error) {
-  }
-};
-
-const editHabit = async (id, newTitle) => {
-  try {
-    const response = await client.put(`api/habit/update_name/${id}`, {
-      name: newTitle,
-    });
-    console.log(response.data);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const AdditHabitModal = ({ id, title, renderHabitList }) => {
   const [show, setShow] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setaddEditError("");
+    setNewTitle(""); // Clear the text input
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
+  const [addEditError, setaddEditError] = useState(""); // Author: Carlos Paredes
 
   let showButton;
+
+  const addHabit = async (newTitle) => {
+    try {
+      await client.post(`api/add_habit`, { name: newTitle });
+      handleClose();
+    } catch (error) {
+      setaddEditError(error.response.data.message);
+    }
+  };
+
+  const editHabit = async (id, newTitle) => {
+    try {
+      const response = await client.put(`api/habit/update_name/${id}`, {
+        name: newTitle,
+      });
+      console.log(response.data);
+      handleClose();
+    } catch (error) {
+      setaddEditError(error.response.data.message);
+    }
+  };
 
   if (id === null && title === "Habit hinzufügen") {
     showButton = (
@@ -39,8 +47,7 @@ const AdditHabitModal = ({ id, title, renderHabitList }) => {
       </Button>
     );
     title = null;
-  }
-  else if (id === null && title === null) {
+  } else if (id === null && title === null) {
     showButton = (
       <Button
         variant={`btn btn-outline-primary bi bi-plus-circle-fill my-1`}
@@ -61,17 +68,10 @@ const AdditHabitModal = ({ id, title, renderHabitList }) => {
       // Send a INSERT request to the backend
       await addHabit(newTitle);
 
-      // Perform any additional actions after successful deletion
-      // ...
-      // <SuccessfulDeleteHabitModal/>
-      // Close the modal
-      handleClose();
-      // <SuccessfulDeleteHabitModal/>
-
+      // handleClose();
       renderHabitList();
-      // alert("HIERNOTHING")
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -79,17 +79,12 @@ const AdditHabitModal = ({ id, title, renderHabitList }) => {
     try {
       // Send a Update request to the backend
       await editHabit(id, newTitle);
-      // Perform any additional actions after successful deletion
-      // ...
-      // <SuccessfulDeleteHabitModal/>
-      // Close the modal
-      handleClose();
-      // <SuccessfulDeleteHabitModal/>
+
+      // handleClose();
 
       renderHabitList();
-      // alert("HIERNOTHING")
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -114,6 +109,9 @@ const AdditHabitModal = ({ id, title, renderHabitList }) => {
             <label htmlFor="habitNameInput">Give your habit a name!</label>
           </div>
         </Modal.Body>
+        {addEditError && (
+          <div className="alert alert-danger mt-3">{addEditError}</div>
+        )}
         <Modal.Footer>
           <Button
             variant="primary"
